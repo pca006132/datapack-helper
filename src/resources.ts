@@ -5,6 +5,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import {pathToName} from './util';
 
 const NAME_PATTERN = /^[a-z0-9-_.]+$/;
 const OBJ_PATTERN = /^scoreboard objectives add (\S+) (\S+)/;
@@ -20,6 +21,8 @@ export function initialize() {
     vscode.window.showInputBox({
         prompt: "Description of your datapack"
     }).then((v) => {
+        if (!v)
+            return;
         fs.mkdir(path.join(root.fsPath, '.datapack'), (err) => {
             if (err) {
                 vscode.window.showErrorMessage("Error creating .datapack folder");
@@ -88,14 +91,14 @@ function readFileAsync(path) {
     })
 }
 
-async function walker(p, extension) {
+async function walker(p, extension, ignore_files = false) {
     let names = (await readdirAsync(p)).map(v=>path.join(p,v));
     let fit: string[] = [];
     let dir: Promise<string[]>[] = [];
 
     let stats = await Promise.all(names.map(v=>statAsync(v)));
     for (let i = 0; i < names.length; i++) {
-        if (stats[i].isFile() && names[i].endsWith(extension)) {
+        if (!ignore_files && stats[i].isFile() && names[i].endsWith(extension)) {
             fit.push(names[i]);
         } else if (stats[i].isDirectory()) {
             dir.push(walker(names[i], extension));
@@ -114,23 +117,47 @@ export async function loadObjectives() {
         //Cannot handle multi-root folder right now, quit
         return;
     }
-    let root = vscode.workspace.workspaceFolders[0].uri;
+    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'functions');
     let objectives: Array<[string, string]> = [];
-    let paths = await walker(path.join(root.fsPath, 'data', 'functions'), ".mcfunction");
+    let paths = await walker(root, ".mcfunction", true);
     let v = await Promise.all(paths.map(v=>readFileAsync(v)));
-    for (let file of v) {
+
+    let namespaces = {};
+
+    for (let i = 0; i < v.length; i++) {
+        let file = v[i];
+        let name = pathToName(root, paths[i]);
+
+        let nodes = name.split(":");
+        nodes.push(...nodes.pop().split("/"));
+        let temp = namespaces;
+        for (let i = 0; i < nodes.length-1; i++) {
+            if (!temp[nodes[i]])
+                temp[nodes[i]] = {};
+            temp = temp[nodes[i]];
+        }
+        if (!temp["$functions"])
+            temp["$functions"] = [];
+
+        temp["$functions"].push(nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 11));
+
         for (let line of file.split(LINE_DELIMITER)) {
             let m = OBJ_PATTERN.exec(line);
             if (m) {
                 if (!objectives.find(v=>v[0] === m[1])) {
-                    objectives.push([m[1], m[2]]);
+                    objectives.push([m[1], m[2], name]);
                 }
             }
         }
     }
-    fs.writeFile(path.join(root.fsPath, '.datapack', 'objectives.json'), JSON.stringify(objectives), (err) => {
+    fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'objectives.json'), JSON.stringify(objectives), (err) => {
         if (err) {
-            vscode.window.showErrorMessage("Error creating .datapack/objectives.json");
+            vscode.window.showErrorMessage("Error writing .datapack/objectives.json");
+        }
+    });
+    fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'functions.json'), JSON.stringify(namespaces), (err) => {
+        if (err) {
+            vscode.window.showErrorMessage("Error writing .datapack/functions.json");
         }
     });
 }
