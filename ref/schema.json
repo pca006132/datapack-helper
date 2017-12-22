@@ -461,6 +461,176 @@
                 }
              ]
           ]
+       },
+       {
+          "options": [
+             "experience",
+             "xp"
+          ],
+          "children": [
+             {
+                "options": [
+                   "add",
+                   "set"
+                ],
+                "children": [
+                   {
+                      "function": "targets",
+                      "children": [
+                         {
+                            "format": "int",
+                            "children": [
+                               {
+                                  "options": [
+                                     "levels",
+                                     "points"
+                                  ],
+                                  "optional": true,
+                                  "children": []
+                               }
+                            ]
+                         }
+                      ]
+                   }
+                ]
+             },
+             {
+                "data": "query",
+                "children": [
+                   {
+                      "function": "targets",
+                      "children": [
+                         {
+                            "options": [
+                               "levels",
+                               "points"
+                            ],
+                            "children": []
+                         }
+                      ]
+                   }
+                ]
+             }
+          ]
+       },
+       {
+          "data": "fill",
+          "children": [
+             {
+                "format": "location",
+                "children": [
+                   {
+                      "format": "location",
+                      "children": [
+                         {
+                            "function": "block",
+                            "children": [
+                               {
+                                  "options": [
+                                     "destroy",
+                                     "hollow",
+                                     "keep",
+                                     "outline"
+                                  ],
+                                  "optional": true,
+                                  "children": []
+                               },
+                               {
+                                  "data": "replace",
+                                  "children": [
+                                     {
+                                        "function": "block",
+                                        "optional": true,
+                                        "children": []
+                                     }
+                                  ]
+                               }
+                            ]
+                         }
+                      ]
+                   }
+                ]
+             }
+          ]
+       },
+       {
+          "data": "function",
+          "children": [
+             {
+                "function": "functions",
+                "children": []
+             }
+          ]
+       },
+       {
+          "data": "gamemode",
+          "children": [
+             {
+                "options": [
+                   "adventure",
+                   "creative",
+                   "spectator",
+                   "survival"
+                ],
+                "children": [
+                   {
+                      "function": "targets",
+                      "optional": true,
+                      "children": []
+                   }
+                ]
+             }
+          ]
+       },
+       {
+          "data": "gamerule",
+          "children": [
+             {
+                "options": [
+                   "announceAdvancements",
+                   "commandBlockOutput",
+                   "disableElytraMovementCheck",
+                   "doDaylightCycle",
+                   "doEntityDrops",
+                   "doFireTick",
+                   "doLimitedCrafting",
+                   "doMobLoot",
+                   "doMobSpawning",
+                   "doTileDrops",
+                   "doWeatherCycle",
+                   "keepInventory",
+                   "logAdminCommands",
+                   "mobGriefing",
+                   "naturalRegeneration",
+                   "reducedDebugInfo",
+                   "sendCommandFeedback",
+                   "showDeathMessages",
+                   "spectatorsGenerateChunks"
+                ],
+                "children": [
+                   {
+                      "format": "bool",
+                      "optional": true,
+                      "children": []
+                   }
+                ]
+             },
+             {
+                "options": [
+                   "maxCommandChainLength",
+                   "maxEntityCramming",
+                   "randomTickSpeed",
+                   "spawnRadius"
+                ],
+                "children": [
+                   {
+                      "format": "int",
+                      "optional": true,
+                      "children": []
+                   }
+                ]
+             }
+          ]
        }
     ]
  }
