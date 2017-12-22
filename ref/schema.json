@@ -216,31 +216,42 @@
                             "children": [
                                 {
                                     "format": "location",
-                                    "children":[
+                                    "children": [
                                         {
                                             "function": "block path",
-                                            "children": [
-                                                
-                                            ]
+                                            "children": []
                                         }
                                     ]
                                 }
                             ]
                         },
                         {
-                            "data":"entity",
-                            "children":[
+                            "data": "entity",
+                            "children": [
                                 {
-                                    "function":"selector",
-                                    "children":[
+                                    "function": "selector",
+                                    "children": [
                                         {
-                                            "function":"entity path",
-                                            "children":[]
+                                            "function": "entity path",
+                                            "children": []
                                         }
                                     ]
                                 }
                             ]
                         }
+                    ]
+                }
+            ]
+        },
+        {
+            "data": "defaultgamemode",
+            "children": [
+                {
+                    "options": [
+                        "adventure",
+                        "creative",
+                        "spectator",
+                        "survival"
                     ]
                 }
             ]
