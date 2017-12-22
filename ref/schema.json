@@ -158,27 +158,62 @@
                     "data": "remove",
                     "children": [{
                             "data": "block",
-                            "children": [{
-                                "format": "location",
-                                "children": [{
-                                    "function": "block path",
+                            "children": [
+                                {
+                                    "format": "location",
                                     "children": [
-
+                                        {
+                                            "function": "block path",
+                                            "children": []
+                                        }
                                     ]
                                 }]
                             }]
                         },
                         {
                             "data": "entity",
-                            "children": [{
-                                "function": "selector",
-                                "children": [{
-                                    "function": "entity path",
-                                    "children": []
-                                }]
-                            }]
+                            "children": [
+                                {
+                                    "function": "selector",
+                                    "children": [
+                                        {
+                                            "function": "entity path",
+                                            "children": []
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
+                }
+            ]
+        },
+        {
+            "data": "defaultgamemode",
+            "children": [
+                {
+                    "options": [
+                        "adventure",
+                        "creative",
+                        "spectator",
+                        "survival"
+                    ],
+                    "children": []
+                }
+            ]
+        },
+        {
+            "data": "difficulty",
+            "children": [
+                {
+                    "options": [
+                        "easy",
+                        "hard",
+                        "normal",
+                        "peaceful"
+                    ],
+                    "optional": true,
+                    "children": []
                 }
             ]
         }
