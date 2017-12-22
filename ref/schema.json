@@ -253,7 +253,22 @@
                         "spectator",
                         "survival"
                     ],
-                    "children":[]
+                    "children": []
+                }
+            ]
+        },
+        {
+            "data": "difficulty",
+            "children": [
+                {
+                    "options": [
+                        "easy",
+                        "hard",
+                        "normal",
+                        "peaceful"
+                    ],
+                    "optional": true,
+                    "children": []
                 }
             ]
         }
