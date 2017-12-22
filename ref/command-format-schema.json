@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema",
-    "id":"https://raw.githubusercontent.com/pca006132/datapack-helper/master/command-format.json",
+    "id":"https://raw.githubusercontent.com/pca006132/datapack-helper/master/ref/command-format-schema.json",
     "type": "object",
     "title": "Root tag",
     "description": "Command tree",
