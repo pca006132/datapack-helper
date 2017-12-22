@@ -6,6 +6,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import {pathToName} from './util';
+import { isObject } from 'util';
 
 const NAME_PATTERN = /^[a-z0-9-_.]+$/;
 const OBJ_PATTERN = /^scoreboard objectives add (\S+) (\S+)/;
@@ -33,12 +34,12 @@ export function initialize() {
                     vscode.window.showErrorMessage("Error creating .datapack/objectives.json");
                 }
             });
-            fs.writeFile(path.join(root.fsPath, '.datapack', 'functions.json'), "[]", (err) => {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'functions.json'), "{}", (err) => {
                 if (err) {
                     vscode.window.showErrorMessage("Error creating .datapack/functions.json");
                 }
             });
-            fs.writeFile(path.join(root.fsPath, '.datapack', 'advancements.json'), "[]", (err) => {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'advancements.json'), "{}", (err) => {
                 if (err) {
                     vscode.window.showErrorMessage("Error creating .datapack/advancements.json");
                 }
@@ -112,7 +113,7 @@ async function walker(p, extension, ignore_files = false) {
     return fit;
 }
 
-export async function loadObjectives() {
+export async function loadFunctions() {
     if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length !== 1) {
         //Cannot handle multi-root folder right now, quit
         return;
@@ -136,10 +137,10 @@ export async function loadObjectives() {
                 temp[nodes[i]] = {};
             temp = temp[nodes[i]];
         }
-        if (!temp["$functions"])
-            temp["$functions"] = [];
+        if (!temp["$func"])
+            temp["$func"] = [];
 
-        temp["$functions"].push(nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 11));
+        temp["$func"].push(nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 11));
 
         for (let line of file.split(LINE_DELIMITER)) {
             let m = OBJ_PATTERN.exec(line);
@@ -160,4 +161,49 @@ export async function loadObjectives() {
             vscode.window.showErrorMessage("Error writing .datapack/functions.json");
         }
     });
+}
+
+export async function loadAdvancements() {
+    if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length !== 1) {
+        //Cannot handle multi-root folder right now, quit
+        return;
+    }
+    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'advancements');
+    let objectives: Array<[string, string]> = [];
+    let paths = await walker(root, ".json", true);
+    let v = await Promise.all(paths.map(v=>readFileAsync(v)));
+
+    let namespaces = {};
+    for (let i = 0; i < v.length; i++) {
+        let file = v[i];
+        let name = pathToName(root, paths[i]);
+
+        let nodes = name.split(":");
+        nodes.push(...nodes.pop().split("/"));
+        let temp = namespaces;
+        for (let i = 0; i < nodes.length-1; i++) {
+            if (!temp[nodes[i]])
+                temp[nodes[i]] = {};
+            temp = temp[nodes[i]];
+        }
+        if (!temp["$adv"])
+            temp["$adv"] = {};
+
+        let criteria = temp["$adv"][nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 5)] = [];
+
+        try {
+            let adv = JSON.parse(file);
+            if (adv["criteria"] && isObject(adv["criteria"])) {
+                criteria.push(...Object.keys(adv.criteria));
+            }
+        } catch (e) {
+            //No processing is needed
+        }
+
+        fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'advancements.json'), JSON.stringify(namespaces), (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error writing .datapack/advancements.json");
+            }
+        });
+    }
 }

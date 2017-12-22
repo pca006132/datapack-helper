@@ -22,8 +22,11 @@ export function activate(context: vscode.ExtensionContext) {
 		resources.initialize();
 	})
 	vscode.commands.registerCommand("datapack.reload", ()=> {
-		resources.loadObjectives().catch(err=>{
-			if (err) vscode.window.showErrorMessage(err);
+		resources.loadFunctions().catch(err=>{
+			if (err) vscode.window.showErrorMessage("Error loading functions: " + err);
+		})
+		resources.loadAdvancements().catch(err=>{
+			if (err) vscode.window.showErrorMessage("Error loading advancements: " + err);
 		})
 	})
 }
