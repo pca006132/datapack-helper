@@ -1,0 +1,137 @@
+{
+    "$schema": "https://raw.githubusercontent.com/pca006132/datapack-helper/master/command-format.json",
+    "nodes": [
+      {
+        "data": "advancement",
+        "children": [
+          {
+            "options": [
+              "grant",
+              "revoke"
+            ],
+            "children": [
+              {
+                "function": "selector",
+                "children": [
+                  {
+                    "data": "everything",
+                    "children": []
+                  },
+                  {
+                    "data": "only",
+                    "children": [
+                      {
+                        "function": "advancements",
+                        "children": [
+                          {
+                            "function": "advancements-criterion",
+                            "optional": true,
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "options": [
+                      "from",
+                      "through",
+                      "until"
+                    ],
+                    "children": [
+                      {
+                        "function": "advancements",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "data": "clear",
+        "children": [
+          {
+            "function": "selector",
+            "optional": true,
+            "children": [
+              {
+                "function": "item",
+                "children": [
+                  {
+                    "format": "number",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "data": "clone",
+        "children": [
+          {
+            "format": "location",
+            "children": [
+              {
+                "format": "location",
+                "children": [
+                  {
+                    "format": "location",
+                    "children": [
+                      {
+                        "data": "filtered",
+                        "optional": true,
+                        "children": [
+                          {
+                            "function": "block",
+                            "children": [
+                              {
+                                "options": [
+                                  "force",
+                                  "move",
+                                  "normal"
+                                ],
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "options": [
+                          "masked",
+                          "replace"
+                        ],
+                        "optional": true,
+                        "children": [
+                          {
+                            "options": [
+                              "force",
+                              "move",
+                              "normal"
+                            ],
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "data": "data",
+        "children": [
+          
+        ]
+      }
+    ]
+  }
