@@ -271,6 +271,59 @@
                     "children": []
                 }
             ]
+        },
+        {
+            "data": "effect",
+            "children": [
+                {
+                    "data": "clear",
+                    "children": [
+                        {
+                            "function": "targets",
+                            "children": [
+                                {
+                                    "key": "#effects",
+                                    "optional": true,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "data": "give",
+                    "children": [
+                        {
+                            "function": "targets",
+                            "children": [
+                                {
+                                    "key": "#effects",
+                                    "children": [
+                                        {
+                                            "format": "int",
+                                            "optional": true,
+                                            "children": [
+                                                {
+                                                    "format": "int",
+                                                    "children": [
+                                                        {
+                                                            "options": [
+                                                                "false",
+                                                                "true"
+                                                            ],
+                                                            "children": []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
