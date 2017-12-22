@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema",
-    "id":"https://commandtutorials.neocities.org/test/command-node-schema.json",
+    "id":"https://raw.githubusercontent.com/pca006132/datapack-helper/master/command-format.json",
     "type": "object",
     "title": "Root tag",
     "description": "Command tree",
