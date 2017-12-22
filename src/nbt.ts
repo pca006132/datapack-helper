@@ -90,10 +90,13 @@ function skipTag(data: string, start: number, end: number) {
 interface NameResult {
     //If the tag is ended (a complete tag)
     end: boolean;
-    //Tags stack, number for
+    //Tags stack, number for list/array index, string for tag name
     tags?: Array<string|number>;
+    //If the user is typing the tag name, or the value
     completingName: boolean;
-    data: string;
+    //If the autocomplete should be triggered
+    complete: boolean;
+    endingIndex?: number;
 }
 
 function getCompoundTagNames(data: string, start: number, end: number): NameResult {
@@ -102,49 +105,109 @@ function getCompoundTagNames(data: string, start: number, end: number): NameResu
     let index = start + 1;
     while (index < end) {
         index = skipSpaces(data, index, end);
-        if (index === end) {
-            return {
-                end: false,
-                tags: [],
-                completingName: true,
-                data: ""
-            }
-        }
         //name part
         let newIndex: number;
         try {
             newIndex = skipTag(data, index, end);
         } catch (e) {
-            let temp = data.substring(index, end);
-            if (temp.length >= 1 && temp[0] === '"') {
-                temp = unescape(temp.substring(1));
-            }
+            //Non-terminated quoted key
             return {
                 end: false,
                 tags: [],
                 completingName: true,
-                data: temp
+                complete: true
             }
         }
         let tag = data.substring(index, newIndex);
+        let quoted = false;
         if (tag.length >= 2 && tag[0] === '"') {
+            quoted = true;
             tag = unescape(tag.substring(1, tag.length - 1));
         }
         index = newIndex;
-
-        index = skipSpaces(data, index, end);
         if (index === end) {
             return {
                 end: false,
                 tags: [],
                 completingName: true,
-                data: tag
+                //If it is after a quoted key, don't do autocomplete
+                complete: !quoted
             }
         }
 
-
+        index = skipSpaces(data, index, end);
+        if (index === end || data[index++] !== ':') {
+            return {
+                end: false,
+                tags: [],
+                completingName: true,
+                complete: false
+            }
+        }
         //value part
+        index = skipSpaces(data, index, end);
 
+        if (index < end && data[index] === '{') {
+            let result = getCompoundTagNames(data, index, end);
+            if (result.end) {
+                index = result.endingIndex;
+            } else {
+                return {
+                    end: false,
+                    tags: [tag, ...result.tags],
+                    completingName: result.completingName,
+                    complete: result.complete
+                }
+            }
+        } else if (index < end && data[index] === '[') {
 
+        } else {
+            let quoted = index < end && data[index] === '"';
+            try {
+                index = skipTag(data, index, end);
+            } catch (e) {
+                return {
+                    end: false,
+                    tags: [tag],
+                    completingName: false,
+                    complete: true
+                }
+            }
+            if (index === end) {
+                return {
+                    end: false,
+                    tags: [tag],
+                    completingName: false,
+                    complete: !quoted
+                }
+            }
+        }
+        index = skipSpaces(data, index, end);
+
+        if (index === end) {
+            return {
+                end: false,
+                tags: [],
+                completingName: true,
+                complete: false
+            }
+        }
+        if (data[index] === '}') {
+            return {
+                end: true,
+                tags: [],
+                completingName: false,
+                complete: false
+            }
+        }
+        if (data[index++] !== ',') {
+            //error
+            return {
+                end: false,
+                tags: [],
+                completingName: true,
+                complete: false
+            }
+        }
     }
 }
