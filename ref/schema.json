@@ -578,6 +578,56 @@
                 ]
              }
           ]
+       },
+       {
+          "data": "gamerule",
+          "children": [
+             {
+                "options": [
+                   "announceAdvancements",
+                   "commandBlockOutput",
+                   "disableElytraMovementCheck",
+                   "doDaylightCycle",
+                   "doEntityDrops",
+                   "doFireTick",
+                   "doLimitedCrafting",
+                   "doMobLoot",
+                   "doMobSpawning",
+                   "doTileDrops",
+                   "doWeatherCycle",
+                   "keepInventory",
+                   "logAdminCommands",
+                   "mobGriefing",
+                   "naturalRegeneration",
+                   "reducedDebugInfo",
+                   "sendCommandFeedback",
+                   "showDeathMessages",
+                   "spectatorsGenerateChunks"
+                ],
+                "children": [
+                   {
+                      "format": "bool",
+                      "optional": true,
+                      "children": []
+                   }
+                ]
+             },
+             {
+                "options": [
+                   "maxCommandChainLength",
+                   "maxEntityCramming",
+                   "randomTickSpeed",
+                   "spawnRadius"
+                ],
+                "children": [
+                   {
+                      "format": "int",
+                      "optional": true,
+                      "children": []
+                   }
+                ]
+             }
+          ]
        }
     ]
  }
