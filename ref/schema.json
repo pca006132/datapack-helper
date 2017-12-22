@@ -307,10 +307,7 @@
                                                     "format": "int",
                                                     "children": [
                                                         {
-                                                            "options": [
-                                                                "false",
-                                                                "true"
-                                                            ],
+                                                            "format": "bool",
                                                             "children": []
                                                         }
                                                     ]
