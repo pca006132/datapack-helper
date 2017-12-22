@@ -558,6 +558,26 @@
                 "children": []
              }
           ]
+       },
+       {
+          "data": "gamemode",
+          "children": [
+             {
+                "options": [
+                   "adventure",
+                   "creative",
+                   "spectator",
+                   "survival"
+                ],
+                "children": [
+                   {
+                      "function": "targets",
+                      "optional": true,
+                      "children": []
+                   }
+                ]
+             }
+          ]
        }
     ]
  }
