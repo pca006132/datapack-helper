@@ -108,12 +108,7 @@
             "properties": {
                 "format": {
                     "type": "string",
-                    "enum": [
-                        "number",
-                        "int",
-                        "location",
-                        "rotation"
-                    ]
+                    "description": "'number', 'int', 'location', 'rotation', 'bool' or regex pattern"
                 },
                 "children": {
                     "type": "array",
