@@ -19,10 +19,21 @@
                     ".mcfunction"
                 ]
             }
+        ],
+        "commands": [
+            {
+                "command": "datapack.initialize",
+                "title": "Initialize datapack"
+            },
+            {
+                "command": "datapack.reload",
+                "title": "Reload datapack references"
+            }
         ]
     },
     "activationEvents": [
-        "onLanguage:mcfunction"
+        "workspaceContains:**/pack.mcmeta",
+        "onCommand:datapack.initialize"
     ],
     "scripts": {
         "vscode:prepublish": "npm run compile",
