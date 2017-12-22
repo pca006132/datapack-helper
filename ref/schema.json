@@ -321,6 +321,47 @@
                     ]
                 }
             ]
+        },
+        {
+            "data": "execute",
+            "children": [
+                [
+                    {
+                        "data": "align",
+                        "children": [
+                            {
+                                "format": "[xyz]+",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": "as",
+                        "children": [
+                            {
+                                "function": "targets",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": "at",
+                        "children": [
+                            {
+                                "function": "targets",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "options": [
+                            "if",
+                            "unless"
+                        ],
+                        "children": []
+                    }
+                ]
+            ]
         }
     ]
 }
