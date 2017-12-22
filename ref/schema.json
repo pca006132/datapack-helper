@@ -461,6 +461,54 @@
                 }
              ]
           ]
+       },
+       {
+          "data": "experience",
+          "children": [
+             {
+                "options": [
+                   "add",
+                   "set"
+                ],
+                "children": [
+                   {
+                      "function": "targets",
+                      "children": [
+                         {
+                            "format": "int",
+                            "children": [
+                               {
+                                  "options": [
+                                     "levels",
+                                     "points"
+                                  ],
+                                  "optional": true,
+                                  "children": []
+                               }
+                            ]
+                         }
+                      ]
+                   }
+                ]
+             },
+             {
+                "data": "query",
+                "children": [
+                   {
+                      "function": "targets",
+                      "children": [
+                         {
+                            "options": [
+                               "levels",
+                               "points"
+                            ],
+                            "children": []
+                         }
+                      ]
+                   }
+                ]
+             }
+          ]
        }
     ]
  }
