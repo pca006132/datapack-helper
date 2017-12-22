@@ -1,137 +1,249 @@
 {
     "$schema": "https://raw.githubusercontent.com/pca006132/datapack-helper/master/command-format.json",
     "nodes": [
-      {
-        "data": "advancement",
-        "children": [
-          {
-            "options": [
-              "grant",
-              "revoke"
-            ],
+        {
+            "data": "advancement",
             "children": [
-              {
-                "function": "selector",
-                "children": [
-                  {
-                    "data": "everything",
-                    "children": []
-                  },
-                  {
-                    "data": "only",
-                    "children": [
-                      {
-                        "function": "advancements",
-                        "children": [
-                          {
-                            "function": "advancements-criterion",
-                            "optional": true,
-                            "children": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
+                {
                     "options": [
-                      "from",
-                      "through",
-                      "until"
+                        "grant",
+                        "revoke"
                     ],
                     "children": [
-                      {
-                        "function": "advancements",
-                        "children": []
-                      }
+                        {
+                            "function": "selector",
+                            "children": [
+                                {
+                                    "data": "everything",
+                                    "children": []
+                                },
+                                {
+                                    "data": "only",
+                                    "children": [
+                                        {
+                                            "function": "advancements",
+                                            "children": [
+                                                {
+                                                    "function": "advancements-criterion",
+                                                    "optional": true,
+                                                    "children": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "options": [
+                                        "from",
+                                        "through",
+                                        "until"
+                                    ],
+                                    "children": [
+                                        {
+                                            "function": "advancements",
+                                            "children": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
                     ]
-                  }
-                ]
-              }
+                }
             ]
-          }
-        ]
-      },
-      {
-        "data": "clear",
-        "children": [
-          {
-            "function": "selector",
-            "optional": true,
+        },
+        {
+            "data": "clear",
             "children": [
-              {
-                "function": "item",
-                "children": [
-                  {
-                    "format": "number",
-                    "children": []
-                  }
-                ]
-              }
+                {
+                    "function": "selector",
+                    "optional": true,
+                    "children": [
+                        {
+                            "function": "item",
+                            "children": [
+                                {
+                                    "format": "number",
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                }
             ]
-          }
-        ]
-      },
-      {
-        "data": "clone",
-        "children": [
-          {
-            "format": "location",
+        },
+        {
+            "data": "clone",
             "children": [
-              {
-                "format": "location",
-                "children": [
-                  {
+                {
                     "format": "location",
                     "children": [
-                      {
-                        "data": "filtered",
-                        "optional": true,
-                        "children": [
-                          {
-                            "function": "block",
+                        {
+                            "format": "location",
                             "children": [
-                              {
-                                "options": [
-                                  "force",
-                                  "move",
-                                  "normal"
-                                ],
-                                "children": []
-                              }
+                                {
+                                    "format": "location",
+                                    "children": [
+                                        {
+                                            "data": "filtered",
+                                            "optional": true,
+                                            "children": [
+                                                {
+                                                    "function": "block",
+                                                    "children": [
+                                                        {
+                                                            "options": [
+                                                                "force",
+                                                                "move",
+                                                                "normal"
+                                                            ],
+                                                            "children": []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "options": [
+                                                "masked",
+                                                "replace"
+                                            ],
+                                            "optional": true,
+                                            "children": [
+                                                {
+                                                    "options": [
+                                                        "force",
+                                                        "move",
+                                                        "normal"
+                                                    ],
+                                                    "children": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
                             ]
-                          }
-                        ]
-                      },
-                      {
-                        "options": [
-                          "masked",
-                          "replace"
-                        ],
-                        "optional": true,
-                        "children": [
-                          {
-                            "options": [
-                              "force",
-                              "move",
-                              "normal"
-                            ],
-                            "children": []
-                          }
-                        ]
-                      }
+                        }
                     ]
-                  }
-                ]
-              }
+                }
             ]
-          }
-        ]
-      },
-      {
-        "data": "data",
-        "children": [
-          
-        ]
-      }
+        },
+        {
+            "data": "data",
+            "children": [
+                {
+                    "data": "get",
+                    "children": [
+                        {
+                            "data": "block",
+                            "children": [
+                                {
+                                    "format": "location",
+                                    "children": [
+                                        {
+                                            "function": "block path",
+                                            "optional": true,
+                                            "children": [
+                                                {
+                                                    "format": "number",
+                                                    "children": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "data": "entity",
+                            "children": [
+                                {
+                                    "function": "selector",
+                                    "children": [
+                                        {
+                                            "function": "entity path",
+                                            "optional": true,
+                                            "children": [
+                                                {
+                                                    "format": "number",
+                                                    "children": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "data": "merge",
+                    "children": [
+                        {
+                            "data": "block",
+                            "children": [
+                                {
+                                    "format": "location",
+                                    "children": [
+                                        {
+                                            "function": "block nbt",
+                                            "children": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "data": "entity",
+                            "children": [
+                                {
+                                    "function": "selector",
+                                    "children": [
+                                        {
+                                            "function": "entity nbt",
+                                            "children": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "data": "remove",
+                    "children": [
+                        {
+                            "data": "block",
+                            "children": [
+                                {
+                                    "format": "location",
+                                    "children":[
+                                        {
+                                            "function": "block path",
+                                            "children": [
+                                                
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "data":"entity",
+                            "children":[
+                                {
+                                    "function":"selector",
+                                    "children":[
+                                        {
+                                            "function":"entity path",
+                                            "children":[]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
     ]
-  }
+}
