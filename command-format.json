@@ -1,0 +1,178 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "id":"https://commandtutorials.neocities.org/test/command-node-schema.json",
+    "type": "object",
+    "title": "Root tag",
+    "description": "Command tree",
+    "additionalProperties": false,
+    "definitions": {
+        "node": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/chain"
+                },
+                {
+                    "$ref": "#/definitions/plain"
+                },
+                {
+                    "$ref": "#/definitions/options"
+                },
+                {
+                    "$ref": "#/definitions/reference"
+                },
+                {
+                    "$ref": "#/definitions/format"
+                },
+                {
+                    "$ref": "#/definitions/function"
+                }
+            ],
+            "properties": {
+                "optional": {
+                    "type": "boolean",
+                    "description": "Whether the tag (and its children) is optional. Default false."
+                }
+            }
+        },
+        "chain": {
+            "type": "array",
+            "description": "Chain the following command nodes, in whatever order. Used for the execute command.",
+            "items": {
+                "$ref": "#/definitions/node"
+            }
+        },
+        "plain": {
+            "type": "object",
+            "title": "Plain node",
+            "description": "Plain text option node.",
+            "properties": {
+                "data": {
+                    "type": "string"
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/node"
+                    }
+                }
+            },
+            "required": [
+                "data", "children"
+            ]
+        },
+        "options": {
+            "type": "object",
+            "title": "Option",
+            "description": "Multi-options node, with common children (The selected option would not affect the latter nodes).",
+            "properties": {
+                "options": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/node"
+                    }
+                }
+            },
+            "required": [
+                "options", "children"
+            ]
+        },
+        "reference": {
+            "type": "object",
+            "title": "Reference",
+            "description": "Reference to a list of keys, for example, entity IDs.",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/node"
+                    }
+                }
+            },
+            "required": [
+                "key", "children"
+            ]
+        },
+        "format": {
+            "type": "object",
+            "title": "Format",
+            "description": "Specify the format of the argument.",
+            "properties": {
+                "format": {
+                    "type": "string",
+                    "enum": [
+                        "number",
+                        "int",
+                        "location",
+                        "rotation"
+                    ]
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/node"
+                    }
+                }
+            },
+            "required": [
+                "format", "children"
+            ]
+        },
+        "function": {
+            "type": "object",
+            "title": "Function",
+            "description": "Special functions for special parameters, handled by the parser.",
+            "properties": {
+                "function": {
+                    "type": "string",
+                    "enum": [
+                        "command",
+                        "selector",
+                        "block nbt",
+                        "entity nbt",
+                        "item tag nbt",
+                        "advancements",
+                        "advancements-criterion",
+                        "functions",
+                        "objectives",
+                        "sounds",
+                        "tags",
+                        "block",
+                        "item",
+                        "block path",
+                        "entity path"
+                    ],
+                    "description": "command: Chain to another command, parsing from the beginning of the command nodes tree. \nselector: Parsing a selector/player name. \nblock nbt: Parse against a block root tag. \nentity nbt: Parse against an entity root tag. \nitem tag nbt: Parse against the tag tag of item nbt. \nadvancements: Refer to the list of advancement IDs. \nadvancements-criterion: Refer to the list of advancemnt criteria of the advancement in the previous argument. \nfunctions: Refer to the list of function names. \nobjectives: Refer to the list of scoreboard objectives. \nsounds: Refer to the list of sounds in sounds.json. \ntags: Refer to the list of tags (from the tag command). \nblock: The block parameter. \nitem: The item parameter. \n<block|entity> path refer to the path parameter."
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/node"
+                    }
+                }
+            },
+            "required": [
+                "function", "children"
+            ]
+        }
+    },
+    "properties": {
+        "nodes": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/node"
+            }
+        },
+        "$schema": {
+            "type": "string"
+        }
+    }
+}
