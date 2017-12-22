@@ -509,6 +509,46 @@
                 ]
              }
           ]
-       }
+       },
+       {
+        "data": "fill",
+        "children": [
+           {
+              "format": "location",
+              "children": [
+                 {
+                    "format": "location",
+                    "children": [
+                       {
+                          "function": "block",
+                          "children": [
+                             {
+                                "options": [
+                                   "destroy",
+                                   "hollow",
+                                   "keep",
+                                   "outline"
+                                ],
+                                "optional": true,
+                                "children": []
+                             },
+                             {
+                                "data": "replace",
+                                "children": [
+                                   {
+                                      "function": "block",
+                                      "optional": true,
+                                      "children": []
+                                   }
+                                ]
+                             }
+                          ]
+                       }
+                    ]
+                 }
+              ]
+           }
+        ]
+     }
     ]
  }
