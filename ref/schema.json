@@ -463,7 +463,10 @@
           ]
        },
        {
-          "data": "experience",
+          "options": [
+             "experience",
+             "xp"
+          ],
           "children": [
              {
                 "options": [
