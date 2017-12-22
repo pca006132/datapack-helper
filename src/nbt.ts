@@ -1,5 +1,3 @@
-import { accessSync } from "fs";
-
 /**
  * Parse NBT
  */
@@ -71,7 +69,7 @@ function skipUnquotedString(data: string, start: number, end: number) {
     }
     if (index === start)
         throw new Error(`No tag at ${index}: ${getSegment(data, index)}`);
-    return index+1;
+    return index;
 }
 
 function skipTag(data: string, start: number, end: number) {
@@ -87,7 +85,7 @@ function skipTag(data: string, start: number, end: number) {
     }
 }
 
-interface NameResult {
+export interface NameResult {
     //If the tag is ended (a complete tag)
     end: boolean;
     //Tags stack, number for list/array index, string for tag name
@@ -99,9 +97,7 @@ interface NameResult {
     endingIndex?: number;
 }
 
-function getCompoundTagNames(data: string, start: number, end: number): NameResult {
-    let tags: Array<string|number> = [];
-
+export function getCompoundTagNames(data: string, start: number, end: number): NameResult {
     let index = start + 1;
     while (index < end) {
         index = skipSpaces(data, index, end);
@@ -160,7 +156,34 @@ function getCompoundTagNames(data: string, start: number, end: number): NameResu
                 }
             }
         } else if (index < end && data[index] === '[') {
-
+            if (index+2 < end && (data[index+1] === 'I' || data[index+1] === 'L' || data[index+1] === 'B') && data[index+2] === ';') {
+                //array
+                while (++index < end) {
+                    if (data[index] === ']') {
+                        break;
+                    }
+                }
+                if (index === end) {
+                    return {
+                        end: false,
+                        tags: [],
+                        completingName: false,
+                        complete: false
+                    }
+                }
+            } else {
+                let result = getListTagNames(data, index, end);
+                if (result.end) {
+                    index = result.endingIndex;
+                } else {
+                    return {
+                        end: false,
+                        tags: [tag, ...result.tags],
+                        completingName: result.completingName,
+                        complete: result.complete
+                    }
+                }
+            }
         } else {
             let quoted = index < end && data[index] === '"';
             try {
@@ -170,7 +193,7 @@ function getCompoundTagNames(data: string, start: number, end: number): NameResu
                     end: false,
                     tags: [tag],
                     completingName: false,
-                    complete: true
+                    complete: true,
                 }
             }
             if (index === end) {
@@ -197,7 +220,8 @@ function getCompoundTagNames(data: string, start: number, end: number): NameResu
                 end: true,
                 tags: [],
                 completingName: false,
-                complete: false
+                complete: false,
+                endingIndex: index+1
             }
         }
         if (data[index++] !== ',') {
@@ -209,5 +233,117 @@ function getCompoundTagNames(data: string, start: number, end: number): NameResu
                 complete: false
             }
         }
+    }
+    //after the , character
+    return {
+        end: false,
+        tags: [],
+        completingName: true,
+        complete: true
+    }
+}
+
+function getListTagNames(data: string, start: number, end: number): NameResult {
+    let index = start + 1;
+    let i = 0;
+    while (index < end) {
+        index = skipSpaces(data, index, end);
+        if (index < end && data[index] === '{') {
+            let result = getCompoundTagNames(data, index, end);
+            if (result.end) {
+                index = result.endingIndex;
+            } else {
+                return {
+                    end: false,
+                    tags: [i, ...result.tags],
+                    completingName: result.completingName,
+                    complete: result.complete
+                }
+            }
+        } else if (index < end && data[index] === '[') {
+            if (index+2 < end && (data[index+1] === 'I' || data[index+1] === 'L' || data[index+1] === 'B') && data[index+2] === ';') {
+                //array
+                while (++index < end) {
+                    if (data[index] === ']') {
+                        break;
+                    }
+                }
+                if (index === end) {
+                    return {
+                        end: false,
+                        tags: [],
+                        completingName: false,
+                        complete: false
+                    }
+                }
+            } else {
+                let result = getListTagNames(data, index, end);
+                if (result.end) {
+                    index = result.endingIndex;
+                } else {
+                    return {
+                        end: false,
+                        tags: [i, ...result.tags],
+                        completingName: result.completingName,
+                        complete: result.complete
+                    }
+                }
+            }
+        } else {
+            let quoted = index < end && data[index] === '"';
+            try {
+                index = skipTag(data, index, end);
+            } catch (e) {
+                return {
+                    end: false,
+                    tags: [i],
+                    completingName: false,
+                    complete: true
+                }
+            }
+            if (index === end) {
+                return {
+                    end: false,
+                    tags: [i],
+                    completingName: false,
+                    complete: !quoted
+                }
+            }
+        }
+        index = skipSpaces(data, index, end);
+
+        if (index === end) {
+            return {
+                end: false,
+                tags: [],
+                completingName: false,
+                complete: false
+            }
+        }
+        if (data[index] === ']') {
+            return {
+                end: true,
+                tags: [],
+                completingName: false,
+                complete: false,
+                endingIndex: index+1
+            }
+        }
+        if (data[index++] !== ',') {
+            //error
+            return {
+                end: false,
+                tags: [],
+                completingName: false,
+                complete: false
+            }
+        }
+        i++;
+    }
+    return {
+        end: false,
+        tags: [],
+        completingName: false,
+        complete: true
     }
 }
