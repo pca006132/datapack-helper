@@ -45,3 +45,14 @@ export function readFileAsync(path: string) {
         })
     })
 }
+
+export function strStartsWith(str: string, start: number, end: number, startswith: string) {
+    if (end - start < startswith.length)
+        return false;
+
+    for (let i = 0; i < startswith.length; i++) {
+        if (str[i+start] !== startswith[i])
+            return false;
+    }
+    return true;
+}
