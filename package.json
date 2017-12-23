@@ -26,14 +26,15 @@
                 "title": "Initialize datapack"
             },
             {
-                "command": "datapack.reload",
+                "command": "datapack.read",
                 "title": "Reload datapack references"
             }
         ]
     },
     "activationEvents": [
         "workspaceContains:**/pack.mcmeta",
-        "onCommand:datapack.initialize"
+        "onCommand:datapack.initialize",
+        "onCommand:datapack.read"
     ],
     "scripts": {
         "vscode:prepublish": "npm run compile",

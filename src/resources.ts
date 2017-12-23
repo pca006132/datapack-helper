@@ -5,8 +5,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import {pathToName} from './util';
-import { isObject } from 'util';
+import {pathToName, readdirAsync, readFileAsync, statAsync} from './util';
+import { isObject, isArray, isString } from 'util';
 
 const NAME_PATTERN = /^[a-z0-9-_.]+$/;
 const OBJ_PATTERN = /^scoreboard objectives add (\S+) (\S+)/;
@@ -19,76 +19,46 @@ export function initialize() {
     }
     let root = vscode.workspace.workspaceFolders[0].uri;
 
-    vscode.window.showInputBox({
-        prompt: "Description of your datapack"
-    }).then((v) => {
-        if (!v)
+    fs.open(path.join(root.fsPath, 'pack.mcmeta'), "wx", (err, fd) => {
+        if (err) {
+            if (err.code !== 'EEXIST') {
+                vscode.window.showErrorMessage("Error opening pack.mcmeta");
+            }
             return;
-        fs.mkdir(path.join(root.fsPath, '.datapack'), (err) => {
-            if (err) {
-                vscode.window.showErrorMessage("Error creating .datapack folder");
-                return;
-            }
-            fs.writeFile(path.join(root.fsPath, '.datapack', 'objectives.json'), "[]", (err) => {
-                if (err) {
-                    vscode.window.showErrorMessage("Error creating .datapack/objectives.json");
-                }
-            });
-            fs.writeFile(path.join(root.fsPath, '.datapack', 'functions.json'), "{}", (err) => {
-                if (err) {
-                    vscode.window.showErrorMessage("Error creating .datapack/functions.json");
-                }
-            });
-            fs.writeFile(path.join(root.fsPath, '.datapack', 'advancements.json'), "{}", (err) => {
-                if (err) {
-                    vscode.window.showErrorMessage("Error creating .datapack/advancements.json");
-                }
-            });
-            fs.writeFile(path.join(root.fsPath, '.datapack', 'entity_tags.json'), "[]", (err) => {
-                if (err) {
-                    vscode.window.showErrorMessage("Error creating .datapack/entity_tags.json");
-                }
-            });
-        })
-        fs.writeFile(path.join(root.fsPath, 'pack.mcmeta'), `{"pack":{"pack_format":4,"description":${JSON.stringify(v)}}}`, (err) => {
-            if (err) {
-                vscode.window.showErrorMessage("Error creating pack.mcmeta");
-            }
-        });
-    })
-}
-
-function readdirAsync(path) {
-    return new Promise<string[]>(function (resolve, reject) {
-        fs.readdir(path, function (err, result) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(result);
-            }
-        });
-    });
-}
-function statAsync(path) {
-    return new Promise<fs.Stats>(function (resolve, reject) {
-        fs.stat(path, (err, stats) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(stats);
-            }
+        }
+        vscode.window.showInputBox({
+            prompt: "Description of your datapack"
+        }).then(v=> {
+            fs.write(fd, `{"pack":{"pack_format":4,"description":${JSON.stringify(v)}}}`, err=> {
+                vscode.window.showErrorMessage("Error opening pack.mcmeta");
+            })
         })
     })
-}
-function readFileAsync(path) {
-    return new Promise<string>(function (resolve, reject) {
-        fs.readFile(path, "utf-8", (err, data) => {
+    fs.mkdir(path.join(root.fsPath, '.datapack'), (err) => {
+        if (err) {
+            vscode.window.showErrorMessage("Error creating .datapack folder");
+            return;
+        }
+        fs.writeFile(path.join(root.fsPath, '.datapack', 'objectives.json'), "[]", (err) => {
             if (err) {
-                reject(err);
-            } else {
-                resolve(data);
+                vscode.window.showErrorMessage("Error creating .datapack/objectives.json");
             }
-        })
+        });
+        fs.writeFile(path.join(root.fsPath, '.datapack', 'functions.json'), "{}", (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error creating .datapack/functions.json");
+            }
+        });
+        fs.writeFile(path.join(root.fsPath, '.datapack', 'advancements.json'), "{}", (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error creating .datapack/advancements.json");
+            }
+        });
+        fs.writeFile(path.join(root.fsPath, '.datapack', 'entity_tags.json'), "[]", (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error creating .datapack/entity_tags.json");
+            }
+        });
     })
 }
 
@@ -113,17 +83,21 @@ async function walker(p, extension, ignore_files = false) {
     return fit;
 }
 
-export async function loadFunctions() {
+let resources = {
+    advancements: {},
+    functions: {},
+    objectives: [],
+    tags: []
+}
+
+export async function readFunctions() {
     if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length !== 1) {
         //Cannot handle multi-root folder right now, quit
         return;
     }
     let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'functions');
-    let objectives: Array<[string, string]> = [];
     let paths = await walker(root, ".mcfunction", true);
     let v = await Promise.all(paths.map(v=>readFileAsync(v)));
-
-    let namespaces = {};
 
     for (let i = 0; i < v.length; i++) {
         let file = v[i];
@@ -131,7 +105,7 @@ export async function loadFunctions() {
 
         let nodes = name.split(":");
         nodes.push(...nodes.pop().split("/"));
-        let temp = namespaces;
+        let temp = resources.functions;
         for (let i = 0; i < nodes.length-1; i++) {
             if (!temp[nodes[i]])
                 temp[nodes[i]] = {};
@@ -145,42 +119,40 @@ export async function loadFunctions() {
         for (let line of file.split(LINE_DELIMITER)) {
             let m = OBJ_PATTERN.exec(line);
             if (m) {
-                if (!objectives.find(v=>v[0] === m[1])) {
-                    objectives.push([m[1], m[2], name]);
+                if (!resources.objectives.find(v=>v[0] === m[1])) {
+                    resources.objectives.push([m[1], m[2], name]);
                 }
             }
         }
     }
-    fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'objectives.json'), JSON.stringify(objectives), (err) => {
+    fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'objectives.json'), JSON.stringify(resources.objectives), (err) => {
         if (err) {
             vscode.window.showErrorMessage("Error writing .datapack/objectives.json");
         }
     });
-    fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'functions.json'), JSON.stringify(namespaces), (err) => {
+    fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'functions.json'), JSON.stringify(resources.functions), (err) => {
         if (err) {
             vscode.window.showErrorMessage("Error writing .datapack/functions.json");
         }
     });
 }
 
-export async function loadAdvancements() {
+export async function readAdvancements() {
     if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length !== 1) {
         //Cannot handle multi-root folder right now, quit
         return;
     }
     let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'advancements');
-    let objectives: Array<[string, string]> = [];
     let paths = await walker(root, ".json", true);
     let v = await Promise.all(paths.map(v=>readFileAsync(v)));
 
-    let namespaces = {};
     for (let i = 0; i < v.length; i++) {
         let file = v[i];
         let name = pathToName(root, paths[i]);
 
         let nodes = name.split(":");
         nodes.push(...nodes.pop().split("/"));
-        let temp = namespaces;
+        let temp = resources.advancements;
         for (let i = 0; i < nodes.length-1; i++) {
             if (!temp[nodes[i]])
                 temp[nodes[i]] = {};
@@ -200,10 +172,53 @@ export async function loadAdvancements() {
             //No processing is needed
         }
 
-        fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'advancements.json'), JSON.stringify(namespaces), (err) => {
+        fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'advancements.json'), JSON.stringify(resources.advancements), (err) => {
             if (err) {
                 vscode.window.showErrorMessage("Error writing .datapack/advancements.json");
             }
         });
     }
+}
+
+export async function loadFiles() {
+    async function loadJson(path: string) {
+        let v = await readFileAsync(path);
+        return JSON.parse(v);
+    }
+
+    try {
+        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','entity_tags.json'));
+        if (!isArray(raw) || raw.find(v=>!isString(v))) {
+            vscode.window.showErrorMessage("Invalid format: .datapack/entity_tags.json. Should be array with strings");
+        } else {
+            resources.tags = raw;
+        }
+    } catch (e) {
+        vscode.window.showErrorMessage("Error loading .datapack/entity_tags.json");
+    }
+
+    try {
+        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','advancements.json'));
+        resources.advancements = raw;
+    } catch (e) {
+        vscode.window.showErrorMessage("Error loading .datapack/advancements.json");
+    }
+
+    try {
+        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','functions.json'));
+        resources.functions = raw;
+    } catch (e) {
+        vscode.window.showErrorMessage("Error loading .datapack/functions.json");
+    }
+
+    try {
+        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','objectives.json'));
+        resources.objectives = raw;
+    } catch (e) {
+        vscode.window.showErrorMessage("Error loading .datapack/objectives.json");
+    }
+}
+
+export function getResources(key: string) {
+    return resources[key];
 }
