@@ -1,636 +1,602 @@
 {
     "$schema": "https://raw.githubusercontent.com/pca006132/datapack-helper/master/ref/command-format-schema.json",
-    "nodes": [
-       {
-          "data": "advancement",
-          "children": [
-             {
+    "nodes": [{
+            "data": "advancement",
+            "children": [{
                 "options": [
-                   "grant",
-                   "revoke"
+                    "grant",
+                    "revoke"
                 ],
-                "children": [
-                   {
-                      "function": "targets",
-                      "children": [
-                         {
+                "children": [{
+                    "function": "targets",
+                    "children": [{
                             "data": "everything",
                             "children": []
-                         },
-                         {
+                        },
+                        {
                             "data": "only",
-                            "children": [
-                               {
-                                  "function": "advancements",
-                                  "children": [
-                                     {
-                                        "function": "advancements-criterion",
-                                        "optional": true,
-                                        "children": []
-                                     }
-                                  ]
-                               }
-                            ]
-                         },
-                         {
+                            "children": [{
+                                "function": "advancements",
+                                "children": [{
+                                    "function": "advancements-criterion",
+                                    "optional": true,
+                                    "children": []
+                                }]
+                            }]
+                        },
+                        {
                             "options": [
-                               "from",
-                               "through",
-                               "until"
+                                "from",
+                                "through",
+                                "until"
                             ],
-                            "children": [
-                               {
-                                  "function": "advancements",
-                                  "children": []
-                               }
-                            ]
-                         }
-                      ]
-                   }
-                ]
-             }
-          ]
-       },
-       {
-          "data": "clear",
-          "children": [
-             {
+                            "children": [{
+                                "function": "advancements",
+                                "children": []
+                            }]
+                        }
+                    ]
+                }]
+            }]
+        },
+        {
+            "data": "clear",
+            "children": [{
                 "function": "targets",
                 "optional": true,
-                "children": [
-                   {
-                      "function": "item",
-                      "children": [
-                         {
-                            "format": "number",
-                            "children": []
-                         }
-                      ]
-                   }
-                ]
-             }
-          ]
-       },
-       {
-          "data": "clone",
-          "children": [
-             {
+                "children": [{
+                    "function": "item",
+                    "children": [{
+                        "format": "number",
+                        "children": []
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "clone",
+            "children": [{
                 "format": "location",
-                "children": [
-                   {
-                      "format": "location",
-                      "children": [
-                         {
-                            "format": "location",
-                            "children": [
-                               {
-                                  "data": "filtered",
-                                  "optional": true,
-                                  "children": [
-                                     {
-                                        "function": "block",
-                                        "children": [
-                                           {
-                                              "options": [
-                                                 "force",
-                                                 "move",
-                                                 "normal"
-                                              ],
-                                              "children": []
-                                           }
-                                        ]
-                                     }
-                                  ]
-                               },
-                               {
-                                  "options": [
-                                     "masked",
-                                     "replace"
-                                  ],
-                                  "optional": true,
-                                  "children": [
-                                     {
+                "children": [{
+                    "format": "location",
+                    "children": [{
+                        "format": "location",
+                        "children": [{
+                                "data": "filtered",
+                                "optional": true,
+                                "children": [{
+                                    "function": "block",
+                                    "children": [{
                                         "options": [
-                                           "force",
-                                           "move",
-                                           "normal"
+                                            "force",
+                                            "move",
+                                            "normal"
                                         ],
                                         "children": []
-                                     }
-                                  ]
-                               }
-                            ]
-                         }
-                      ]
-                   }
-                ]
-             }
-          ]
-       },
-       {
-          "data": "data",
-          "children": [
-             {
-                "data": "get",
-                "children": [
-                   {
-                      "data": "block",
-                      "children": [
-                         {
-                            "format": "location",
-                            "children": [
-                               {
-                                  "function": "block path",
-                                  "optional": true,
-                                  "children": [
-                                     {
+                                    }]
+                                }]
+                            },
+                            {
+                                "options": [
+                                    "masked",
+                                    "replace"
+                                ],
+                                "optional": true,
+                                "children": [{
+                                    "options": [
+                                        "force",
+                                        "move",
+                                        "normal"
+                                    ],
+                                    "children": []
+                                }]
+                            }
+                        ]
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "data",
+            "children": [{
+                    "data": "get",
+                    "children": [{
+                            "data": "block",
+                            "children": [{
+                                "format": "location",
+                                "children": [{
+                                    "function": "block path",
+                                    "optional": true,
+                                    "children": [{
                                         "format": "number",
                                         "children": []
-                                     }
-                                  ]
-                               }
-                            ]
-                         }
-                      ]
-                   },
-                   {
-                      "data": "entity",
-                      "children": [
-                         {
-                            "function": "target",
-                            "children": [
-                               {
-                                  "function": "entity path",
-                                  "optional": true,
-                                  "children": [
-                                     {
+                                    }]
+                                }]
+                            }]
+                        },
+                        {
+                            "data": "entity",
+                            "children": [{
+                                "function": "target",
+                                "children": [{
+                                    "function": "entity path",
+                                    "optional": true,
+                                    "children": [{
                                         "format": "number",
                                         "children": []
-                                     }
-                                  ]
-                               }
-                            ]
-                         }
-                      ]
-                   }
-                ]
-             },
-             {
-                "data": "merge",
-                "children": [
-                   {
-                      "data": "block",
-                      "children": [
-                         {
+                                    }]
+                                }]
+                            }]
+                        }
+                    ]
+                },
+                {
+                    "data": "merge",
+                    "children": [{
+                            "data": "block",
+                            "children": [{
+                                "format": "location",
+                                "children": [{
+                                    "function": "block nbt",
+                                    "children": []
+                                }]
+                            }]
+                        },
+                        {
+                            "data": "entity",
+                            "children": [{
+                                "function": "target",
+                                "children": [{
+                                    "function": "entity nbt",
+                                    "children": []
+                                }]
+                            }]
+                        }
+                    ]
+                },
+                {
+                    "data": "remove",
+                    "children": [{
+                        "data": "block",
+                        "children": [{
                             "format": "location",
-                            "children": [
-                               {
-                                  "function": "block nbt",
-                                  "children": []
-                               }
-                            ]
-                         }
-                      ]
-                   },
-                   {
-                      "data": "entity",
-                      "children": [
-                         {
-                            "function": "target",
-                            "children": [
-                               {
-                                  "function": "entity nbt",
-                                  "children": []
-                               }
-                            ]
-                         }
-                      ]
-                   }
-                ]
-             },
-             {
-                "data": "remove",
-                "children": [
-                   {
-                      "data": "block",
-                      "children": [
-                         {
-                            "format": "location",
-                            "children": [
-                               {
-                                  "function": "block path",
-                                  "children": []
-                               }
-                            ]
-                         }
-                      ]
-                   }
-                ]
-             },
-             {
-                "data": "entity",
-                "children": [
-                   {
-                      "function": "target",
-                      "children": [
-                         {
+                            "children": [{
+                                "function": "block path",
+                                "children": []
+                            }]
+                        }]
+                    }]
+                },
+                {
+                    "data": "entity",
+                    "children": [{
+                        "function": "target",
+                        "children": [{
                             "function": "entity path",
                             "children": []
-                         }
-                      ]
-                   }
-                ]
-             }
-          ]
-       },
-       {
-          "data": "defaultgamemode",
-          "children": [
-             {
+                        }]
+                    }]
+                }
+            ]
+        },
+        {
+            "data": "defaultgamemode",
+            "children": [{
                 "options": [
-                   "adventure",
-                   "creative",
-                   "spectator",
-                   "survival"
+                    "adventure",
+                    "creative",
+                    "spectator",
+                    "survival"
                 ],
                 "children": []
-             }
-          ]
-       },
-       {
-          "data": "difficulty",
-          "children": [
-             {
+            }]
+        },
+        {
+            "data": "difficulty",
+            "children": [{
                 "options": [
-                   "easy",
-                   "hard",
-                   "normal",
-                   "peaceful"
+                    "easy",
+                    "hard",
+                    "normal",
+                    "peaceful"
                 ],
                 "optional": true,
                 "children": []
-             }
-          ]
-       },
-       {
-          "data": "effect",
-          "children": [
-             {
-                "data": "clear",
-                "children": [
-                   {
-                      "function": "targets",
-                      "children": [
-                         {
+            }]
+        },
+        {
+            "data": "effect",
+            "children": [{
+                    "data": "clear",
+                    "children": [{
+                        "function": "targets",
+                        "children": [{
                             "key": "#effects",
                             "optional": true,
                             "children": []
-                         }
-                      ]
-                   }
-                ]
-             },
-             {
-                "data": "give",
-                "children": [
-                   {
-                      "function": "targets",
-                      "children": [
-                         {
+                        }]
+                    }]
+                },
+                {
+                    "data": "give",
+                    "children": [{
+                        "function": "targets",
+                        "children": [{
                             "key": "#effects",
-                            "children": [
-                               {
-                                  "format": "int",
-                                  "optional": true,
-                                  "children": [
-                                     {
-                                        "format": "int",
-                                        "children": [
-                                           {
-                                              "format": "bool",
-                                              "children": []
-                                           }
-                                        ]
-                                     }
-                                  ]
-                               }
-                            ]
-                         }
-                      ]
-                   }
-                ]
-             }
-          ]
-       },
-       {
-          "data": "execute",
-          "children": [
-             [
-                {
-                   "data": "align",
-                   "children": [
-                      {
-                         "format": "[xyz]+",
-                         "children": []
-                      }
-                   ]
-                },
-                {
-                   "data": "as",
-                   "children": [
-                      {
-                         "function": "targets",
-                         "children": []
-                      }
-                   ]
-                },
-                {
-                   "data": "at",
-                   "children": [
-                      {
-                         "function": "targets",
-                         "children": []
-                      }
-                   ]
-                },
-                {
-                   "options": [
-                      "if",
-                      "unless"
-                   ],
-                   "children": [
-                      {
-                         "data": "block",
-                         "children": [
-                            {
-                               "format": "location",
-                               "children": [
-                                  {
-                                     "function": "block",
-                                     "children": []
-                                  }
-                               ]
-                            }
-                         ]
-                      },
-                      {
-                         "data": "blocks",
-                         "children": [
-                            {
-                               "format": "location",
-                               "children": [
-                                  {
-                                     "format": "location",
-                                     "children": [
-                                        {
-                                           "options": [
-                                              "all",
-                                              "masked"
-                                           ],
-                                           "children": []
-                                        }
-                                     ]
-                                  }
-                               ]
-                            }
-                         ]
-                      },
-                      {
-                         "data": "entity",
-                         "children": [
-                            {
-                               "function": "targets",
-                               "children": []
-                            }
-                         ]
-                      },
-                      {
-                         "data": "score",
-                         "children": [
-                            {
-                               "function": "target",
-                               "children": [
-                                  {
-                                     "function": "objectives",
-                                     "children": [
-                                        {
-                                           "options": [
-                                              "<",
-                                              "<=",
-                                              "=",
-                                              ">",
-                                              ">="
-                                           ],
-                                           "children": [
-                                              {
-                                                 "function": "target",
-                                                 "children": [
-                                                    {
-                                                       "function": "objectives",
-                                                       "children": []
-                                                    }
-                                                 ]
-                                              }
-                                           ]
-                                        }
-                                     ]
-                                  }
-                               ]
-                            }
-                         ]
-                      }
-                   ]
-                },
-                {
-                   "data": "offset",
-                   "children": [
-                      {
-                         "format": "location",
-                         "children": []
-                      }
-                   ]
-                },
-                {
-                   "data": "run",
-                   "children": [
-                      {
-                         "function": "command",
-                         "children": []
-                      }
-                   ]
+                            "children": [{
+                                "format": "int",
+                                "optional": true,
+                                "children": [{
+                                    "format": "int",
+                                    "children": [{
+                                        "format": "bool",
+                                        "children": []
+                                    }]
+                                }]
+                            }]
+                        }]
+                    }]
                 }
-             ]
-          ]
-       },
-       {
-          "options": [
-             "experience",
-             "xp"
-          ],
-          "children": [
-             {
-                "options": [
-                   "add",
-                   "set"
-                ],
-                "children": [
-                   {
-                      "function": "targets",
-                      "children": [
-                         {
-                            "format": "int",
-                            "children": [
-                               {
-                                  "options": [
-                                     "levels",
-                                     "points"
-                                  ],
-                                  "optional": true,
-                                  "children": []
-                               }
-                            ]
-                         }
-                      ]
-                   }
+            ]
+        },
+        {
+            "data": "execute",
+            "children": [
+                [{
+                        "data": "align",
+                        "children": [{
+                            "format": "[xyz]+",
+                            "children": []
+                        }]
+                    },
+                    {
+                        "data": "as",
+                        "children": [{
+                            "function": "targets",
+                            "children": []
+                        }]
+                    },
+                    {
+                        "data": "at",
+                        "children": [{
+                            "function": "targets",
+                            "children": []
+                        }]
+                    },
+                    {
+                        "options": [
+                            "if",
+                            "unless"
+                        ],
+                        "children": [{
+                                "data": "block",
+                                "children": [{
+                                    "format": "location",
+                                    "children": [{
+                                        "function": "block",
+                                        "children": []
+                                    }]
+                                }]
+                            },
+                            {
+                                "data": "blocks",
+                                "children": [{
+                                    "format": "location",
+                                    "children": [{
+                                        "format": "location",
+                                        "children": [{
+                                            "options": [
+                                                "all",
+                                                "masked"
+                                            ],
+                                            "children": []
+                                        }]
+                                    }]
+                                }]
+                            },
+                            {
+                                "data": "entity",
+                                "children": [{
+                                    "function": "targets",
+                                    "children": []
+                                }]
+                            },
+                            {
+                                "data": "score",
+                                "children": [{
+                                    "function": "target",
+                                    "children": [{
+                                        "function": "objectives",
+                                        "children": [{
+                                            "options": [
+                                                "<",
+                                                "<=",
+                                                "=",
+                                                ">",
+                                                ">="
+                                            ],
+                                            "children": [{
+                                                "function": "target",
+                                                "children": [{
+                                                    "function": "objectives",
+                                                    "children": []
+                                                }]
+                                            }]
+                                        }]
+                                    }]
+                                }]
+                            }
+                        ]
+                    },
+                    {
+                        "data": "offset",
+                        "children": [{
+                            "format": "location",
+                            "children": []
+                        }]
+                    },
+                    {
+                        "data": "run",
+                        "children": [{
+                            "function": "command",
+                            "children": []
+                        }]
+                    }
                 ]
-             },
-             {
-                "data": "query",
-                "children": [
-                   {
-                      "function": "targets",
-                      "children": [
-                         {
+            ]
+        },
+        {
+            "options": [
+                "experience",
+                "xp"
+            ],
+            "children": [{
+                    "options": [
+                        "add",
+                        "set"
+                    ],
+                    "children": [{
+                        "function": "targets",
+                        "children": [{
+                            "format": "int",
+                            "children": [{
+                                "options": [
+                                    "levels",
+                                    "points"
+                                ],
+                                "optional": true,
+                                "children": []
+                            }]
+                        }]
+                    }]
+                },
+                {
+                    "data": "query",
+                    "children": [{
+                        "function": "targets",
+                        "children": [{
                             "options": [
-                               "levels",
-                               "points"
+                                "levels",
+                                "points"
                             ],
                             "children": []
-                         }
-                      ]
-                   }
-                ]
-             }
-          ]
-       },
-       {
-          "data": "fill",
-          "children": [
-             {
+                        }]
+                    }]
+                }
+            ]
+        },
+        {
+            "data": "fill",
+            "children": [{
                 "format": "location",
-                "children": [
-                   {
-                      "format": "location",
-                      "children": [
-                         {
-                            "function": "block",
-                            "children": [
-                               {
-                                  "options": [
-                                     "destroy",
-                                     "hollow",
-                                     "keep",
-                                     "outline"
-                                  ],
-                                  "optional": true,
-                                  "children": []
-                               },
-                               {
-                                  "data": "replace",
-                                  "children": [
-                                     {
-                                        "function": "block",
-                                        "optional": true,
-                                        "children": []
-                                     }
-                                  ]
-                               }
-                            ]
-                         }
-                      ]
-                   }
-                ]
-             }
-          ]
-       },
-       {
-          "data": "function",
-          "children": [
-             {
+                "children": [{
+                    "format": "location",
+                    "children": [{
+                        "function": "block",
+                        "children": [{
+                                "options": [
+                                    "destroy",
+                                    "hollow",
+                                    "keep",
+                                    "outline"
+                                ],
+                                "optional": true,
+                                "children": []
+                            },
+                            {
+                                "data": "replace",
+                                "children": [{
+                                    "function": "block",
+                                    "optional": true,
+                                    "children": []
+                                }]
+                            }
+                        ]
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "function",
+            "children": [{
                 "function": "functions",
                 "children": []
-             }
-          ]
-       },
-       {
-          "data": "gamemode",
-          "children": [
-             {
+            }]
+        },
+        {
+            "data": "gamemode",
+            "children": [{
                 "options": [
-                   "adventure",
-                   "creative",
-                   "spectator",
-                   "survival"
+                    "adventure",
+                    "creative",
+                    "spectator",
+                    "survival"
                 ],
-                "children": [
-                   {
-                      "function": "targets",
-                      "optional": true,
-                      "children": []
-                   }
-                ]
-             }
-          ]
-       },
-       {
-          "data": "gamerule",
-          "children": [
-             {
+                "children": [{
+                    "function": "targets",
+                    "optional": true,
+                    "children": []
+                }]
+            }]
+        },
+        {
+            "data": "gamerule",
+            "children": [{
+                    "options": [
+                        "announceAdvancements",
+                        "commandBlockOutput",
+                        "disableElytraMovementCheck",
+                        "doDaylightCycle",
+                        "doEntityDrops",
+                        "doFireTick",
+                        "doLimitedCrafting",
+                        "doMobLoot",
+                        "doMobSpawning",
+                        "doTileDrops",
+                        "doWeatherCycle",
+                        "keepInventory",
+                        "logAdminCommands",
+                        "mobGriefing",
+                        "naturalRegeneration",
+                        "reducedDebugInfo",
+                        "sendCommandFeedback",
+                        "showDeathMessages",
+                        "spectatorsGenerateChunks"
+                    ],
+                    "children": [{
+                        "format": "bool",
+                        "optional": true,
+                        "children": []
+                    }]
+                },
+                {
+                    "options": [
+                        "maxCommandChainLength",
+                        "maxEntityCramming",
+                        "randomTickSpeed",
+                        "spawnRadius"
+                    ],
+                    "children": [{
+                        "format": "int",
+                        "optional": true,
+                        "children": []
+                    }]
+                }
+            ]
+        },
+        {
+            "data": "give",
+            "children": [{
+                "function": "targets",
+                "children": [{
+                    "function": "item",
+                    "children": [{
+                        "format": "int",
+                        "optional": true,
+                        "children": []
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "particle",
+            "children": [{
+                "function": "particle",
+                "children": [{
+                    "key": "#particles",
+                    "children": [{
+                        "format": "location",
+                        "children": [{
+                            "format": "number",
+                            "children": [{
+                                "format": "number",
+                                "children": [{
+                                    "format": "number",
+                                    "children": [{
+                                        "format": "number",
+                                        "children": [{
+                                            "format": "int",
+                                            "children": [{
+                                                "options": [
+                                                    "force",
+                                                    "normal"
+                                                ],
+                                                "optional": true,
+                                                "children": [{
+                                                    "function": "targets",
+                                                    "optional": true,
+                                                    "children": []
+                                                }]
+                                            }]
+                                        }]
+                                    }]
+                                }]
+                            }]
+                        }]
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "playsound",
+            "children": [{
+                "function": "sounds",
+                "children": [{
+                    "options": [
+                        "ambient",
+                        "block",
+                        "hostile",
+                        "master",
+                        "music",
+                        "neutral",
+                        "player",
+                        "record",
+                        "voice",
+                        "weather"
+                    ],
+                    "children": [{
+                        "function": "targets",
+                        "children": [{
+                            "format": "location",
+                            "optional": true,
+                            "children": [{
+                                "format": "number",
+                                "optional": true,
+                                "children": [{
+                                    "format": "number",
+                                    "optional": true,
+                                    "children": [{
+                                        "format": "number",
+                                        "optional": true,
+                                        "children": []
+                                    }]
+                                }]
+                            }]
+                        }]
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "recipe",
+            "children": [{
                 "options": [
-                   "announceAdvancements",
-                   "commandBlockOutput",
-                   "disableElytraMovementCheck",
-                   "doDaylightCycle",
-                   "doEntityDrops",
-                   "doFireTick",
-                   "doLimitedCrafting",
-                   "doMobLoot",
-                   "doMobSpawning",
-                   "doTileDrops",
-                   "doWeatherCycle",
-                   "keepInventory",
-                   "logAdminCommands",
-                   "mobGriefing",
-                   "naturalRegeneration",
-                   "reducedDebugInfo",
-                   "sendCommandFeedback",
-                   "showDeathMessages",
-                   "spectatorsGenerateChunks"
+                    "give",
+                    "take"
                 ],
-                "children": [
-                   {
-                      "format": "bool",
-                      "optional": true,
-                      "children": []
-                   }
-                ]
-             },
-             {
-                "options": [
-                   "maxCommandChainLength",
-                   "maxEntityCramming",
-                   "randomTickSpeed",
-                   "spawnRadius"
-                ],
-                "children": [
-                   {
-                      "format": "int",
-                      "optional": true,
-                      "children": []
-                   }
-                ]
-             }
-          ]
-       }
+                "children": [{
+                    "function": "targets",
+                    "children": [{
+                            "options": ["*"],
+                            "children": []
+                        },
+                        {
+                            "key": "#recipe",
+                            "children": []
+                        }
+                    ]
+                }]
+            }]
+        }
     ]
- }
+}

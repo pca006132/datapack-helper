@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pca006132/datapack-helper/master/ref/command-format-schema.json",
+  "nodes": [{},
+    {
+      "data": "*",
+      "children": []
+    }
+  ]
+}
