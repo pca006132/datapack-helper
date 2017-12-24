@@ -5,11 +5,11 @@
 export class BaseNode {
     children: Array<BaseNode> = [];
 
-    getCompletion = (line: string, start: number, end: number): [Array<string>, boolean] => {
+    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         let completion: Array<string> = [];
         for (let child of this.children) {
             try {
-                let result = child.getCompletion(line, start, end);
+                let result = child.getCompletion(line, start, end, data);
                 if (result[1]) {
                     return result;
                 } else {

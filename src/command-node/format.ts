@@ -39,7 +39,7 @@ export class FormatNode extends BaseNode {
         }
     }
     content: RegExp;
-    getCompletion = (line: string, start: number, end: number): [Array<string>, boolean] => {
+    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         let segment = line.substring(start, end);
         let m = this.content.exec(segment);
         if (m) {
@@ -47,7 +47,7 @@ export class FormatNode extends BaseNode {
             if (length > 0 && m[0][length - 1] !== ' ') {
                 length++;
             }
-            return super.getCompletion(line, start + length, end);
+            return super.getCompletion(line, start + length, end, data);
         }
         return [[], false];
     }

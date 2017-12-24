@@ -11,9 +11,9 @@ export class PlainNode extends BaseNode {
         this.content = name + ' ';
     }
     content: string;
-    getCompletion = (line: string, start: number, end: number): [Array<string>, boolean] => {
+    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         if (strStartsWith(line, start, end, this.content)) {
-            return super.getCompletion(line, start + this.content.length, end);
+            return super.getCompletion(line, start + this.content.length, end, data);
         }
 
         let segment = line.substring(start, end);

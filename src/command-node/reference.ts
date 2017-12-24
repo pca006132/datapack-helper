@@ -3,7 +3,7 @@
  */
 
 import {BaseNode} from './base';
-import {strStartsWith} from './../util';
+import {strStartsWith, indexOf} from './../util';
 import {getResources} from './../resources';
 
 export class Reference extends BaseNode {
@@ -13,16 +13,10 @@ export class Reference extends BaseNode {
     }
     key: string;
 
-    getCompletion = (line: string, start: number, end: number): [Array<string>, boolean] => {
-        let index = -1;
-        for (let i = start; i < end; i++) {
-            if (line[i] === ' ') {
-                index = i;
-                break;
-            }
-        }
+    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+        let index = indexOf(line, start, end, ' ');
         if (index !== -1) {
-            return super.getCompletion(line, index+1, end);
+            return super.getCompletion(line, index+1, end, data);
         }
         if (strStartsWith(line, start, end, 'minecraft:')) {
             return [getResources(this.key), true];
