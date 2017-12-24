@@ -6,7 +6,7 @@ import {BaseNode} from './../base';
 import {getResources} from './../../resources';
 import {indexOf} from './../../util';
 
-class ObjectiveNode extends BaseNode {
+export class ObjectiveNode extends BaseNode {
     getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         let index = indexOf(line, start, end, ' ');
         if (index !== -1) {

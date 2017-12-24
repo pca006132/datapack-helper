@@ -2,10 +2,40 @@
  * Parse NBT
  */
 
+
+import {BaseNode} from './../base';
+import {Result} from './selector';
+
 const ESCAPE_PATTERN = /("|\\)/g;
 const UNESCAPE_PATTERN = /\\("|\\)/g;
-const ACCEPTED_CHAR = /[a-zA-Z._+-]/;
+const ACCEPTED_CHAR = /[a-zA-Z0-9._+-]/;
 const TERMINATING_CHAR = /[,}\s\]:]/;
+
+export class NbtNode extends BaseNode {
+    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+        let result = nbtCompletion(line, start, end, data);
+        if (result.completed) {
+            return super.getCompletion(line, result.index+1, end, data);
+        }
+        return [result.data, true];
+    }
+}
+
+export function nbtCompletion(line: string, start: number, end: number, data): Result {
+    let result = getCompoundTagNames(line, start, end);
+    if (result.end) {
+        return {
+            completed: true,
+            index: result.endingIndex,
+            shouldDelete: false
+        }
+    }
+    return {
+        completed: false,
+        data: [],
+        shouldDelete: false
+    }
+}
 
 function escape(data: string) {
     return data.replace(ESCAPE_PATTERN, "\\$1");

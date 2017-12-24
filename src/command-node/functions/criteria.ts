@@ -6,7 +6,7 @@ import {BaseNode} from './../base';
 import {getResources} from './../../resources';
 import {indexOf, getResourceComponents} from './../../util';
 
-class Criteria extends BaseNode {
+export class Criteria extends BaseNode {
     getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         let index = indexOf(line, start, end, ' ');
         if (index !== -1) {
@@ -14,19 +14,20 @@ class Criteria extends BaseNode {
         }
 
         let segment = line.substring(start, end);
-        let components = getResourceComponents(data["advancement"] || "");
-        let temp = getResources("advancements");
-        for (let i = 0; i < components.length - 1; i++) {
-            if (temp[components[i]]) {
-                temp = temp[components[i]];
-            } else {
-                return [[], true];
-            }
-        }
-        temp = temp["$adv"][components[components.length - 1]];
-        if (temp) {
-            return [temp.filter(n=>n.startsWith(segment)), false];
-        }
-        return [[], false];
+        return [criteriaCompletion(data["advancement"]).filter(v=>v.startsWith(segment)), true]3;
     }
+}
+
+export function criteriaCompletion(advancement: string): Array<string> {
+    let components = getResourceComponents(advancement);
+    let temp = getResources("advancements");
+    for (let i = 0; i < components.length - 1; i++) {
+        if (temp[components[i]]) {
+            temp = temp[components[i]];
+        } else {
+            return [];
+        }
+    }
+    temp = temp["$adv"][components[components.length - 1]];
+    return temp || [];
 }
