@@ -639,11 +639,11 @@
         {
             "data": "scoreboard",
             "children": [{
-                    "options": ["objectives"],
+                    "data": "objectives",
                     "children": [{
-                            "options": ["add"],
+                            "data": "add",
                             "children": [{
-                                "function": "objectives",
+                                "format": "^\\S+",
                                 "children": [{
                                     "function": "scb-criteria",
                                     "children": [{
@@ -655,14 +655,14 @@
                             }]
                         },
                         {
-                            "options": ["remove"],
+                            "data": "remove",
                             "children": [{
                                 "function": "objectives",
                                 "children": []
                             }]
                         },
                         {
-                            "options": ["setdisplay"],
+                            "data": "setdisplay",
                             "children": [{
                                 "function": "display-slot",
                                 "children": [{
@@ -675,7 +675,7 @@
                     ]
                 },
                 {
-                    "options": ["players"],
+                    "data": "players",
                     "children": [{
                             "options": ["add", "remove", "set"],
                             "children": [{
@@ -690,7 +690,7 @@
                             }]
                         },
                         {
-                            "options": ["enable"],
+                            "data": "enable",
                             "children": [{
                                 "function": "targets",
                                 "children": [{
@@ -700,7 +700,7 @@
                             }]
                         },
                         {
-                            "options": ["get"],
+                            "data": "get",
                             "children": [{
                                 "function": "target",
                                 "children": [{
@@ -710,7 +710,7 @@
                             }]
                         },
                         {
-                            "options": ["reset"],
+                            "data": "reset",
                             "children": [{
                                     "function": "targets",
                                     "children": [{
@@ -720,7 +720,7 @@
                                     }]
                                 },
                                 {
-                                    "options": ["*"],
+                                    "data": "*",
                                     "children": [{
                                         "function": "objectives",
                                         "optional": true,
@@ -730,7 +730,7 @@
                             ]
                         },
                         {
-                            "options": ["operation"],
+                            "data": "operation",
                             "children": [{
                                 "function": "targets",
                                 "children": [{

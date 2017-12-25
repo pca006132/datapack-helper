@@ -264,3 +264,10 @@ export async function loadFiles() {
 export function getResources(key: string) {
     return resources[key];
 }
+
+//Read resources.json
+//blocking, as it is the initialization
+let data = JSON.parse(fs.readFileSync("./../ref/resources.json", "utf-8"));
+for (let key of Object.keys(data)) {
+    resources[key] = data[key];
+}

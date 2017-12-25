@@ -12,8 +12,13 @@ const ACCEPTED_CHAR = /[a-zA-Z0-9._+-]/;
 const TERMINATING_CHAR = /[,}\s\]:]/;
 
 export class NbtNode extends BaseNode {
+    base: string;
+    constructor(base: string) {
+        super();
+        this.base = base;
+    }
     getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
-        let result = nbtCompletion(line, start, end, data);
+        let result = nbtCompletion(this.base, line, start, end, data);
         if (result.completed) {
             return super.getCompletion(line, result.index+1, end, data);
         }
@@ -21,7 +26,7 @@ export class NbtNode extends BaseNode {
     }
 }
 
-export function nbtCompletion(line: string, start: number, end: number, data): Result {
+export function nbtCompletion(base: string, line: string, start: number, end: number, data): Result {
     let result = getCompoundTagNames(line, start, end);
     if (result.end) {
         return {

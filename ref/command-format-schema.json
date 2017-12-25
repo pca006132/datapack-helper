@@ -142,14 +142,16 @@
                         "teams",
                         "sounds",
                         "block",
+                        "tags",
                         "item",
                         "block path",
                         "entity path",
                         "slot",
                         "display-slot",
-                        "scb-criteria"
+                        "scb-criteria",
+                        "trigger"
                     ],
-                    "description": "command: Chain to another command, parsing from the beginning of the command nodes tree. \ntarget: Parsing a selector(single target)/player name. \ntargets: Parsing a selector(could be multi-target)/player name. \nblock nbt: Parse against a block root tag. \nentity nbt: Parse against an entity root tag. \nitem tag nbt: Parse against the tag tag of item nbt. \nadvancements: Refer to the list of advancement IDs. \nadvancements-criterion: Refer to the list of advancemnt criteria of the advancement in the previous argument. \nfunctions: Refer to the list of function names. \nobjectives: Refer to the list of scoreboard objectives. \nteams: Refer to the list of teams\nsounds: Refer to the list of sounds in sounds.json. \nblock: The block parameter. \nitem: The item parameter. \n<block|entity> path refer to the path parameter. \ndisplay-slot: scoreboard objective display slot. \nscb-criteria: scoreboard objective criteria."
+                    "description": "command: Chain to another command, parsing from the beginning of the command nodes tree. \ntarget: Parsing a selector(single target)/player name. \ntargets: Parsing a selector(could be multi-target)/player name. \nblock nbt: Parse against a block root tag. \nentity nbt: Parse against an entity root tag. \nitem tag nbt: Parse against the tag tag of item nbt. \nadvancements: Refer to the list of advancement IDs. \nadvancements-criterion: Refer to the list of advancemnt criteria of the advancement in the previous argument. \nfunctions: Refer to the list of function names. \nobjectives: Refer to the list of scoreboard objectives. \nteams: Refer to the list of teams\nsounds: Refer to the list of sounds in sounds.json. \nblock: The block parameter. \nitem: The item parameter. \ntags: Refer to the list of tags.\n<block|entity> path refer to the path parameter. \ndisplay-slot: scoreboard objective display slot. \nscb-criteria: scoreboard objective criteria. \ntrigger: trigger objectives"
                 },
                 "children": {
                     "type": "array",

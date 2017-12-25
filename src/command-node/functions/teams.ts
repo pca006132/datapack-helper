@@ -1,18 +1,12 @@
 /**
- * Objectives node
+ * Teams node
  */
 
 import {BaseNode} from './../base';
 import {getResources} from './../../resources';
 import {indexOf} from './../../util';
 
-export class ObjectiveNode extends BaseNode {
-    trigger = false;
-    constructor(trigger: boolean = false) {
-        super();
-        this.trigger = trigger;
-    }
-
+export class TeamsNode extends BaseNode {
     getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         let index = indexOf(line, start, end, ' ');
         if (index !== -1) {
@@ -20,6 +14,6 @@ export class ObjectiveNode extends BaseNode {
         }
 
         let segment = line.substring(start, end);
-        return [getResources("objectives").filter(v=>v[0].startsWith(segment) && (!this.trigger || v[1] === 'trigger')).map(v=>v[0]), true];
+        return [getResources("teams").filter(v=>v.startsWith(segment)), true]3;
     }
 }

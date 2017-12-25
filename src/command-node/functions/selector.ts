@@ -52,7 +52,6 @@ export class SelectorNode extends BaseNode {
                         case 'x_rotation':
                         case 'y_rotation':
                         case 'limit':
-                        case 'team':
                         case 'name':
                             var result = skipArgument(line, equalSign+1, end);
                             if (result.completed) {
@@ -64,6 +63,19 @@ export class SelectorNode extends BaseNode {
                                 }
                             } else {
                                 return [[], true];
+                            }
+                            break;
+                        case 'team':
+                            var result = skipArgument(line, equalSign+1, end);
+                            if (result.completed) {
+                                index = result.index;
+                                if (result.shouldDelete) {
+                                    let i = argumentList.indexOf(key);
+                                    if (i !== -1)
+                                        argumentList.splice(i);
+                                }
+                            } else {
+                                return [getResources("teams"), true];
                             }
                             break;
                         case 'sort':
@@ -115,7 +127,7 @@ export class SelectorNode extends BaseNode {
                                         argumentList.splice(i);
                                 }
                             } else {
-                                let types = getResources("#entity");
+                                let types = getResources("#entities");
                                 types.push("player")
                                 return [types, true];
                             }
@@ -126,7 +138,7 @@ export class SelectorNode extends BaseNode {
                                 shouldDelete = true;
                                 equalSign++;
                             }
-                            var result = nbtCompletion(line, equalSign+1, end, data);
+                            var result = nbtCompletion("entity", line, equalSign+1, end, data);
                             if (result.completed) {
                                 index = result.index+1;
                                 if (shouldDelete) {
@@ -214,7 +226,7 @@ export class SelectorNode extends BaseNode {
                 return [[], true];
             }
         } else if (end === start) {
-            return [["@e", "@s", "@r", "@a", "@p"], true];
+            return [["@e", "@s", "@r", "@a", "@p"], false];
         } else {
             let index = indexOf(line, start, end, ' ');
             return super.getCompletion(line, index+1, end, data);
@@ -235,7 +247,7 @@ export interface Result {
     error?: boolean;
 }
 
-function skipArgument(line: string, start: number, end: number): Result {
+export function skipArgument(line: string, start: number, end: number): Result {
     let negation = false;
     if (start === end) {
         return {
@@ -244,14 +256,14 @@ function skipArgument(line: string, start: number, end: number): Result {
             data: []
         }
     }
-    let index = start;
+    let index = start-1;
     let inString = false;
     let escape = false;
-    if (line[index] === '!') {
+    if (line[index+1] === '!') {
         negation = true;
         index++;
     }
-    while (index < end) {
+    while (++index < end) {
         if (inString) {
             if (escape) {
                 escape = false;
