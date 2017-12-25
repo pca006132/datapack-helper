@@ -3,7 +3,9 @@
   "nodes": [
     //当前要做的指令，完成一个后请保存到同目录下command-format.json
     {
-    "data": "setblock",
-    "children": []
-  }]
+      "data": "team",
+      "children": []
+    }
+    //你懂的。
+  ]
 }

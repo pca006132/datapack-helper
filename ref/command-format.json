@@ -542,18 +542,7 @@
             "children": [{
                 "function": "sounds",
                 "children": [{
-                    "options": [
-                        "ambient",
-                        "block",
-                        "hostile",
-                        "master",
-                        "music",
-                        "neutral",
-                        "player",
-                        "record",
-                        "voice",
-                        "weather"
-                    ],
+                    "options": ["ambient", "block", "hostile", "master", "music", "neutral", "player", "record", "voice", "weather"],
                     "children": [{
                         "function": "targets",
                         "children": [{
@@ -749,6 +738,201 @@
                             }]
                         }
                     ]
+                }
+            ]
+        },
+        {
+            "data": "setblock",
+            "children": [{
+                "function": "location",
+                "children": [{
+                    "function": "block",
+                    "children": [{
+                        "options": [
+                            "replace",
+                            "destroy",
+                            "keep"
+                        ],
+                        "optional": true,
+                        "children": []
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "setworldspawn",
+            "children": [{
+                "format": "location",
+                "optional": true,
+                "children": []
+            }]
+        },
+        {
+            "data": "spawnpoint",
+            "children": [{
+                "function": "targets",
+                "children": [{
+                    "format": "location",
+                    "optional": true,
+                    "children": []
+                }]
+            }]
+        },
+        {
+            "data": "spreadplayers",
+            "children": [{
+                "format": "number",
+                "children": [{
+                    "format": "number",
+                    "children": [{
+                        "format": "number",
+                        "children": [{
+                            "format": "number",
+                            "children": [{
+                                "options": ["true", "false"],
+                                "children": [{
+                                    "function": "targets",
+                                    "children": []
+                                }]
+                            }]
+                        }]
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "stopsound",
+            "children": [{
+                "function": "targets",
+                "children": [{
+                        "options": ["*"],
+                        "optional": true,
+                        "children": [{
+                            "function": "sounds",
+                            "children": []
+                        }]
+                    },
+                    {
+                        "options": ["ambient", "block", "hostile", "master", "music", "neutral", "player", "record", "voice", "weather"],
+                        "optional": true,
+                        "children": [{
+                            "function": "sounds",
+                            "children": []
+                        }]
+                    }
+                ]
+            }]
+        },
+        {
+            "data": "summon",
+            "children": [{
+                "function": "entity",
+                "children": [{
+                    "format": "location",
+                    "optional": true,
+                    "children": [{
+                        "function": "entity nbt",
+                        "children": []
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "tag",
+            "children": [{
+                "function": "targets",
+                "children": [{
+                        "options": ["add", "remove"],
+                        "children": [{
+                            "key": "#tag",
+                            "children": []
+                        }]
+                    },
+                    {
+                        "options": ["list"],
+                        "children": []
+                    }
+                ]
+            }]
+        },
+        {
+            "data": "team",
+            "children": [{
+                    "options": ["add"],
+                    "children": [{
+                        "function": "teams",
+                        "chldren": [{
+                            "format": "string",
+                            "optional": true,
+                            "children": []
+                        }]
+                    }]
+                },
+                {
+                    "options": ["empty", "remove"],
+                    "children": [{
+                        "function": "teams",
+                        "children": []
+                    }]
+                },
+                {
+                    "options": ["join"],
+                    "children": [{
+                        "function": "teams",
+                        "children": [{
+                            "function": "targets",
+                            "optional": true,
+                            "children": []
+                        }]
+                    }]
+                },
+                {
+                    "options": ["leave"],
+                    "children": [{
+                        "function": "targets",
+                        "children": []
+                    }]
+                },
+                {
+                    "options": ["list"],
+                    "children": [{
+                        "function": "teams",
+                        "optional": true,
+                        "children": []
+                    }]
+                },
+                {
+                    "options": ["option"],
+                    "children": [{
+                        "function": "teams",
+                        "children": [{
+                                "options": ["collisionRule"],
+                                "children": [{
+                                    "options": ["always", "never", "pushOtherTeams", "pushOwnTeam"]
+                                }]
+                            },
+                            {
+                                "options": ["deathMessageVisibility", "nametagVisibility"],
+                                "children": [{
+                                    "options": ["always", "never", "hideForOtherTeams", "hideForOwnTeam"]
+                                }]
+                            },
+                            {
+                                "options": ["friendlyfire", "seeFriendlyInvisibles"],
+                                "children": [{
+                                    "options": ["true", "false"],
+                                    "children": []
+                                }]
+                            },
+                            {
+                                "options": ["color"],
+                                "children": [{
+                                    "key": "#color",
+                                    "children": []
+                                }]
+                            }
+                        ]
+                    }]
                 }
             ]
         }
