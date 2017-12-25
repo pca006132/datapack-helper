@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 		provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext) {
 			if (!enabled)
 				return [];
-			console.log(document.lineAt(position.line).text.substring(0, position.line));
+			console.log(document.lineAt(position.line).text.substring(0, position.character));
 			if (document.lineAt(position.line).text.length !== 0) {
 				let char = document.lineAt(position.line).text.charCodeAt(0);
 				if (char < 97 || char > 122)
@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 			return baseNode.getCompletion(document.lineAt(position.line).text, 0, position.character, {})[0].map(v=>new vscode.CompletionItem(v));
 		}
-	}, ...[".", "[", "{", " ", "/", ":", "=", "!"]);
+	}, ...[".", ",", "[", "{", " ", "/", ":", "=", "!", "_"], ...range(97, 122));
 
 	vscode.commands.registerCommand("datapack.initialize", ()=> {
 		if (!enabled)
@@ -64,4 +64,12 @@ export function activate(context: vscode.ExtensionContext) {
 			})
 		}
 	})
+}
+
+function range(start: number, end: number) {
+    let result: Array<string> = [];
+    for (let i = start; i <= end; i++) {
+        result.push(String.fromCharCode(i));
+    }
+    return result;
 }

@@ -38,6 +38,10 @@ export default class SelectorNode extends BaseNode {
                 ]
 
                 let index = start + 3;
+                if (index === end) {
+                    let segment = line.substring(index);
+                    return [argumentList.filter(n=>n.startsWith(segment)), true];
+                }
                 while (index < end) {
                     let equalSign = indexOf(line, index, end, '=');
                     if (equalSign === -1) {
@@ -161,6 +165,9 @@ export default class SelectorNode extends BaseNode {
                             if (line[index++] !== '{') {
                                 return [["{"], true];
                             }
+                            if (index === end) {
+                                return [advancementCompletion(line, equalSign+1, end), true];
+                            }
                             while (index < end && line[index] !== '}') {
                                 let equalSign = indexOf(line, index, end, '=');
                                 if (equalSign === -1) {
@@ -168,8 +175,12 @@ export default class SelectorNode extends BaseNode {
                                 }
                                 let key = line.substring(index, equalSign);
                                 index = equalSign+1;
+                                let criteria = criteriaCompletion(key);
+                                if (index === end) {
+                                    let segment = line.substring(index, end);
+                                    return [criteria.filter(n=>n.startsWith(segment)), true];
+                                }
                                 if (index < end && line[index] === '{') {
-                                    let criteria = criteriaCompletion(key);
                                     while (index < end && line[index] !== '}') {
                                         let eqSign = indexOf(line, index, end, '=');
                                         if (eqSign === -1) {
@@ -207,6 +218,10 @@ export default class SelectorNode extends BaseNode {
                                 return [["{"], true];
                             }
                             let objectives = getResources("objectives").map(v=>v[0]);
+                            if (index === end) {
+                                let segment = line.substring(index);
+                                return [objectives.filter(n=>n.startsWith(segment)), true];
+                            }
                             while (index < end && line[index] !== '}') {
                                 let equalSign = indexOf(line, index, end, '=');
                                 if (equalSign === -1) {
@@ -235,6 +250,7 @@ export default class SelectorNode extends BaseNode {
                         return super.getCompletion(line, index+2, end, data);
                     }
                 }
+
             } else {
                 return [[], true];
             }
@@ -242,6 +258,9 @@ export default class SelectorNode extends BaseNode {
             return [["@e", "@s", "@r", "@a", "@p"], false];
         } else {
             let index = indexOf(line, start, end, ' ');
+            if (index === -1) {
+                return [[], false];
+            }
             return super.getCompletion(line, index+1, end, data);
         }
     }
