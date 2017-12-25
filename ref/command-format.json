@@ -501,11 +501,11 @@
         {
             "data": "particle",
             "children": [{
-                "function": "particle",
+                "key": "#particles",
                 "children": [{
-                    "key": "#particles",
+                    "format": "location",
                     "children": [{
-                        "format": "location",
+                        "format": "number",
                         "children": [{
                             "format": "number",
                             "children": [{
@@ -513,20 +513,17 @@
                                 "children": [{
                                     "format": "number",
                                     "children": [{
-                                        "format": "number",
+                                        "format": "int",
                                         "children": [{
-                                            "format": "int",
+                                            "options": [
+                                                "force",
+                                                "normal"
+                                            ],
+                                            "optional": true,
                                             "children": [{
-                                                "options": [
-                                                    "force",
-                                                    "normal"
-                                                ],
+                                                "function": "targets",
                                                 "optional": true,
-                                                "children": [{
-                                                    "function": "targets",
-                                                    "optional": true,
-                                                    "children": []
-                                                }]
+                                                "children": []
                                             }]
                                         }]
                                     }]
@@ -591,7 +588,7 @@
                             "children": []
                         },
                         {
-                            "key": "#recipe",
+                            "key": "#recipes",
                             "children": []
                         }
                     ]
