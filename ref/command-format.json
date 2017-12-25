@@ -844,12 +844,12 @@
                 "children": [{
                         "options": ["add", "remove"],
                         "children": [{
-                            "key": "#tag",
+                            "function": "tags",
                             "children": []
                         }]
                     },
                     {
-                        "options": ["list"],
+                        "data": "list",
                         "children": []
                     }
                 ]
@@ -858,7 +858,7 @@
         {
             "data": "team",
             "children": [{
-                    "options": ["add"],
+                    "data": "add",
                     "children": [{
                         "function": "teams",
                         "chldren": [{
@@ -876,7 +876,7 @@
                     }]
                 },
                 {
-                    "options": ["join"],
+                    "data": "join",
                     "children": [{
                         "function": "teams",
                         "children": [{
@@ -887,14 +887,14 @@
                     }]
                 },
                 {
-                    "options": ["leave"],
+                    "data": "leave",
                     "children": [{
                         "function": "targets",
                         "children": []
                     }]
                 },
                 {
-                    "options": ["list"],
+                    "data": "list",
                     "children": [{
                         "function": "teams",
                         "optional": true,
@@ -902,7 +902,7 @@
                     }]
                 },
                 {
-                    "options": ["option"],
+                    "data": "option",
                     "children": [{
                         "function": "teams",
                         "children": [{
