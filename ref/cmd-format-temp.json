@@ -1,9 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/pca006132/datapack-helper/master/ref/command-format-schema.json",
-  "nodes": [{},
+  "nodes": [
+    //当前要做的指令，完成一个后请保存到同目录下command-format.json
     {
-      "data": "*",
-      "children": []
-    }
-  ]
+    "data": "setblock",
+    "children": []
+  }]
 }

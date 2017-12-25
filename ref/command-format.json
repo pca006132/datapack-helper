@@ -501,11 +501,11 @@
         {
             "data": "particle",
             "children": [{
-                "key": "#particles",
+                "function": "particle",
                 "children": [{
-                    "format": "location",
+                    "key": "#particles",
                     "children": [{
-                        "format": "number",
+                        "format": "location",
                         "children": [{
                             "format": "number",
                             "children": [{
@@ -513,17 +513,20 @@
                                 "children": [{
                                     "format": "number",
                                     "children": [{
-                                        "format": "int",
+                                        "format": "number",
                                         "children": [{
-                                            "options": [
-                                                "force",
-                                                "normal"
-                                            ],
-                                            "optional": true,
+                                            "format": "int",
                                             "children": [{
-                                                "function": "targets",
+                                                "options": [
+                                                    "force",
+                                                    "normal"
+                                                ],
                                                 "optional": true,
-                                                "children": []
+                                                "children": [{
+                                                    "function": "targets",
+                                                    "optional": true,
+                                                    "children": []
+                                                }]
                                             }]
                                         }]
                                     }]
@@ -588,12 +591,166 @@
                             "children": []
                         },
                         {
-                            "key": "#recipes",
+                            "key": "#recipe",
                             "children": []
                         }
                     ]
                 }]
             }]
+        },
+        {
+            "data": "replaceitem",
+            "children": [{
+                    "options": ["block"],
+                    "children": [{
+                        "format": "location",
+                        "children": [{
+                            "function": "slot",
+                            "children": [{
+                                "function": "item",
+                                "children": [{
+                                    "format": "int",
+                                    "optional": true,
+                                    "children": []
+                                }]
+                            }]
+                        }]
+                    }]
+                },
+                {
+                    "options": ["entity"],
+                    "children": [{
+                        "function": "targets",
+                        "children": [{
+                            "function": "slot",
+                            "children": [{
+                                "function": "item",
+                                "children": [{
+                                    "format": "int",
+                                    "optional": true,
+                                    "children": []
+                                }]
+                            }]
+                        }]
+                    }]
+                }
+            ]
+        },
+        {
+            "data": "scoreboard",
+            "children": [{
+                    "options": ["objectives"],
+                    "children": [{
+                            "options": ["add"],
+                            "children": [{
+                                "function": "objectives",
+                                "children": [{
+                                    "function": "scb-criteria",
+                                    "children": [{
+                                        "format": "string",
+                                        "optional": true,
+                                        "children": []
+                                    }]
+                                }]
+                            }]
+                        },
+                        {
+                            "options": ["remove"],
+                            "children": [{
+                                "function": "objectives",
+                                "children": []
+                            }]
+                        },
+                        {
+                            "options": ["setdisplay"],
+                            "children": [{
+                                "function": "display-slot",
+                                "children": [{
+                                    "function": "objectives",
+                                    "optional": true,
+                                    "children": []
+                                }]
+                            }]
+                        }
+                    ]
+                },
+                {
+                    "options": ["players"],
+                    "children": [{
+                            "options": ["add", "remove", "set"],
+                            "children": [{
+                                "function": "targets",
+                                "children": [{
+                                    "function": "objectives",
+                                    "children": [{
+                                        "format": "int",
+                                        "children": []
+                                    }]
+                                }]
+                            }]
+                        },
+                        {
+                            "options": ["enable"],
+                            "children": [{
+                                "function": "targets",
+                                "children": [{
+                                    "function": "trigger",
+                                    "children": []
+                                }]
+                            }]
+                        },
+                        {
+                            "options": ["get"],
+                            "children": [{
+                                "function": "target",
+                                "children": [{
+                                    "function": "objectives",
+                                    "children": []
+                                }]
+                            }]
+                        },
+                        {
+                            "options": ["reset"],
+                            "children": [{
+                                    "function": "targets",
+                                    "children": [{
+                                        "function": "objectives",
+                                        "optional": true,
+                                        "children": []
+                                    }]
+                                },
+                                {
+                                    "options": ["*"],
+                                    "children": [{
+                                        "function": "objectives",
+                                        "optional": true,
+                                        "children": []
+                                    }]
+                                }
+                            ]
+                        },
+                        {
+                            "options": ["operation"],
+                            "children": [{
+                                "function": "targets",
+                                "children": [{
+                                    "function": "objectives",
+                                    "children": [{
+                                        "options": ["+=", "-=", "*=", "/=", "%=", "=", ">", "<", "><"],
+                                        "children": [{
+                                            "function": "targets",
+                                            "children": [{
+                                                "function": "objectives",
+                                                "children": []
+                                            }]
+                                        }]
+                                    }]
+                                }]
+                            }]
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
