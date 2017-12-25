@@ -860,7 +860,7 @@
             "children": [{
                     "options": ["add"],
                     "children": [{
-                        "key": "#team",
+                        "function": "teams",
                         "chldren": [{
                             "format": "string",
                             "optional": true,
@@ -871,14 +871,14 @@
                 {
                     "options": ["empty", "remove"],
                     "children": [{
-                        "key": "#team",
+                        "function": "teams",
                         "children": []
                     }]
                 },
                 {
                     "options": ["join"],
                     "children": [{
-                        "key": "#team",
+                        "function": "teams",
                         "children": [{
                             "function": "targets",
                             "optional": true,
@@ -896,7 +896,7 @@
                 {
                     "options": ["list"],
                     "children": [{
-                        "key": "#team",
+                        "function": "teams",
                         "optional": true,
                         "children": []
                     }]
@@ -904,7 +904,7 @@
                 {
                     "options": ["option"],
                     "children": [{
-                        "key": "#team",
+                        "function": "teams",
                         "children": [{
                                 "options": ["collisionRule"],
                                 "children": [{
