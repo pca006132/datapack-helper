@@ -8,12 +8,13 @@ import {strStartsWith} from './../util';
 export default class PlainNode extends BaseNode {
     constructor(name:string) {
         super();
-        this.content = name + ' ';
+        this.content = name;
     }
     content: string;
-    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+    getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
         if (strStartsWith(line, start, end, this.content)) {
-            return super.getCompletion(line, start + this.content.length, end, data);
+            let result = super.getCompletion(line, start + this.content.length + 1, end, data);
+            return result;
         }
 
         let segment = line.substring(start, end);

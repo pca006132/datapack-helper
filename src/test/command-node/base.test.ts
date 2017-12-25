@@ -8,14 +8,14 @@ suite("BaseNode test", ()=> {
             {
                 children: [],
                 optional: false,
-                getCompletion: (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+                getCompletion: function (line: string, start: number, end: number, data): [Array<string>, boolean]  {
                     return [["1"], true];
                 }
             },
             {
                 children: [],
                 optional: false,
-                getCompletion: (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+                getCompletion: function (line: string, start: number, end: number, data): [Array<string>, boolean]  {
                     throw new Error("should not be executed");
                 }
             }
@@ -28,14 +28,14 @@ suite("BaseNode test", ()=> {
             {
                 children: [],
                 optional: false,
-                getCompletion: (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+                getCompletion: function (line: string, start: number, end: number, data): [Array<string>, boolean]  {
                     throw new Error("should not be executed");
                 }
             },
             {
                 children: [],
                 optional: false,
-                getCompletion: (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+                getCompletion: function (line: string, start: number, end: number, data): [Array<string>, boolean]  {
                     return [["1"], true];
                 }
             }
@@ -48,14 +48,14 @@ suite("BaseNode test", ()=> {
             {
                 children: [],
                 optional: false,
-                getCompletion: (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+                getCompletion: function (line: string, start: number, end: number, data): [Array<string>, boolean]  {
                     throw new Error("should not be executed");
                 }
             },
             {
                 children: [],
                 optional: false,
-                getCompletion: (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+                getCompletion: function (line: string, start: number, end: number, data): [Array<string>, boolean]  {
                     throw new Error("should not be executed");
                 }
             }

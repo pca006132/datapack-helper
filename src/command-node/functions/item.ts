@@ -8,7 +8,7 @@ import {getResources} from './../../resources';
 import {strStartsWith, indexOf} from './../../util';
 
 export default class ItemNode extends BaseNode {
-    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+    getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
         let space = indexOf(line, start, end, " ");
         if (strStartsWith(line, start, end, "minecraft:")) {
             let colon = indexOf(line, start, end, ":");

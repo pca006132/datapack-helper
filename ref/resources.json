@@ -5066,5 +5066,36 @@
         "tune_noteblock",
         "use_cauldron",
         "walk_one_cm"
-    ]
+    ],
+    "#effects": [
+        "nausea",
+		"regeneration",
+		"glowing",
+		"invisibility",
+		"poison",
+		"jump_boost",
+		"water_breathing",
+		"blindness",
+		"saturation",
+		"luck",
+		"night_vision",
+		"absorption",
+		"fire_resistance",
+		"instant_damage",
+		"levitation",
+		"speed",
+		"wither",
+		"slowness",
+		"unluck",
+		"weakness",
+		"instant_health",
+		"hunger",
+		"mining_fatigue",
+		"strength",
+		"health_boost",
+		"haste",
+		"resistance"
+    ],
+    "#particles": ["angryVillager", "barrier", "blockcrack", "blockdust", "bubble", "cloud", "crit", "damageIndicator", "depthsuspend", "dragonbreath", "dripLava", "dripWater", "droplet", "enchantmenttable", "endRod", "explode", "fallingdust", "fireworksSpark", "flame", "footstep", "happyVillager", "heart", "hugeexplosion", "iconcrack", "instantSpell", "largeexplode", "largesmoke", "lava", "magicCrit", "mobSpell", "mobSpellAmbient", "mobappearance", "note", "portal", "reddust", "slime", "smoke", "snowballpoof", "snowshovel", "spell", "spit", "splash", "suspended", "sweepAttack", "take", "totem", "townaura", "wake", "witchMagic"],
+    "#recipe": []
 }

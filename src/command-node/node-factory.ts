@@ -125,7 +125,7 @@ function parseChildren(children: Array<object>, base: BaseNode): Array<BaseNode>
     return result;
 }
 
-export function getBaseNode(text): BaseNode {
+export default function getBaseNode(text: string): BaseNode {
     let obj = JSON.parse(text);
     let base = new BaseNode();
     base.children = parseChildren(obj["nodes"], base);

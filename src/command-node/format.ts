@@ -39,7 +39,7 @@ export default class FormatNode extends BaseNode {
         }
     }
     content: RegExp;
-    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+    getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
         let segment = line.substring(start, end);
         let m = this.content.exec(segment);
         if (m) {

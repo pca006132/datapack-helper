@@ -6,7 +6,8 @@ export default class BaseNode {
     children: Array<BaseNode> = [];
     optional: boolean;
 
-    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+
+    getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean] {
         let completion: Array<string> = [];
         for (let child of this.children) {
             try {
@@ -18,6 +19,7 @@ export default class BaseNode {
                 }
             } catch (e) {
                 //Nothing to handle
+                console.log(e);
             }
         }
         return [completion, true];

@@ -16,7 +16,7 @@ export default class SelectorNode extends BaseNode {
         this.single = single;
     }
 
-    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+    getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
         if (end > start && line[start] === '@') {
             if (end > start + 2 && line[start + 2] === '[') {
                 let argumentList = [

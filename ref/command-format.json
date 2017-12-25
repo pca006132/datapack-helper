@@ -1,702 +1,300 @@
 {
     "$schema": "https://raw.githubusercontent.com/pca006132/datapack-helper/master/ref/command-format-schema.json",
     "nodes": [{
-                "data": "advancement",
+            "data": "advancement",
+            "children": [{
+                "options": [
+                    "grant",
+                    "revoke"
+                ],
                 "children": [{
-                    "options": [
-                        "grant",
-                        "revoke"
-                    ],
+                    "function": "targets",
                     "children": [{
-                        "function": "targets",
-                        "children": [{
-                                "data": "everything",
-                                "children": []
-                            },
-                            {
-                                "data": "only",
+                            "data": "everything",
+                            "children": []
+                        },
+                        {
+                            "data": "only",
+                            "children": [{
+                                "function": "advancements",
                                 "children": [{
-                                    "function": "advancements",
+                                    "function": "advancements-criterion",
+                                    "optional": true,
+                                    "children": []
+                                }]
+                            }]
+                        },
+                        {
+                            "options": ["from", "through", "until"],
+                            "children": [{
+                                "function": "advancements",
+                                "children": []
+                            }]
+                        }
+                    ]
+                }]
+            }]
+        },
+        {
+            "data": "clear",
+            "children": [{
+                "function": "targets",
+                "optional": true,
+                "children": [{
+                    "function": "item",
+                    "children": [{
+                        "format": "number",
+                        "children": []
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "clone",
+            "children": [{
+                "format": "location",
+                "children": [{
+                    "format": "location",
+                    "children": [{
+                        "format": "location",
+                        "children": [{
+                                "data": "filtered",
+                                "optional": true,
+                                "children": [{
+                                    "function": "block",
                                     "children": [{
-                                        "function": "advancements-criterion",
-                                        "optional": true,
+                                        "options": ["force", "move", "normal"],
                                         "children": []
                                     }]
                                 }]
                             },
                             {
-                                "options": ["from", "through", "until"],
+                                "options": [
+                                    "masked",
+                                    "replace"
+                                ],
+                                "optional": true,
                                 "children": [{
-                                    "function": "advancements",
+                                    "options": [
+                                        "force",
+                                        "move",
+                                        "normal"
+                                    ],
                                     "children": []
                                 }]
                             }
                         ]
                     }]
                 }]
-            },
-            {
-                "data": "clear",
-                "children": [{
-                    "function": "targets",
-                    "optional": true,
+            }]
+        },
+        {
+            "data": "data",
+            "children": [{
+                    "data": "get",
                     "children": [{
-                        "function": "item",
-                        "children": [{
-                            "format": "number",
-                            "children": []
-                        }]
-                    }]
-                }]
-            },
-            {
-                "data": "clone",
-                "children": [{
-                    "format": "location",
-                    "children": [{
-                        "format": "location",
-                        "children": [{
-                            "format": "location",
-                            "children": [{
-                                    "data": "filtered",
-                                    "optional": true,
-                                    "children": [{
-                                        "function": "block",
-                                        "children": [{
-                                            "options": ["force", "move", "normal"],
-                                            "children": []
-                                        }]
-                                    }]
-                                },
-                                {
-                                    "options": [
-                                        "masked",
-                                        "replace"
-                                    ],
-                                    "optional": true,
-                                    "children": [{
-                                        "options": [
-                                            "force",
-                                            "move",
-                                            "normal"
-                                        ],
-                                        "children": []
-                                    }]
-                                }
-                            ]
-                        }]
-                    }]
-                }]
-            },
-            {
-                "data": "data",
-                "children": [{
-                        "data": "get",
-                        "children": [{
-                                "data": "block",
-                                "children": [{
-                                    "format": "location",
-                                    "children": [{
-                                        "function": "block path",
-                                        "optional": true,
-                                        "children": [{
-                                            "format": "number",
-                                            "children": []
-                                        }]
-                                    }]
-                                }]
-                            },
-                            {
-                                "data": "entity",
-                                "children": [{
-                                    "function": "target",
-                                    "children": [{
-                                        "function": "entity path",
-                                        "optional": true,
-                                        "children": [{
-                                            "format": "number",
-                                            "children": []
-                                        }]
-                                    }]
-                                }]
-                            }
-                        ]
-                    },
-                    {
-                        "data": "merge",
-                        "children": [{
-                                "data": "block",
-                                "children": [{
-                                    "format": "location",
-                                    "children": [{
-                                        "function": "block nbt",
-                                        "children": []
-                                    }]
-                                }]
-                            },
-                            {
-                                "data": "entity",
-                                "children": [{
-                                    "function": "target",
-                                    "children": [{
-                                        "function": "entity nbt",
-                                        "children": []
-                                    }]
-                                }]
-                            }
-                        ]
-                    },
-                    {
-                        "data": "remove",
-                        "children": [{
                             "data": "block",
                             "children": [{
                                 "format": "location",
                                 "children": [{
                                     "function": "block path",
-                                    "children": []
-                                }]
-                            }]
-                        }]
-                    },
-                    {
-                        "data": "entity",
-                        "children": [{
-                            "function": "target",
-                            "children": [{
-                                "function": "entity path",
-                                "children": []
-                            }]
-                        }]
-                    }
-                ]
-            },
-            {
-                "data": "defaultgamemode",
-                "children": [{
-                    "options": [
-                        "adventure",
-                        "creative",
-                        "spectator",
-                        "survival"
-                    ],
-                    "children": []
-                }]
-            },
-            {
-                "data": "difficulty",
-                "children": [{
-                    "options": ["easy", "hard", "normal", "peaceful"],
-                    "optional": true,
-                    "children": []
-                }]
-            },
-            {
-                "data": "effect",
-                "children": [{
-                        "data": "clear",
-                        "children": [{
-                            "function": "targets",
-                            "children": [{
-                                "key": "#effects",
-                                "optional": true,
-                                "children": []
-                            }]
-                        }]
-                    },
-                    {
-                        "data": "give",
-                        "children": [{
-                            "function": "targets",
-                            "children": [{
-                                "key": "#effects",
-                                "children": [{
-                                    "format": "int",
                                     "optional": true,
                                     "children": [{
-                                        "format": "int",
-                                        "children": [{
-                                            "format": "bool",
-                                            "children": []
-                                        }]
+                                        "format": "number",
+                                        "children": []
                                     }]
                                 }]
                             }]
-                        }]
-                    }
-                ]
-            },
-            {
-                "data": "execute",
-                "children": [
-                    [{
-                            "data": "align",
-                            "children": [{
-                                "format": "[xyz]+",
-                                "children": []
-                            }]
                         },
                         {
-                            "data": "as",
+                            "data": "entity",
                             "children": [{
-                                "function": "targets",
-                                "children": []
-                            }]
-                        },
-                        {
-                            "data": "at",
-                            "children": [{
-                                "function": "targets",
-                                "children": []
-                            }]
-                        },
-                        {
-                            "options": ["if", "unless"],
-                            "children": [{
-                                    "data": "block",
+                                "function": "target",
+                                "children": [{
+                                    "function": "entity path",
+                                    "optional": true,
                                     "children": [{
-                                        "format": "location",
-                                        "children": [{
-                                            "function": "block",
-                                            "children": []
-                                        }]
-                                    }]
-                                },
-                                {
-                                    "data": "blocks",
-                                    "children": [{
-                                        "format": "location",
-                                        "children": [{
-                                            "format": "location",
-                                            "children": [{
-                                                "options": [
-                                                    "all",
-                                                    "masked"
-                                                ],
-                                                "children": []
-                                            }]
-                                        }]
-                                    }]
-                                },
-                                {
-                                    "data": "entity",
-                                    "children": [{
-                                        "function": "targets",
+                                        "format": "number",
                                         "children": []
                                     }]
-                                },
-                                {
-                                    "data": "score",
-                                    "children": [{
-                                        "function": "target",
-                                        "children": [{
-                                            "function": "objectives",
-                                            "children": [{
-                                                "options": ["<", "<=", "=", ">", ">="],
-                                                "children": [{
-                                                    "function": "target",
-                                                    "children": [{
-                                                        "function": "objectives",
-                                                        "children": []
-                                                    }]
-                                                }]
-                                            }]
-                                        }]
-                                    }]
-                                }
-                            ]
-                        },
-                        {
-                            "data": "offset",
-                            "children": [{
-                                "format": "location",
-                                "children": []
-                            }]
-                        },
-                        {
-                            "data": "run",
-                            "children": [{
-                                "function": "command",
-                                "children": []
+                                }]
                             }]
                         }
                     ]
-                ]
-            },
-            {
-                "options": ["experience", "xp"],
-                "children": [{
-                        "options": ["add", "set"],
-                        "children": [{
-                            "function": "targets",
-                            "children": [{
-                                "format": "int",
-                                "children": [{
-                                    "options": ["levels", "points"],
-                                    "optional": true,
-                                    "children": []
-                                }]
-                            }]
-                        }]
-                    },
-                    {
-                        "data": "query",
-                        "children": [{
-                            "function": "targets",
-                            "children": [{
-                                "options": [
-                                    "levels",
-                                    "points"
-                                ],
-                                "children": []
-                            }]
-                        }]
-                    }
-                ]
-            },
-            {
-                "data": "fill",
-                "children": [{
-                    "format": "location",
+                },
+                {
+                    "data": "merge",
                     "children": [{
-                        "format": "location",
-                        "children": [{
-                            "function": "block",
-                            "children": [{
-                                    "options": [
-                                        "destroy",
-                                        "hollow",
-                                        "keep",
-                                        "outline"
-                                    ],
-                                    "optional": true,
-                                    "children": []
-                                },
-                                {
-                                    "data": "replace",
-                                    "children": [{
-                                        "function": "block",
-                                        "optional": true,
-                                        "children": []
-                                    }]
-                                }
-                            ]
-                        }]
-                    }]
-                }]
-            },
-            {
-                "data": "function",
-                "children": [{
-                    "function": "functions",
-                    "children": []
-                }]
-            },
-            {
-                "data": "gamemode",
-                "children": [{
-                    "options": [
-                        "adventure",
-                        "creative",
-                        "spectator",
-                        "survival"
-                    ],
-                    "children": [{
-                        "function": "targets",
-                        "optional": true,
-                        "children": []
-                    }]
-                }]
-            },
-            {
-                "data": "gamerule",
-                "children": [{
-                        "options": [
-                            "announceAdvancements",
-                            "commandBlockOutput",
-                            "disableElytraMovementCheck",
-                            "doDaylightCycle",
-                            "doEntityDrops",
-                            "doFireTick",
-                            "doLimitedCrafting",
-                            "doMobLoot",
-                            "doMobSpawning",
-                            "doTileDrops",
-                            "doWeatherCycle",
-                            "keepInventory",
-                            "logAdminCommands",
-                            "mobGriefing",
-                            "naturalRegeneration",
-                            "reducedDebugInfo",
-                            "sendCommandFeedback",
-                            "showDeathMessages",
-                            "spectatorsGenerateChunks"
-                        ],
-                        "children": [{
-                            "format": "bool",
-                            "optional": true,
-                            "children": []
-                        }]
-                    },
-                    {
-                        "options": [
-                            "maxCommandChainLength",
-                            "maxEntityCramming",
-                            "randomTickSpeed",
-                            "spawnRadius"
-                        ],
-                        "children": [{
-                            "format": "int",
-                            "optional": true,
-                            "children": []
-                        }]
-                    }
-                ]
-            },
-            {
-                "data": "give",
-                "children": [{
-                    "function": "targets",
-                    "children": [{
-                        "function": "item",
-                        "children": [{
-                            "format": "int",
-                            "optional": true,
-                            "children": []
-                        }]
-                    }]
-                }]
-            },
-            {
-                "data": "particle",
-                "children": [{
-                    "function": "particle",
-                    "children": [{
-                        "key": "#particles",
-                        "children": [{
-                            "format": "location",
-                            "children": [{
-                                "format": "number",
-                                "children": [{
-                                    "format": "number",
-                                    "children": [{
-                                        "format": "number",
-                                        "children": [{
-                                            "format": "number",
-                                            "children": [{
-                                                "format": "int",
-                                                "children": [{
-                                                    "options": [
-                                                        "force",
-                                                        "normal"
-                                                    ],
-                                                    "optional": true,
-                                                    "children": [{
-                                                        "function": "targets",
-                                                        "optional": true,
-                                                        "children": []
-                                                    }]
-                                                }]
-                                            }]
-                                        }]
-                                    }]
-                                }]
-                            }]
-                        }]
-                    }]
-                }]
-            },
-            {
-                "data": "playsound",
-                "children": [{
-                    "function": "sounds",
-                    "children": [{
-                        "options": ["ambient", "block", "hostile", "master", "music", "neutral", "player", "record", "voice", "weather"],
-                        "children": [{
-                            "function": "targets",
+                            "data": "block",
                             "children": [{
                                 "format": "location",
-                                "optional": true,
                                 "children": [{
-                                    "format": "number",
-                                    "optional": true,
-                                    "children": [{
-                                        "format": "number",
-                                        "optional": true,
-                                        "children": [{
-                                            "format": "number",
-                                            "optional": true,
-                                            "children": []
-                                        }]
-                                    }]
+                                    "function": "block nbt",
+                                    "children": []
                                 }]
                             }]
-                        }]
-                    }]
-                }]
-            },
-            {
-                "data": "recipe",
-                "children": [{
-                    "options": [
-                        "give",
-                        "take"
-                    ],
+                        },
+                        {
+                            "data": "entity",
+                            "children": [{
+                                "function": "target",
+                                "children": [{
+                                    "function": "entity nbt",
+                                    "children": []
+                                }]
+                            }]
+                        }
+                    ]
+                },
+                {
+                    "data": "remove",
                     "children": [{
-                        "function": "targets",
-                        "children": [{
-                                "data": "*",
-                                "children": []
-                            },
-                            {
-                                "key": "#recipe",
-                                "children": []
-                            }
-                        ]
-                    }]
-                }]
-            },
-            {
-                "data": "replaceitem",
-                "children": [{
-                        "options": ["block"],
+                        "data": "block",
                         "children": [{
                             "format": "location",
                             "children": [{
-                                "function": "slot",
+                                "function": "block path",
+                                "children": []
+                            }]
+                        }]
+                    }]
+                },
+                {
+                    "data": "entity",
+                    "children": [{
+                        "function": "target",
+                        "children": [{
+                            "function": "entity path",
+                            "children": []
+                        }]
+                    }]
+                }
+            ]
+        },
+        {
+            "data": "defaultgamemode",
+            "children": [{
+                "options": [
+                    "adventure",
+                    "creative",
+                    "spectator",
+                    "survival"
+                ],
+                "children": []
+            }]
+        },
+        {
+            "data": "difficulty",
+            "children": [{
+                "options": ["easy", "hard", "normal", "peaceful"],
+                "optional": true,
+                "children": []
+            }]
+        },
+        {
+            "data": "effect",
+            "children": [{
+                    "data": "clear",
+                    "children": [{
+                        "function": "targets",
+                        "children": [{
+                            "key": "#effects",
+                            "optional": true,
+                            "children": []
+                        }]
+                    }]
+                },
+                {
+                    "data": "give",
+                    "children": [{
+                        "function": "targets",
+                        "children": [{
+                            "key": "#effects",
+                            "children": [{
+                                "format": "int",
+                                "optional": true,
                                 "children": [{
-                                    "function": "item",
+                                    "format": "int",
                                     "children": [{
-                                        "format": "int",
-                                        "optional": true,
+                                        "format": "bool",
                                         "children": []
                                     }]
                                 }]
                             }]
+                        }]
+                    }]
+                }
+            ]
+        },
+        {
+            "data": "execute",
+            "children": [
+                [{
+                        "data": "align",
+                        "children": [{
+                            "format": "^[xyz]+",
+                            "children": []
                         }]
                     },
                     {
-                        "options": ["entity"],
+                        "data": "as",
                         "children": [{
                             "function": "targets",
-                            "children": [{
-                                "function": "slot",
+                            "children": []
+                        }]
+                    },
+                    {
+                        "data": "at",
+                        "children": [{
+                            "function": "targets",
+                            "children": []
+                        }]
+                    },
+                    {
+                        "options": ["if", "unless"],
+                        "children": [{
+                                "data": "block",
                                 "children": [{
-                                    "function": "item",
+                                    "format": "location",
                                     "children": [{
-                                        "format": "int",
-                                        "optional": true,
+                                        "function": "block",
                                         "children": []
                                     }]
                                 }]
-                            }]
-                        }]
-                    }
-                ]
-            },
-            {
-                "data": "scoreboard",
-                "children": [{
-                        "data": "objectives",
-                        "children": [{
-                                "data": "add",
+                            },
+                            {
+                                "data": "blocks",
                                 "children": [{
-                                    "format": "^\\S+",
+                                    "format": "location",
                                     "children": [{
-                                        "function": "scb-criteria",
+                                        "format": "location",
                                         "children": [{
-                                            "format": "string",
-                                            "optional": true,
+                                            "options": [
+                                                "all",
+                                                "masked"
+                                            ],
                                             "children": []
                                         }]
                                     }]
                                 }]
                             },
                             {
-                                "data": "remove",
+                                "data": "entity",
                                 "children": [{
-                                    "function": "objectives",
+                                    "function": "targets",
                                     "children": []
                                 }]
                             },
                             {
-                                "data": "setdisplay",
-                                "children": [{
-                                    "function": "display-slot",
-                                    "children": [{
-                                        "function": "objectives",
-                                        "optional": true,
-                                        "children": []
-                                    }]
-                                }]
-                            }
-                        ]
-                    },
-                    {
-                        "data": "players",
-                        "children": [{
-                                "options": ["add", "remove", "set"],
-                                "children": [{
-                                    "function": "targets",
-                                    "children": [{
-                                        "function": "objectives",
-                                        "children": [{
-                                            "format": "int",
-                                            "children": []
-                                        }]
-                                    }]
-                                }]
-                            },
-                            {
-                                "data": "enable",
-                                "children": [{
-                                    "function": "targets",
-                                    "children": [{
-                                        "function": "trigger",
-                                        "children": []
-                                    }]
-                                }]
-                            },
-                            {
-                                "data": "get",
+                                "data": "score",
                                 "children": [{
                                     "function": "target",
                                     "children": [{
                                         "function": "objectives",
-                                        "children": []
-                                    }]
-                                }]
-                            },
-                            {
-                                "data": "reset",
-                                "children": [{
-                                        "function": "targets",
                                         "children": [{
-                                            "function": "objectives",
-                                            "optional": true,
-                                            "children": []
-                                        }]
-                                    },
-                                    {
-                                        "data": "*",
-                                        "children": [{
-                                            "function": "objectives",
-                                            "optional": true,
-                                            "children": []
-                                        }]
-                                    }
-                                ]
-                            },
-                            {
-                                "data": "operation",
-                                "children": [{
-                                    "function": "targets",
-                                    "children": [{
-                                        "function": "objectives",
-                                        "children": [{
-                                            "options": ["+=", "-=", "*=", "/=", "%=", "=", ">", "<", "><"],
+                                            "options": ["<", "<=", "=", ">", ">="],
                                             "children": [{
-                                                "function": "targets",
+                                                "function": "target",
                                                 "children": [{
                                                     "function": "objectives",
                                                     "children": []
@@ -707,46 +305,174 @@
                                 }]
                             }
                         ]
+                    },
+                    {
+                        "data": "offset",
+                        "children": [{
+                            "format": "location",
+                            "children": []
+                        }]
+                    },
+                    {
+                        "data": "run",
+                        "children": [{
+                            "function": "command",
+                            "children": []
+                        }]
                     }
                 ]
-            },
-            {
-                "data": "setblock",
-                "children": [{
-                    "function": "location",
+            ]
+        },
+        {
+            "options": ["experience", "xp"],
+            "children": [{
+                    "options": ["add", "set"],
                     "children": [{
-                        "function": "block",
+                        "function": "targets",
                         "children": [{
-                            "options": ["replace", "destroy", "keep"],
-                            "optional": true,
+                            "format": "int",
+                            "children": [{
+                                "options": ["levels", "points"],
+                                "optional": true,
+                                "children": []
+                            }]
+                        }]
+                    }]
+                },
+                {
+                    "data": "query",
+                    "children": [{
+                        "function": "targets",
+                        "children": [{
+                            "options": [
+                                "levels",
+                                "points"
+                            ],
                             "children": []
                         }]
                     }]
-                }]
-            },
-            {
-                "data": "setworldspawn",
+                }
+            ]
+        },
+        {
+            "data": "fill",
+            "children": [{
+                "format": "location",
                 "children": [{
                     "format": "location",
+                    "children": [{
+                        "function": "block",
+                        "children": [{
+                                "options": [
+                                    "destroy",
+                                    "hollow",
+                                    "keep",
+                                    "outline"
+                                ],
+                                "optional": true,
+                                "children": []
+                            },
+                            {
+                                "data": "replace",
+                                "children": [{
+                                    "function": "block",
+                                    "optional": true,
+                                    "children": []
+                                }]
+                            }
+                        ]
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "function",
+            "children": [{
+                "function": "functions",
+                "children": []
+            }]
+        },
+        {
+            "data": "gamemode",
+            "children": [{
+                "options": [
+                    "adventure",
+                    "creative",
+                    "spectator",
+                    "survival"
+                ],
+                "children": [{
+                    "function": "targets",
                     "optional": true,
                     "children": []
                 }]
-            },
-            {
-                "data": "spawnpoint",
-                "children": [{
-                    "function": "targets",
+            }]
+        },
+        {
+            "data": "gamerule",
+            "children": [{
+                    "options": [
+                        "announceAdvancements",
+                        "commandBlockOutput",
+                        "disableElytraMovementCheck",
+                        "doDaylightCycle",
+                        "doEntityDrops",
+                        "doFireTick",
+                        "doLimitedCrafting",
+                        "doMobLoot",
+                        "doMobSpawning",
+                        "doTileDrops",
+                        "doWeatherCycle",
+                        "keepInventory",
+                        "logAdminCommands",
+                        "mobGriefing",
+                        "naturalRegeneration",
+                        "reducedDebugInfo",
+                        "sendCommandFeedback",
+                        "showDeathMessages",
+                        "spectatorsGenerateChunks"
+                    ],
                     "children": [{
-                        "format": "location",
+                        "format": "bool",
+                        "optional": true,
+                        "children": []
+                    }]
+                },
+                {
+                    "options": [
+                        "maxCommandChainLength",
+                        "maxEntityCramming",
+                        "randomTickSpeed",
+                        "spawnRadius"
+                    ],
+                    "children": [{
+                        "format": "int",
+                        "optional": true,
+                        "children": []
+                    }]
+                }
+            ]
+        },
+        {
+            "data": "give",
+            "children": [{
+                "function": "targets",
+                "children": [{
+                    "function": "item",
+                    "children": [{
+                        "format": "int",
                         "optional": true,
                         "children": []
                     }]
                 }]
-            },
-            {
-                "data": "spreadplayers",
+            }]
+        },
+        {
+            "data": "particle",
+            "children": [{
+                "key": "#particles",
                 "children": [{
-                    "format": "number",
+                    "format": "location",
                     "children": [{
                         "format": "number",
                         "children": [{
@@ -754,179 +480,43 @@
                             "children": [{
                                 "format": "number",
                                 "children": [{
-                                    "options": ["true", "false"],
+                                    "format": "number",
                                     "children": [{
-                                        "function": "targets",
-                                        "children": []
+                                        "format": "int",
+                                        "children": [{
+                                            "options": [
+                                                "force",
+                                                "normal"
+                                            ],
+                                            "optional": true,
+                                            "children": [{
+                                                "function": "targets",
+                                                "optional": true,
+                                                "children": []
+                                            }]
+                                        }]
                                     }]
                                 }]
                             }]
                         }]
                     }]
                 }]
-            },
-            {
-                "data": "stopsound",
+            }]
+        },
+        {
+            "data": "playsound",
+            "children": [{
+                "function": "sounds",
                 "children": [{
-                    "function": "targets",
+                    "options": ["ambient", "block", "hostile", "master", "music", "neutral", "player", "record", "voice", "weather"],
                     "children": [{
-                            "data": "*",
-                            "optional": true,
-                            "children": [{
-                                "function": "sounds",
-                                "children": []
-                            }]
-                        },
-                        {
-                            "options": ["ambient", "block", "hostile", "master", "music", "neutral", "player", "record", "voice", "weather"],
-                            "optional": true,
-                            "children": [{
-                                "function": "sounds",
-                                "children": []
-                            }]
-                        }
-                    ]
-                }]
-            },
-            {
-                "data": "summon",
-                "children": [{
-                    "function": "entity",
-                    "children": [{
-                        "format": "location",
-                        "optional": true,
+                        "function": "targets",
                         "children": [{
-                            "function": "entity nbt",
-                            "children": []
-                        }]
-                    }]
-                }]
-            },
-            {
-                "data": "tag",
-                "children": [{
-                    "function": "targets",
-                    "children": [{
-                            "options": ["add", "remove"],
-                            "children": [{
-                                "function": "tags",
-                                "children": []
-                            }]
-                        },
-                        {
-                            "data": "list",
-                            "children": []
-                        }
-                    ]
-                }]
-            },
-            {
-                "data": "team",
-                "children": [{
-                        "data": "add",
-                        "children": [{
-                            "function": "teams",
-                            "chldren": [{
-                                "format": "string",
-                                "optional": true,
-                                "children": []
-                            }]
-                        }]
-                    },
-                    {
-                        "options": ["empty", "remove"],
-                        "children": [{
-                            "function": "teams",
-                            "children": []
-                        }]
-                    },
-                    {
-                        "data": "join",
-                        "children": [{
-                            "function": "teams",
-                            "children": [{
-                                "function": "targets",
-                                "optional": true,
-                                "children": []
-                            }]
-                        }]
-                    },
-                    {
-                        "data": "leave",
-                        "children": [{
-                            "function": "targets",
-                            "children": []
-                        }]
-                    },
-                    {
-                        "data": "list",
-                        "children": [{
-                            "function": "teams",
-                            "optional": true,
-                            "children": []
-                        }]
-                    },
-                    {
-                        "data": "option",
-                        "children": [{
-                            "function": "teams",
-                            "children": [{
-                                    "data": "collisionRule",
-                                    "children": [{
-                                        "options": ["always", "never", "pushOtherTeams", "pushOwnTeam"]
-                                    }]
-                                },
-                                {
-                                    "options": ["deathMessageVisibility", "nametagVisibility"],
-                                    "children": [{
-                                        "options": ["always", "never", "hideForOtherTeams", "hideForOwnTeam"]
-                                    }]
-                                },
-                                {
-                                    "options": ["friendlyfire", "seeFriendlyInvisibles"],
-                                    "children": [{
-                                        "options": ["true", "false"],
-                                        "children": []
-                                    }]
-                                },
-                                {
-                                    "data": "color",
-                                    "children": [{
-                                        "key": "#color",
-                                        "children": []
-                                    }]
-                                }
-                            ]
-                        }]
-                    }
-                ]
-            },
-            {
-                "options": ["teleport", "tp"],
-                "children": [{
-                        "function": "target",
-                        "children": []
-                    },
-                    {
-                        "format": "location",
-                        "children": [{
-                            "format": "number",
+                            "format": "location",
                             "optional": true,
                             "children": [{
                                 "format": "number",
                                 "optional": true,
-                                "children": []
-                            }]
-                        }]
-                    },
-                    {
-                        "function": "targets",
-                        "children": [{
-                                "function": "target",
-                                "children": []
-                            },
-                            {
-                                "format": "location",
                                 "children": [{
                                     "format": "number",
                                     "optional": true,
@@ -936,158 +526,552 @@
                                         "children": []
                                     }]
                                 }]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "data": "tellraw",
-                "children": [{
-                    "function": "targets",
-                    "children": [{
-                        "function": "json",
-                        "children": []
+                            }]
+                        }]
                     }]
                 }]
-            },
-            {
-                "data": "time",
-                "children": [{
-                        "data": "add",
-                        "children": [{
-                            "format": "int",
-                            "children": []
-                        }]
-                    },
-                    {
-                        "data": "query",
-                        "children": [{
-                            "options": ["day", "daytime", "gametime"],
-                            "children": []
-                        }]
-                    },
-                    {
-                        "data": "set",
-                        "children": [{
-                                "options": ["day", "night"],
-                                "children": []
-                            },
-                            {
-                                "format": "int",
-                                "children": []
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "data": "title",
+            }]
+        },
+        {
+            "data": "recipe",
+            "children": [{
+                "options": [
+                    "give",
+                    "take"
+                ],
                 "children": [{
                     "function": "targets",
                     "children": [{
-                            "options": ["actionbar", "subtitle", "title"],
+                            "data": "*",
+                            "children": []
+                        },
+                        {
+                            "key": "#recipe",
+                            "children": []
+                        }
+                    ]
+                }]
+            }]
+        },
+        {
+            "data": "replaceitem",
+            "children": [{
+                    "options": ["block"],
+                    "children": [{
+                        "format": "location",
+                        "children": [{
+                            "function": "slot",
                             "children": [{
-                                "function": "json",
+                                "function": "item",
+                                "children": [{
+                                    "format": "int",
+                                    "optional": true,
+                                    "children": []
+                                }]
+                            }]
+                        }]
+                    }]
+                },
+                {
+                    "options": ["entity"],
+                    "children": [{
+                        "function": "targets",
+                        "children": [{
+                            "function": "slot",
+                            "children": [{
+                                "function": "item",
+                                "children": [{
+                                    "format": "int",
+                                    "optional": true,
+                                    "children": []
+                                }]
+                            }]
+                        }]
+                    }]
+                }
+            ]
+        },
+        {
+            "data": "scoreboard",
+            "children": [{
+                    "data": "objectives",
+                    "children": [{
+                            "data": "add",
+                            "children": [{
+                                "format": "^\\S+",
+                                "children": [{
+                                    "function": "scb-criteria",
+                                    "children": []
+                                }]
+                            }]
+                        },
+                        {
+                            "data": "remove",
+                            "children": [{
+                                "function": "objectives",
                                 "children": []
                             }]
                         },
                         {
-                            "options": ["clear", "reset"],
-                            "children": []
+                            "data": "setdisplay",
+                            "children": [{
+                                "function": "display-slot",
+                                "children": [{
+                                    "function": "objectives",
+                                    "optional": true,
+                                    "children": []
+                                }]
+                            }]
+                        }
+                    ]
+                },
+                {
+                    "data": "players",
+                    "children": [{
+                            "options": ["add", "remove", "set"],
+                            "children": [{
+                                "function": "targets",
+                                "children": [{
+                                    "function": "objectives",
+                                    "children": [{
+                                        "format": "int",
+                                        "children": []
+                                    }]
+                                }]
+                            }]
                         },
                         {
-                            "data": "times",
+                            "data": "enable",
                             "children": [{
-                                "format": "number",
+                                "function": "targets",
                                 "children": [{
-                                    "format": "number",
+                                    "function": "trigger",
+                                    "children": []
+                                }]
+                            }]
+                        },
+                        {
+                            "data": "get",
+                            "children": [{
+                                "function": "target",
+                                "children": [{
+                                    "function": "objectives",
+                                    "children": []
+                                }]
+                            }]
+                        },
+                        {
+                            "data": "reset",
+                            "children": [{
+                                    "function": "targets",
                                     "children": [{
-                                        "format": "number",
+                                        "function": "objectives",
+                                        "optional": true,
                                         "children": []
+                                    }]
+                                },
+                                {
+                                    "data": "*",
+                                    "children": [{
+                                        "function": "objectives",
+                                        "optional": true,
+                                        "children": []
+                                    }]
+                                }
+                            ]
+                        },
+                        {
+                            "data": "operation",
+                            "children": [{
+                                "function": "targets",
+                                "children": [{
+                                    "function": "objectives",
+                                    "children": [{
+                                        "options": ["+=", "-=", "*=", "/=", "%=", "=", ">", "<", "><"],
+                                        "children": [{
+                                            "function": "targets",
+                                            "children": [{
+                                                "function": "objectives",
+                                                "children": []
+                                            }]
+                                        }]
                                     }]
                                 }]
                             }]
                         }
                     ]
-                }]
-            },
-            {
-                "data": "trigger",
+                }
+            ]
+        },
+        {
+            "data": "setblock",
+            "children": [{
+                "format": "location",
                 "children": [{
-                    "function": "trigger",
+                    "function": "block",
                     "children": [{
-                        "options": ["add", "set"],
-                        "optional": true,
-                        "children": [{
-                            "format": "int",
-                            "children": []
-                        }]
-                    }]
-                }]
-            },
-            {
-                "data": "weather",
-                "children": [{
-                    "options": ["clear", "rain", "thunder"],
-                    "children": [{
-                        "format": "int",
+                        "options": ["replace", "destroy", "keep"],
                         "optional": true,
                         "children": []
                     }]
                 }]
-            },
-            {
-                "data": "worldborder",
+            }]
+        },
+        {
+            "data": "setworldspawn",
+            "children": [{
+                "format": "location",
+                "optional": true,
+                "children": []
+            }]
+        },
+        {
+            "data": "spawnpoint",
+            "children": [{
+                "function": "targets",
                 "children": [{
-                        "options": ["add", "set"],
+                    "format": "location",
+                    "optional": true,
+                    "children": []
+                }]
+            }]
+        },
+        {
+            "data": "spreadplayers",
+            "children": [{
+                "format": "number",
+                "children": [{
+                    "format": "number",
+                    "children": [{
+                        "format": "number",
+                        "children": [{
+                            "format": "number",
+                            "children": [{
+                                "options": ["true", "false"],
+                                "children": [{
+                                    "function": "targets",
+                                    "children": []
+                                }]
+                            }]
+                        }]
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "stopsound",
+            "children": [{
+                "function": "targets",
+                "children": [{
+                        "data": "*",
+                        "optional": true,
+                        "children": [{
+                            "function": "sounds",
+                            "children": []
+                        }]
+                    },
+                    {
+                        "options": ["ambient", "block", "hostile", "master", "music", "neutral", "player", "record", "voice", "weather"],
+                        "optional": true,
+                        "children": [{
+                            "function": "sounds",
+                            "children": []
+                        }]
+                    }
+                ]
+            }]
+        },
+        {
+            "data": "summon",
+            "children": [{
+                "key": "#entities",
+                "children": [{
+                    "format": "location",
+                    "optional": true,
+                    "children": [{
+                        "function": "entity nbt",
+                        "children": []
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "tag",
+            "children": [{
+                "function": "targets",
+                "children": [{
+                        "options": ["add", "remove"],
+                        "children": [{
+                            "function": "tags",
+                            "children": []
+                        }]
+                    },
+                    {
+                        "data": "list",
+                        "children": []
+                    }
+                ]
+            }]
+        },
+        {
+            "data": "team",
+            "children": [{
+                    "data": "add",
+                    "children": [{
+                        "function": "teams",
+                        "children": []
+                    }]
+                },
+                {
+                    "options": ["empty", "remove"],
+                    "children": [{
+                        "function": "teams",
+                        "children": []
+                    }]
+                },
+                {
+                    "data": "join",
+                    "children": [{
+                        "function": "teams",
+                        "children": [{
+                            "function": "targets",
+                            "optional": true,
+                            "children": []
+                        }]
+                    }]
+                },
+                {
+                    "data": "leave",
+                    "children": [{
+                        "function": "targets",
+                        "children": []
+                    }]
+                },
+                {
+                    "data": "list",
+                    "children": [{
+                        "function": "teams",
+                        "optional": true,
+                        "children": []
+                    }]
+                },
+                {
+                    "data": "option",
+                    "children": [{
+                        "function": "teams",
+                        "children": [{
+                                "data": "collisionRule",
+                                "children": [{
+                                    "options": ["always", "never", "pushOtherTeams", "pushOwnTeam"],
+                                    "children": []
+                                }]
+                            },
+                            {
+                                "options": ["deathMessageVisibility", "nametagVisibility"],
+                                "children": [{
+                                    "options": ["always", "never", "hideForOtherTeams", "hideForOwnTeam"],
+                                    "children": []
+                                }]
+                            },
+                            {
+                                "options": ["friendlyfire", "seeFriendlyInvisibles"],
+                                "children": [{
+                                    "options": ["true", "false"],
+                                    "children": []
+                                }]
+                            },
+                            {
+                                "data": "color",
+                                "children": [{
+                                    "key": "#color",
+                                    "children": []
+                                }]
+                            }
+                        ]
+                    }]
+                }
+            ]
+        },
+        {
+            "options": ["teleport", "tp"],
+            "children": [{
+                    "function": "target",
+                    "children": []
+                },
+                {
+                    "format": "location",
+                    "children": [{
+                        "format": "number",
+                        "optional": true,
                         "children": [{
                             "format": "number",
                             "optional": true,
                             "children": []
                         }]
-                    },
-                    {
-                        "data": "center",
-                        "children": [{
-                            "format": "location",
+                    }]
+                },
+                {
+                    "function": "targets",
+                    "children": [{
+                            "function": "target",
                             "children": []
-                        }]
-                    },
-                    {
-                        "data": "damage",
-                        "children": [{
-                            "options": ["amount", "buffer"],
+                        },
+                        {
+                            "format": "location",
                             "children": [{
                                 "format": "number",
-                                "children": []
+                                "optional": true,
+                                "children": [{
+                                    "format": "number",
+                                    "optional": true,
+                                    "children": []
+                                }]
                             }]
-                        }]
-                    },
-                    {
-                        "data": "get",
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "data": "tellraw",
+            "children": [{
+                "function": "targets",
+                "children": []
+            }]
+        },
+        {
+            "data": "time",
+            "children": [{
+                    "data": "add",
+                    "children": [{
+                        "format": "int",
+                        "children": []
+                    }]
+                },
+                {
+                    "data": "query",
+                    "children": [{
+                        "options": ["day", "daytime", "gametime"],
+                        "children": []
+                    }]
+                },
+                {
+                    "data": "set",
+                    "children": [{
+                            "options": ["day", "night"],
+                            "children": []
+                        },
+                        {
+                            "format": "int",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "data": "title",
+            "children": [{
+                "function": "targets",
+                "children": [{
+                        "options": ["actionbar", "subtitle", "title"],
                         "children": []
                     },
                     {
-                        "data": "warning",
+                        "options": ["clear", "reset"],
+                        "children": []
+                    },
+                    {
+                        "data": "times",
                         "children": [{
-                                "data": "distance",
+                            "format": "number",
+                            "children": [{
+                                "format": "number",
                                 "children": [{
                                     "format": "number",
                                     "children": []
                                 }]
-                            },
-                            {
-                                "data": "time",
-                                "children": [{
-                                    "format": "int",
-                                    "children": []
-                                }]
-                            }
-                        ]
+                            }]
+                        }]
                     }
                 ]
-            }
-        ]
-    }
+            }]
+        },
+        {
+            "data": "trigger",
+            "children": [{
+                "function": "trigger",
+                "children": [{
+                    "options": ["add", "set"],
+                    "optional": true,
+                    "children": [{
+                        "format": "int",
+                        "children": []
+                    }]
+                }]
+            }]
+        },
+        {
+            "data": "weather",
+            "children": [{
+                "options": ["clear", "rain", "thunder"],
+                "children": [{
+                    "format": "int",
+                    "optional": true,
+                    "children": []
+                }]
+            }]
+        },
+        {
+            "data": "worldborder",
+            "children": [{
+                    "options": ["add", "set"],
+                    "children": [{
+                        "format": "number",
+                        "optional": true,
+                        "children": []
+                    }]
+                },
+                {
+                    "data": "center",
+                    "children": [{
+                        "format": "location",
+                        "children": []
+                    }]
+                },
+                {
+                    "data": "damage",
+                    "children": [{
+                        "options": ["amount", "buffer"],
+                        "children": [{
+                            "format": "number",
+                            "children": []
+                        }]
+                    }]
+                },
+                {
+                    "data": "get",
+                    "children": []
+                },
+                {
+                    "data": "warning",
+                    "children": [{
+                            "data": "distance",
+                            "children": [{
+                                "format": "number",
+                                "children": []
+                            }]
+                        },
+                        {
+                            "data": "time",
+                            "children": [{
+                                "format": "int",
+                                "children": []
+                            }]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }

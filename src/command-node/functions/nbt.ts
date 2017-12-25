@@ -17,7 +17,7 @@ export default class NbtNode extends BaseNode {
         super();
         this.base = base;
     }
-    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+    getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
         let result = nbtCompletion(this.base, line, start, end, data);
         if (result.completed) {
             return super.getCompletion(line, result.index+1, end, data);

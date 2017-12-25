@@ -9,7 +9,7 @@ export default class NbtPathNode extends BaseNode {
         super();
         this.base = base;
     }
-    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+    getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
         let index = start-1;
         let inString = false;
         let escape = false;

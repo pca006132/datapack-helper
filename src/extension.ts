@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 import * as resources from './resources';
 import * as fs from 'fs';
 import * as path from 'path';
+import getBaseNode from './command-node/node-factory';
 
 export function activate(context: vscode.ExtensionContext) {
 	let enabled = true;
@@ -18,14 +19,18 @@ export function activate(context: vscode.ExtensionContext) {
 	//file change watcher
 	let watcher = vscode.workspace.createFileSystemWatcher("**/*.{mcfunction,json}");
 
+	let baseNode = getBaseNode(fs.readFileSync(path.join(__dirname + "./../ref/command-format.json"), "utf-8"));
+
 	vscode.languages.registerCompletionItemProvider('mcfunction', {
 		provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext) {
 			if (!enabled)
 				return [];
-			console.log(document.lineAt(position.line).text.substring(0, position.character));
-			return [
-                new vscode.CompletionItem('Hello World!'),
-			];
+			if (document.lineAt(position.line).text.length !== 0) {
+				let char = document.lineAt(position.line).text.charCodeAt(0);
+				if (char < 97 || char > 122)
+					return [];
+			}
+			return baseNode.getCompletion(document.lineAt(position.line).text, 0, position.character, {})[0].map(v=>new vscode.CompletionItem(v));
 		}
 	});
 

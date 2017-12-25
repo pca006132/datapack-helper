@@ -7,7 +7,7 @@ import {getResources} from './../../resources';
 import {indexOf, getResourceComponents} from './../../util';
 
 export default class CriteriaNode extends BaseNode {
-    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+    getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
         let index = indexOf(line, start, end, ' ');
         if (index !== -1) {
             return super.getCompletion(line, index+1, end, data);

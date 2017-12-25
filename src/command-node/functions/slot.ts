@@ -33,7 +33,7 @@ function range(end: number) {
 }
 
 export default class SlotNode extends BaseNode {
-    getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
+    getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
         let index = indexOf(line, start, end, ' ');
         if (index !== -1) {
             return super.getCompletion(line, index+1, end, data);
