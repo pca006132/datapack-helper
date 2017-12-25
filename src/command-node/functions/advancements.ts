@@ -21,11 +21,20 @@ export class AdvancementNode extends BaseNode {
 export function advancementCompletion(line: string, start: number, end: number): Array<string> {
     let components = getResourceComponents(line.substring(start, end));
     let temp = getResources("advancements");
+
+    if (components.length === 2 && indexOf(line, start, end, ':') === -1) {
+        //probably completing namespace
+        let children = Object.keys(temp);
+        temp = temp["minecraft"] || {};
+        children.push(...Object.keys(temp).filter(n=>n!=='$adv'));
+        children.push( ...Object.keys((temp["$adv"]||{})) );
+        return children;
+    }
     for (let i = 0; i < components.length - 1; i++) {
         if (temp[components[i]]) {
             temp = temp[components[i]];
         } else {
-            return []];
+            return [];
         }
     }
     let children = Object.keys(temp).filter(n=>n!=='$adv');

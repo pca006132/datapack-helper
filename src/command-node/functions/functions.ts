@@ -18,11 +18,19 @@ export class FunctionNode extends BaseNode {
 }
 
 export function functionCompletion(line: string, start: number, end: number): Array<string> {
-    let segment = getResourceComponents(line.substring(start, end));
+    let components = getResourceComponents(line.substring(start, end));
     let temp = getResources("functions");
-    for (let i = 0; i < segment.length - 1; i++) {
-        if (temp[segment[i]]) {
-            temp = temp[segment[i]];
+    if (components.length === 2 && indexOf(line, start, end, ':') === -1) {
+        //probably completing namespace
+        let children = Object.keys(temp);
+        temp = temp["minecraft"] || {};
+        children.push(...Object.keys(temp).filter(n=>n!=='$func'));
+        children.push( ...(temp["$func"]||[]) );
+        return children;
+    }
+    for (let i = 0; i < components.length - 1; i++) {
+        if (temp[components[i]]) {
+            temp = temp[components[i]];
         } else {
             return [];
         }

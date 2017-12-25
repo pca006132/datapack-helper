@@ -14,6 +14,6 @@ export class TeamsNode extends BaseNode {
         }
 
         let segment = line.substring(start, end);
-        return [getResources("teams").filter(v=>v.startsWith(segment)), true]3;
+        return [getResources("teams").filter(v=>v.startsWith(segment)), true];
     }
 }

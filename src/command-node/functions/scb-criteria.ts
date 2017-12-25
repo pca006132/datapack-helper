@@ -21,39 +21,25 @@ let CRITERIA = {
     food: {},
     air: {},
     armor: {},
-    stat: {
-        craftItem: {
-            minecraft: getResources("#items")
-        },
-        useItem: {
-            minecraft: getResources("#items")
-        },
-        breakItem: {
-            minecraft: getResources("#items")
-        },
-        mineBlock: {
-            minecraft: BLOCKS
-        },
-        killEntity: {
-            minecraft: getResources("#entities")
-        },
-        pickup: {
-            minecraft: getResources("#items")
-        },
-        drop: {
-            minecraft: getResources("#items")
-        },
-        entityKilledBy: {
-            minecraft: getResources("#entities")
-        },
-        teamkill: getResources("#colors"),
-        killedByTeam: getResources("#colors")
+    teamkill: [getResources("#colors")],
+    killedByTeam: [getResources("#colors")],
+    minecraft: {
+        "custom:minecraft": {
+            broken: getResources("#items"),
+            crafted: getResources("#items"),
+            dropped: getResources("#items"),
+            killed: getResources("#entities"),
+            killed_by: getResources("#entities"),
+            mined: BLOCKS,
+            picked_up: getResources("#items"),
+            used: getResources("#items")
+        }
     }
 }
 
 let stat = getResources("#stats")
 for (let n of stat) {
-    CRITERIA.stat[n] = {};
+    CRITERIA.minecraft["custom:minecraft"][n] = {};
 }
 
 class ScbCriteriaNode extends BaseNode {
