@@ -3,7 +3,86 @@
   "nodes": [
     //当前要做的指令，完成一个后请保存到同目录下command-format.json
     {
-    "data": "setblock",
-    "children": []
-  }]
+      "data": "team",
+      "children": [{
+          "options": ["add"],
+          "children": [{
+            "key": "#team",
+            "chldren": [{
+              "format": "string",
+              "optional": true,
+              "children": []
+            }]
+          }]
+        },
+        {
+          "options": ["empty", "remove"],
+          "children": [{
+            "key": "#team",
+            "children": []
+          }]
+        },
+        {
+          "options": ["join"],
+          "children": [{
+            "key": "#team",
+            "children": [{
+              "function": "targets",
+              "optional": true,
+              "children": []
+            }]
+          }]
+        },
+        {
+          "options": ["leave"],
+          "children": [{
+            "function": "targets",
+            "children": []
+          }]
+        },
+        {
+          "options": ["list"],
+          "children": [{
+            "key": "#team",
+            "optional": true,
+            "children": []
+          }]
+        },
+        {
+          "options": ["option"],
+          "children": [{
+            "key": "#team",
+            "children": [{
+                "options": ["collisionRule"],
+                "children": [{
+                  "options": ["always", "never", "pushOtherTeams", "pushOwnTeam"]
+                }]
+              },
+              {
+                "options": ["deathMessageVisibility", "nametagVisibility"],
+                "children": [{
+                  "options": ["always", "never", "hideForOtherTeams", "hideForOwnTeam"]
+                }]
+              },
+              {
+                "options": ["friendlyfire", "seeFriendlyInvisibles"],
+                "children": [{
+                  "options": ["true", "false"],
+                  "children": []
+                }]
+              },
+              {
+                "options":["color"],
+                "children":[{
+                  "key":"#color",
+                  "children":[]
+                }]
+              }
+            ]
+          }]
+        }
+      ]
+    }
+    //你懂的。
+  ]
 }
