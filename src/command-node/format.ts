@@ -2,7 +2,7 @@
  * Format node
  */
 
-import {BaseNode} from './base';
+import BaseNode from './base';
 
 const NUMBER = /^[+-]?\d+(\.\d+)?/;
 const INT = /^[+-]?\d+/;
@@ -10,7 +10,7 @@ const LOCATION = /^((((~?[+-]?(\d+(\.\d+)?)|\.\d+)|(~))(\s|$)){3}|(`([+-]?(\d+(\
 const ROTATION = /^((((~?[+-]?(\d+(\.\d+)?)|\.\d+)|(~))(\s|$)){2})/;
 const BOOLEAN = /^(true|false)/;
 
-export class FormatNode extends BaseNode {
+export default class FormatNode extends BaseNode {
     constructor(pattern:string) {
         super();
 

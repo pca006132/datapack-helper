@@ -2,11 +2,11 @@
  * Reference node
  */
 
-import {BaseNode} from './base';
+import BaseNode from './base';
 import {strStartsWith, indexOf} from './../util';
 import {getResources} from './../resources';
 
-export class Reference extends BaseNode {
+export default class Reference extends BaseNode {
     constructor(key:string) {
         super();
         this.key = key;

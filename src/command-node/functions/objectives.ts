@@ -2,11 +2,11 @@
  * Objectives node
  */
 
-import {BaseNode} from './../base';
+import BaseNode from './../base';
 import {getResources} from './../../resources';
 import {indexOf} from './../../util';
 
-export class ObjectiveNode extends BaseNode {
+export default class ObjectiveNode extends BaseNode {
     trigger = false;
     constructor(trigger: boolean = false) {
         super();

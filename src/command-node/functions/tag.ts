@@ -2,11 +2,11 @@
  * Handle tags function
  */
 
-import {BaseNode} from './../base';
+import BaseNode from './../base';
 import {getResources} from './../../resources';
 import {indexOf} from './../../util';
 
-export class TagNode extends BaseNode {
+export default class TagNode extends BaseNode {
     getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         let index = indexOf(line, start, end, ' ');
         if (index !== -1) {

@@ -2,14 +2,20 @@
  * Selector Node
  */
 
-import {BaseNode} from './../base';
+import BaseNode from './../base';
 import {nbtCompletion} from './nbt';
 import {indexOf} from './../../util';
 import {getResources} from './../../resources';
 import {advancementCompletion} from './advancements';
 import {criteriaCompletion} from './criteria';
 
-export class SelectorNode extends BaseNode {
+export default class SelectorNode extends BaseNode {
+    single: boolean;
+    constructor(single: boolean) {
+        super();
+        this.single = single;
+    }
+
     getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         if (end > start && line[start] === '@') {
             if (end > start + 2 && line[start + 2] === '[') {

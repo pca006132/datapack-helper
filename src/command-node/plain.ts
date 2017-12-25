@@ -2,10 +2,10 @@
  * Plain text node
  */
 
-import {BaseNode} from './base';
+import BaseNode from './base';
 import {strStartsWith} from './../util';
 
-export class PlainNode extends BaseNode {
+export default class PlainNode extends BaseNode {
     constructor(name:string) {
         super();
         this.content = name + ' ';

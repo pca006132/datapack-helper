@@ -2,12 +2,12 @@
  * Handle item arguments
  */
 
-import {BaseNode} from './../base';
+import BaseNode from './../base';
 import {nbtCompletion} from './nbt';
 import {getResources} from './../../resources';
 import {strStartsWith, indexOf} from './../../util';
 
-class ItemNode extends BaseNode {
+export default class ItemNode extends BaseNode {
     getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         let space = indexOf(line, start, end, " ");
         if (strStartsWith(line, start, end, "minecraft:")) {

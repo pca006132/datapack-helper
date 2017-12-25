@@ -2,11 +2,11 @@
  * Criteria node
  */
 
-import {BaseNode} from './../base';
+import BaseNode from './../base';
 import {getResources} from './../../resources';
 import {indexOf, getResourceComponents} from './../../util';
 
-export class CriteriaNode extends BaseNode {
+export default class CriteriaNode extends BaseNode {
     getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         let index = indexOf(line, start, end, ' ');
         if (index !== -1) {

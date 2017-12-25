@@ -2,7 +2,7 @@
  * Slot function Node
  */
 
-import {BaseNode} from './../base';
+import BaseNode from './../base';
 import {strStartsWith, indexOf} from './../../util';
 import { isArray } from 'util';
 
@@ -32,7 +32,7 @@ function range(end: number) {
     return result;
 }
 
-export class SlotNode extends BaseNode {
+export default class SlotNode extends BaseNode {
     getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         let index = indexOf(line, start, end, ' ');
         if (index !== -1) {

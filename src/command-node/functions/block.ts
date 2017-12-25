@@ -2,13 +2,13 @@
  * Handle block argument
  */
 
-import {BaseNode} from './../base';
+import BaseNode from './../base';
 import {nbtCompletion} from './nbt';
 import {skipArgument} from './selector';
 import {getResources} from './../../resources';
 import {strStartsWith, indexOf} from './../../util';
 
-class BlockNode extends BaseNode {
+export default class BlockNode extends BaseNode {
     getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         let space = indexOf(line, start, end, " ");
         if (strStartsWith(line, start, end, "minecraft:")) {

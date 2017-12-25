@@ -3,7 +3,7 @@
  */
 
 
-import {BaseNode} from './../base';
+import BaseNode from './../base';
 import {Result} from './selector';
 
 const ESCAPE_PATTERN = /("|\\)/g;
@@ -11,7 +11,7 @@ const UNESCAPE_PATTERN = /\\("|\\)/g;
 const ACCEPTED_CHAR = /[a-zA-Z0-9._+-]/;
 const TERMINATING_CHAR = /[,}\s\]:]/;
 
-export class NbtNode extends BaseNode {
+export default class NbtNode extends BaseNode {
     base: string;
     constructor(base: string) {
         super();

@@ -2,8 +2,9 @@
  * class BaseNode
  */
 
-export class BaseNode {
+export default class BaseNode {
     children: Array<BaseNode> = [];
+    optional: boolean;
 
     getCompletion = (line: string, start: number, end: number, data): [Array<string>, boolean] => {
         let completion: Array<string> = [];

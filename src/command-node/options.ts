@@ -2,10 +2,10 @@
  * Option node
  */
 
-import {BaseNode} from './base';
+import BaseNode from './base';
 import {strStartsWith} from './../util';
 
-export class OptionNode extends BaseNode {
+export default class OptionNode extends BaseNode {
     constructor(options:string[]) {
         super();
         this.content = options;

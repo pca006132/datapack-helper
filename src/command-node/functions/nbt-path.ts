@@ -2,8 +2,8 @@
  * Handle NBT path
  */
 
-import {BaseNode} from './../base';
-class NbtPathNode extends BaseNode {
+import BaseNode from './../base';
+export default class NbtPathNode extends BaseNode {
     base: string;
     constructor(base: string) {
         super();
