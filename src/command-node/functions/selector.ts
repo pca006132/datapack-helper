@@ -196,6 +196,9 @@ export default class SelectorNode extends BaseNode {
                                     }
                                 }
                             }
+                            var i = argumentList.indexOf(key);
+                            if (i !== -1)
+                                argumentList.splice(i);
                             index+=2;
                             break;
                         case 'scores':
@@ -222,6 +225,10 @@ export default class SelectorNode extends BaseNode {
                                 }
                             }
                             index+=2;
+
+                            var i = argumentList.indexOf(key);
+                            if (i !== -1)
+                                argumentList.splice(i);
                             break;
                     }
                     if (line[index] === ']') {
