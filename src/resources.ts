@@ -10,6 +10,7 @@ import { isObject, isArray, isString } from 'util';
 
 const NAME_PATTERN = /^[a-z0-9-_.]+$/;
 const OBJ_PATTERN = /^scoreboard objectives add (\S+) (\S+)/;
+const TEAM_PATTERN = /^team add (\S+)/;
 const LINE_DELIMITER = /\r\n|\n|\r/g;
 
 export function initialize() {
@@ -59,6 +60,16 @@ export function initialize() {
                 vscode.window.showErrorMessage("Error creating .datapack/entity_tags.json");
             }
         });
+        fs.writeFile(path.join(root.fsPath, '.datapack', 'teams.json'), "[]", (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error creating .datapack/teams.json");
+            }
+        });
+        fs.writeFile(path.join(root.fsPath, '.datapack', 'sounds.json'), "{}", (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error creating .datapack/sounds.json");
+            }
+        });
     })
 }
 
@@ -87,7 +98,9 @@ let resources = {
     advancements: {},
     functions: {},
     objectives: [],
-    tags: []
+    tags: [],
+    sounds: {},
+    teams: []
 }
 
 export async function readFunctions() {
@@ -121,6 +134,12 @@ export async function readFunctions() {
             if (m) {
                 if (!resources.objectives.find(v=>v[0] === m[1])) {
                     resources.objectives.push([m[1], m[2], name]);
+                }
+            }
+            m = TEAM_PATTERN.exec(line);
+            if (m) {
+                if (!resources.teams.find(v=>v===m[1])) {
+                    resources.teams.push(m[1]);
                 }
             }
         }
@@ -216,6 +235,29 @@ export async function loadFiles() {
         resources.objectives = raw;
     } catch (e) {
         vscode.window.showErrorMessage("Error loading .datapack/objectives.json");
+    }
+
+    try {
+        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','teams.json'));
+        resources.teams = raw;
+    } catch (e) {
+        vscode.window.showErrorMessage("Error loading .datapack/teams.json");
+    }
+
+    try {
+        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','sounds.json'));
+        for (let n of Object.keys(raw)) {
+            let parts = n.split(".");
+            let temp = resources.sounds;
+            for (let k of parts) {
+                if (!temp[k]) {
+                    temp[k] = {};
+                }
+                temp = temp[k];
+            }
+        }
+    } catch (e) {
+        vscode.window.showErrorMessage("Error loading .datapack/sounds.json");
     }
 }
 

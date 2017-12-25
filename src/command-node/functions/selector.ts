@@ -185,7 +185,7 @@ export class SelectorNode extends BaseNode {
                             if (line[index++] !== '{') {
                                 return [["{"], true];
                             }
-                            let objectives = getResources("objectives");
+                            let objectives = getResources("objectives").map(v=>v[0]);
                             while (index < end && line[index] !== '}') {
                                 let equalSign = indexOf(line, index, end, '=');
                                 if (equalSign === -1) {
