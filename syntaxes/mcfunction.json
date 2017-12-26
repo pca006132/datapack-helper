@@ -1,0 +1,80 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "mcfunction",
+    "patterns": [
+        {
+            "include": "#comment"
+        },
+        {
+            "include": "#numeric"
+        },
+        {
+            "include": "#relative"
+        },
+        {
+            "include": "#variables"
+        },
+        {
+            "include": "#keywords"
+        }
+    ],
+    "repository": {
+        "comment": {
+            "patterns": [
+                {
+                    "name": "comment.line.number-sign.mcfunction",
+                    "match": "^#.*"
+                }
+            ]
+        },
+        "numeric": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.mcfunction",
+                    "match": "[+-]?\\d+(\\.\\d+)?[bsfdl]?"
+                }
+            ]
+        },
+        "relative": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.mcfunction",
+                    "match": "((~?[+-]?(\\d+(\\.\\d+)?)|\\.\\d+)|(~))"
+                },
+                {
+                    "name": "constant.numeric.mcfunction",
+                    "match": "`([+-]?(\\d+(\\.\\d+)?|\\.\\d+))?"
+                }
+            ]
+        },
+        "keywords": {
+            "patterns": [
+                {
+                    "name": "constant.language.mcfunction",
+                    "match": "\\b(true|false)\\b|@a|@p|@s|@r|@e"
+                },
+                {
+                    "name": "entity.name.function.mcfunction",
+                    "match": "\\b\\w+\\b"
+                }
+            ]
+        },
+        "variables": {
+            "patterns": [
+                {
+                    "name": "variable.other.mcfunction",
+                    "match": "\\b(([a-z0-9_\\-.]+):)?((([a-z0-9_\\-.]+)\/)+([a-z0-9_\\-.]+))\\b|\\b(([a-z0-9_\\-.]+):)((([a-z0-9_\\-.]+)\/)*([a-z0-9_\\-.]+))\\b"
+                },
+                {
+                    "name": "variable.other.mcfunction",
+                    "match": "\\b\\w+(\\.\\w+)+\\b"
+                },
+                {
+                    "name": "variable.language.method",
+                    "match": "\\bminecraft:\\w+\\b"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.mcfunction"
+}
