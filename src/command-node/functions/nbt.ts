@@ -42,10 +42,10 @@ export function nbtCompletion(base: string, line: string, start: number, end: nu
     }
 }
 
-function escape(data: string) {
+export function escape(data: string) {
     return data.replace(ESCAPE_PATTERN, "\\$1");
 }
-function unescape(data: string) {
+export function unescape(data: string) {
     return data.replace(UNESCAPE_PATTERN, "$1");
 }
 

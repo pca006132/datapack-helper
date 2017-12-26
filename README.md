@@ -11,12 +11,39 @@ datapack.initialize
 ```
 Initialize a datapack, generate `.datapack` folter and files for tracking data, and `pack.mcmeta`.
 
+------
+
 ```
 datapack.read
 ```
 Parse functions and advancements, prepare completion data and store them in `.datapack` folder.
 
 Only need to use it at the first time to prepare those data, and those data would be updated when there are file changes
+
+### Keybinds
+Escape:
+```
+Key: Alt+/
+
+Example: "a" -> \"a\"
+```
+
+Unescape:
+```
+Key: Alt+\
+Example: \"a\" -> "a"
+```
+
+Evaluate Js expression:
+```
+Ctrl+E
+```
+
+A `range(start=0, end, step=1): Array<number>` is provided, which is similar to the `range` function in python.
+
+If the result is an array, it would join the array into lines and replace the code with those lines. Otherwise, the code would be replaced directly by its result (to string). If the result is a number but not an integer, 5 decimals would be kept.
+
+![Example](https://thumbs.gfycat.com/VainForcefulDobermanpinscher-size_restricted.gif)
 
 ### Files
 ```

@@ -2,7 +2,7 @@
     "name": "datapack-helper",
     "displayName": "datapack-helper",
     "description": "Minecraft Datapack helper, providing datapack creation utilities and autocompletion for functions",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "publisher": "pca",
     "engines": {
         "vscode": "^1.19.0"
@@ -53,6 +53,23 @@
             {
                 "fileMatch": "/data/loot_tables/**/*.json",
                 "url": "https://raw.githubusercontent.com/Levertion/minecraft-json-schemas/master/loot_table_strict.json"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "datapack.escape",
+                "key": "alt+/",
+                "when": "editorHasSelection"
+            },
+            {
+                "command": "datapack.unescape",
+                "key": "alt+\\",
+                "when": "editorHasSelection"
+            },
+            {
+                "command": "datapack.evaluate",
+                "key": "ctrl+e",
+                "when": "editorHasSelection"
             }
         ]
     },

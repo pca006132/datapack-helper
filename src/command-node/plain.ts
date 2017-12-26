@@ -13,8 +13,6 @@ export default class PlainNode extends BaseNode {
     content: string;
     getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
         let index = indexOf(line, start, end, ' ');
-        console.log(line.substring(start, index));
-        console.log(this.content);
         if (index !== -1) {
             if (line.substring(start, index) === this.content) {
                 console.log("success");

@@ -901,10 +901,7 @@
         },
         {
             "options": ["teleport", "tp"],
-            "children": [{
-                    "function": "target",
-                    "children": []
-                },
+            "children": [
                 {
                     "format": "location",
                     "children": [{

@@ -6,9 +6,42 @@ import * as resources from './resources';
 import * as fs from 'fs';
 import * as path from 'path';
 import getBaseNode from './command-node/node-factory';
+import {escape, unescape} from './command-node/functions/nbt';
+import { Position } from 'vscode';
+import {indexOf} from './util';
+import {evaluate} from './script-runner';
 
 export function activate(context: vscode.ExtensionContext) {
 	let enabled = true;
+
+	vscode.commands.registerTextEditorCommand("datapack.escape", (editor, edit)=> {
+		editor.selections.forEach(v=> {
+			editor.edit((editBuilder)=> {
+				editBuilder.replace(v, escape(editor.document.getText(v)));
+			}).then((value)=> {
+				if (!value) vscode.window.showErrorMessage("replace failed");
+			})
+		})
+	})
+	vscode.commands.registerTextEditorCommand("datapack.unescape", (editor, edit)=> {
+		editor.selections.forEach(v=> {
+			editor.edit((editBuilder)=> {
+				editBuilder.replace(v, unescape(editor.document.getText(v)));
+			}).then((value)=> {
+				if (!value) vscode.window.showErrorMessage("replace failed");
+			})
+		})
+	})
+	vscode.commands.registerTextEditorCommand("datapack.evaluate", (editor, edit)=> {
+		editor.selections.forEach(v=> {
+			editor.edit((editBuilder)=> {
+				let result = evaluate(editor.document.getText(v));
+				editBuilder.replace(v, result.toString());
+			}).then((value)=> {
+				if (!value) vscode.window.showErrorMessage("replace failed");
+			})
+		})
+	})
 
 	if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length !== 1) {
 		vscode.window.showErrorMessage("There must be 1 and only 1 workspace folder for the datapack");
@@ -90,7 +123,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 			return baseNode.getCompletion(document.lineAt(position.line).text, 0, position.character, {})[0].map(v=>new vscode.CompletionItem(v));
 		}
-	}, ...[".", ",", "[", "{", " ", "/", ":", "=", "!", "_"], ...range(97, 122));
+	}, ...[".", ",", "[", "{", " ", "/", ":", "=", "!", "_"], ...range(97, 122).map(i=>String.fromCharCode(i)));
 
 	vscode.commands.registerCommand("datapack.initialize", ()=> {
 		if (!enabled)
@@ -124,9 +157,9 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function range(start: number, end: number) {
-    let result: Array<string> = [];
+    let result: Array<number> = [];
     for (let i = start; i <= end; i++) {
-        result.push(String.fromCharCode(i));
+        result.push(i);
     }
     return result;
 }
