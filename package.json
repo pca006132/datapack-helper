@@ -1,7 +1,7 @@
 {
-    "name": "datapack",
-    "displayName": "datapack",
-    "description": "Datapack writer",
+    "name": "datapack-helper",
+    "displayName": "datapack-helper",
+    "description": "Minecraft Datapack helper, providing datapack creation utilities and autocompletion for functions",
     "version": "0.0.1",
     "publisher": "pca",
     "engines": {

@@ -3,7 +3,7 @@
  */
 
 import BaseNode from './base';
-import {strStartsWith} from './../util';
+import {strStartsWith, indexOf} from './../util';
 
 export default class PlainNode extends BaseNode {
     constructor(name:string) {
@@ -12,11 +12,15 @@ export default class PlainNode extends BaseNode {
     }
     content: string;
     getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
-        if (strStartsWith(line, start, end, this.content)) {
-            let result = super.getCompletion(line, start + this.content.length + 1, end, data);
-            return result;
+        let index = indexOf(line, start, end, ' ');
+        console.log(line.substring(start, index));
+        console.log(this.content);
+        if (index !== -1) {
+            if (line.substring(start, index) === this.content) {
+                console.log("success");
+                return super.getCompletion(line, index+1, end, data);
+            }
         }
-
         let segment = line.substring(start, end);
         if (this.content.startsWith(segment))
             return [[this.content], false];

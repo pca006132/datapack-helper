@@ -171,6 +171,7 @@ export default class SelectorNode extends BaseNode {
                             while (index < end && line[index] !== '}') {
                                 let equalSign = indexOf(line, index, end, '=');
                                 if (equalSign === -1) {
+                                    console.log(line.substring(equalSign+1));
                                     return [advancementCompletion(line, equalSign+1, end), true];
                                 }
                                 let key = line.substring(index, equalSign);

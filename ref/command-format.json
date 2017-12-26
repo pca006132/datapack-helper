@@ -326,6 +326,19 @@
         {
             "options": ["experience", "xp"],
             "children": [{
+                    "data": "query",
+                    "children": [{
+                        "function": "targets",
+                        "children": [{
+                            "options": [
+                                "levels",
+                                "points"
+                            ],
+                            "children": []
+                        }]
+                    }]
+                },
+                {
                     "options": ["add", "set"],
                     "children": [{
                         "function": "targets",
@@ -336,19 +349,6 @@
                                 "optional": true,
                                 "children": []
                             }]
-                        }]
-                    }]
-                },
-                {
-                    "data": "query",
-                    "children": [{
-                        "function": "targets",
-                        "children": [{
-                            "options": [
-                                "levels",
-                                "points"
-                            ],
-                            "children": []
                         }]
                     }]
                 }
