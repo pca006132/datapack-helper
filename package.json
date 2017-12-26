@@ -2,7 +2,7 @@
     "name": "datapack-helper",
     "displayName": "datapack-helper",
     "description": "Minecraft Datapack helper, providing datapack creation utilities and autocompletion for functions",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "publisher": "pca",
     "engines": {
         "vscode": "^1.19.0"

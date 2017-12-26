@@ -14,6 +14,9 @@ Initialize a datapack, generate `.datapack` folter and files for tracking data, 
 datapack.read
 ```
 Parse functions and advancements, prepare completion data and store them in `.datapack` folder.
+
+Only need to use it at the first time to prepare those data, and those data would be updated when there are file changes
+
 ### Files
 ```
 ├ .datapack
