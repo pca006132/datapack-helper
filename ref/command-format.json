@@ -468,6 +468,13 @@
             }]
         },
         {
+            "data": "kill",
+            "children": [{
+                "function": "targets",
+                "children": []
+            }]
+        },
+        {
             "data": "particle",
             "children": [{
                 "key": "#particles",

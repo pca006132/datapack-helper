@@ -41,7 +41,7 @@ export default class BlockNode extends BaseNode {
                                     index = result.index;
                                     let i = states.indexOf(state);
                                     if (i !== -1) {
-                                        states.splice(i);
+                                        states.splice(i, 1);
                                     }
                                 } else {
                                     return [(getResources("#blocks")[blockId] || {})[state] || [], true];
@@ -49,6 +49,9 @@ export default class BlockNode extends BaseNode {
                             } else {
                                 return [states, true];
                             }
+                        }
+                        if (index === end) {
+                            return [states, true];
                         }
                     } else {
                         let segment = line.substring(colon+1);
@@ -60,7 +63,7 @@ export default class BlockNode extends BaseNode {
             if (space !== -1) {
                 return super.getCompletion(line, space+1, end, data);
             } else {
-                return [["minecraft:"], true];
+                return [["minecraft"], true];
             }
         }
     }

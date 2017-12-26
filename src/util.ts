@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 const DELIMETER_PATTERN = new RegExp("\\" + path.sep, "g");
-const PATTERN = /^(([a-z0-9_\-.]+):)?((([a-z0-9_\-.]+)\/)*([a-z0-9_\-.]+))$/;
+const PATTERN = /^(([a-z0-9_\-.]+):)?((([a-z0-9_\-.]+)\/)*([a-z0-9_\-.]+))?$/;
 
 export function pathToName(base, fPath) {
     let rel = path.relative(base, fPath);
@@ -16,7 +16,7 @@ export function pathToName(base, fPath) {
 export function getResourceComponents(str: string) {
     let m = PATTERN.exec(str);
     if (m) {
-        return [m[2] || 'minecraft', ...m[3].split('/')];
+        return [m[2] || 'minecraft', ...(m[3]||"").split('/')];
     }
     return [];
 }

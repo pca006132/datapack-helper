@@ -69,7 +69,7 @@ export default class SelectorNode extends BaseNode {
                                 if (result.shouldDelete) {
                                     let i = argumentList.indexOf(key);
                                     if (i !== -1)
-                                        argumentList.splice(i);
+                                        argumentList.splice(i, 1);
                                 }
                             } else {
                                 return [[], true];
@@ -82,7 +82,7 @@ export default class SelectorNode extends BaseNode {
                                 if (result.shouldDelete) {
                                     let i = argumentList.indexOf(key);
                                     if (i !== -1)
-                                        argumentList.splice(i);
+                                        argumentList.splice(i, 1);
                                 }
                             } else {
                                 return [getResources("teams"), true];
@@ -95,7 +95,7 @@ export default class SelectorNode extends BaseNode {
                                 if (result.shouldDelete) {
                                     let i = argumentList.indexOf(key);
                                     if (i !== -1)
-                                        argumentList.splice(i);
+                                        argumentList.splice(i, 1);
                                 }
                             } else {
                                 return [["nearest", "furthest", "random", "arbitrary"], true];
@@ -108,7 +108,7 @@ export default class SelectorNode extends BaseNode {
                                 if (result.shouldDelete) {
                                     let i = argumentList.indexOf(key);
                                     if (i !== -1)
-                                        argumentList.splice(i);
+                                        argumentList.splice(i, 1);
                                 }
                             } else {
                                 return [["survival", "creative", "spectator", "adventure"], true];
@@ -121,7 +121,7 @@ export default class SelectorNode extends BaseNode {
                                 if (result.shouldDelete) {
                                     let i = argumentList.indexOf(key);
                                     if (i !== -1)
-                                        argumentList.splice(i);
+                                        argumentList.splice(i, 1);
                                 }
                             } else {
                                 return [getResources("tags"), true];
@@ -134,7 +134,7 @@ export default class SelectorNode extends BaseNode {
                                 if (result.shouldDelete) {
                                     let i = argumentList.indexOf(key);
                                     if (i !== -1)
-                                        argumentList.splice(i);
+                                        argumentList.splice(i, 1);
                                 }
                             } else {
                                 let types = getResources("#entities");
@@ -154,7 +154,7 @@ export default class SelectorNode extends BaseNode {
                                 if (shouldDelete) {
                                     let i = argumentList.indexOf(key);
                                     if (i !== -1)
-                                        argumentList.splice(i);
+                                        argumentList.splice(i, 1);
                                 }
                             } else {
                                 return [result.data, true];
@@ -163,7 +163,7 @@ export default class SelectorNode extends BaseNode {
                         case 'advancements':
                             index = equalSign+1;
                             if (line[index++] !== '{') {
-                                return [["{"], true];
+                                return [[], true];
                             }
                             if (index === end) {
                                 return [advancementCompletion(line, equalSign+1, end), true];
@@ -192,7 +192,7 @@ export default class SelectorNode extends BaseNode {
                                             index = result.index;
                                             let i = criteria.indexOf(line.substring(index, eqSign));
                                             if (i !== -1)
-                                                criteria.splice(i);
+                                                criteria.splice(i, 1);
                                         } else {
                                             return [["true", "false"], true];
                                         }
@@ -209,13 +209,13 @@ export default class SelectorNode extends BaseNode {
                             }
                             var i = argumentList.indexOf(key);
                             if (i !== -1)
-                                argumentList.splice(i);
+                                argumentList.splice(i, 1);
                             index+=2;
                             break;
                         case 'scores':
                             index = equalSign+1;
                             if (line[index++] !== '{') {
-                                return [["{"], true];
+                                return [[], true];
                             }
                             let objectives = getResources("objectives").map(v=>v[0]);
                             if (index === end) {
@@ -231,7 +231,7 @@ export default class SelectorNode extends BaseNode {
                                 let key = line.substring(index, equalSign);
                                 let i = objectives.indexOf(key);
                                 if (i !== -1)
-                                    objectives.splice(i);
+                                    objectives.splice(i, 1);
                                 var result = skipArgument(line, equalSign+1, end);
                                 if (result.completed) {
                                     index = result.index;
@@ -243,7 +243,7 @@ export default class SelectorNode extends BaseNode {
 
                             var i = argumentList.indexOf(key);
                             if (i !== -1)
-                                argumentList.splice(i);
+                                argumentList.splice(i, 1);
                             break;
                     }
                     if (line[index] === ']') {
@@ -252,7 +252,11 @@ export default class SelectorNode extends BaseNode {
                 }
 
             } else {
-                return [[], true];
+                let index = indexOf(line, start, end, ' ');
+                if (index === -1) {
+                    return [[], false];
+                }
+                return super.getCompletion(line, index+1, end, data);
             }
         } else if (end === start) {
             return [["@e", "@s", "@r", "@a", "@p"], false];

@@ -34,7 +34,7 @@ export default class ItemNode extends BaseNode {
             if (space !== -1) {
                 return super.getCompletion(line, space+1, end, data);
             } else {
-                return [["minecraft:"], true];
+                return [["minecraft"], true];
             }
         }
     }

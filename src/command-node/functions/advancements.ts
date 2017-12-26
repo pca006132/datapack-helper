@@ -21,7 +21,6 @@ export default class AdvancementNode extends BaseNode {
 export function advancementCompletion(line: string, start: number, end: number): Array<string> {
     let components = getResourceComponents(line.substring(start, end));
     let temp = getResources("advancements");
-
     if (components.length === 2 && indexOf(line, start, end, ':') === -1) {
         //probably completing namespace
         let children = Object.keys(temp);

@@ -7,6 +7,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import {pathToName, readdirAsync, readFileAsync, statAsync} from './util';
 import { isObject, isArray, isString } from 'util';
+import { setImmediate } from 'timers';
 
 const NAME_PATTERN = /^[a-z0-9-_.]+$/;
 const OBJ_PATTERN = /^scoreboard objectives add (\S+) (\S+)/;
@@ -108,6 +109,7 @@ export async function readFunctions() {
         //Cannot handle multi-root folder right now, quit
         return;
     }
+    resources.functions = {};
     let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'functions');
     let paths = await walker(root, ".mcfunction", true);
     let v = await Promise.all(paths.map(v=>readFileAsync(v)));
@@ -117,7 +119,17 @@ export async function readFunctions() {
         let name = pathToName(root, paths[i]);
 
         let nodes = name.split(":");
+        if (nodes[1].length === 0) {
+            return;
+        }
         nodes.push(...nodes.pop().split("/"));
+
+        for (let n of nodes) {
+            if (!NAME_PATTERN.exec(n)) {
+                return;
+            }
+        }
+
         let temp = resources.functions;
         for (let i = 0; i < nodes.length-1; i++) {
             if (!temp[nodes[i]])
@@ -154,6 +166,11 @@ export async function readFunctions() {
             vscode.window.showErrorMessage("Error writing .datapack/functions.json");
         }
     });
+    fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'teams.json'), JSON.stringify(resources.tags), (err) => {
+        if (err) {
+            vscode.window.showErrorMessage("Error writing .datapack/teams.json");
+        }
+    })
 }
 
 export async function readAdvancements() {
@@ -161,6 +178,7 @@ export async function readAdvancements() {
         //Cannot handle multi-root folder right now, quit
         return;
     }
+    resources.advancements = {};
     let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'advancements');
     let paths = await walker(root, ".json", true);
     let v = await Promise.all(paths.map(v=>readFileAsync(v)));
@@ -170,7 +188,17 @@ export async function readAdvancements() {
         let name = pathToName(root, paths[i]);
 
         let nodes = name.split(":");
+        if (nodes[1].length === 0) {
+            return;
+        }
         nodes.push(...nodes.pop().split("/"));
+
+        for (let n of nodes) {
+            if (!NAME_PATTERN.exec(n)) {
+                return;
+            }
+        }
+
         let temp = resources.advancements;
         for (let i = 0; i < nodes.length-1; i++) {
             if (!temp[nodes[i]])
@@ -263,6 +291,108 @@ export async function loadFiles() {
 
 export function getResources(key: string) {
     return resources[key];
+}
+
+export async function reloadAdvancement(p: string) {
+    let v = await readFileAsync(p);
+    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'advancements');
+    let name = pathToName(root, p);
+    let nodes = name.split(":");
+    if (nodes[1].length === 0) {
+        return;
+    }
+    nodes.push(...nodes.pop().split("/"));
+    for (let n of nodes) {
+        if (!NAME_PATTERN.exec(n)) {
+            return;
+        }
+    }
+    let temp = resources.advancements;
+    for (let i = 0; i < nodes.length-1; i++) {
+        if (!temp[nodes[i]])
+            temp[nodes[i]] = {};
+        temp = temp[nodes[i]];
+    }
+    if (!temp["$adv"])
+        temp["$adv"] = {};
+
+    let criteria = temp["$adv"][nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 5)] = [];
+
+    try {
+        let adv = JSON.parse(v);
+        if (adv["criteria"] && isObject(adv["criteria"])) {
+            criteria.push(...Object.keys(adv.criteria));
+        }
+    } catch (e) {
+        //No processing is needed
+    }
+
+    setImmediate(()=> {
+        fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'advancements.json'), JSON.stringify(resources.advancements), (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error writing .datapack/advancements.json");
+            }
+        });
+    })
+}
+
+export async function reloadFunction(p: string) {
+    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'functions');
+    let name = pathToName(root, p);
+    let file = await readFileAsync(p);
+
+    let nodes = name.split(":");
+    if (nodes[1].length === 0) {
+        return;
+    }
+    nodes.push(...nodes.pop().split("/"));
+    for (let n of nodes) {
+        if (!NAME_PATTERN.exec(n)) {
+            return;
+        }
+    }
+    let temp = resources.functions;
+    for (let i = 0; i < nodes.length-1; i++) {
+        if (!temp[nodes[i]])
+            temp[nodes[i]] = {};
+        temp = temp[nodes[i]];
+    }
+    if (!temp["$func"])
+        temp["$func"] = [];
+
+    if (temp["$func"].indexOf(nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 11)) === -1)
+        temp["$func"].push(nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 11));
+    for (let line of file.split(LINE_DELIMITER)) {
+        let m = OBJ_PATTERN.exec(line);
+        if (m) {
+            if (!resources.objectives.find(v=>v[0] === m[1])) {
+                resources.objectives.push([m[1], m[2], name]);
+            }
+        }
+        m = TEAM_PATTERN.exec(line);
+        if (m) {
+            if (!resources.teams.find(v=>v===m[1])) {
+                resources.teams.push(m[1]);
+            }
+        }
+    }
+    setImmediate(()=> {
+        fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'objectives.json'), JSON.stringify(resources.objectives), (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error writing .datapack/objectives.json");
+            }
+        });
+        fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'functions.json'), JSON.stringify(resources.functions), (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error writing .datapack/functions.json");
+            }
+        });
+        fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'teams.json'), JSON.stringify(resources.tags), (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error writing .datapack/teams.json");
+            }
+        })
+    })
 }
 
 //Read resources.json

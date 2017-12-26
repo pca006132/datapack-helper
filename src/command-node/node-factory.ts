@@ -114,8 +114,7 @@ function parseChildren(children: Array<object>, base: BaseNode): Array<BaseNode>
         if (isArray(c)) {
             let result = parseChildren(c, base);
             for (let i of result) {
-                if (i.children.length === 0)
-                    i.children = result;
+                setChildren(i, result);
             }
             return result;
         } else {
@@ -123,6 +122,16 @@ function parseChildren(children: Array<object>, base: BaseNode): Array<BaseNode>
         }
     }
     return result;
+}
+
+function setChildren(node: BaseNode, children: Array<BaseNode>) {
+    if (node.children.length === 0) {
+        node.children = children;
+    } else {
+        for (let i of node.children) {
+            setChildren(i, children);
+        }
+    }
 }
 
 export default function getBaseNode(text: string): BaseNode {

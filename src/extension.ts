@@ -17,7 +17,58 @@ export function activate(context: vscode.ExtensionContext) {
 		resources.loadFiles();
 	}
 	//file change watcher
-	let watcher = vscode.workspace.createFileSystemWatcher("**/*.{mcfunction,json}");
+	let functionWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/functions/**/*.mcfunction");
+	functionWatcher.onDidChange(e=> {
+		if (!enabled)
+			return;
+		resources.reloadFunction(e.fsPath);
+	})
+	functionWatcher.onDidCreate(e=> {
+		if (!enabled)
+			return;
+		resources.reloadFunction(e.fsPath);
+	})
+	functionWatcher.onDidDelete(e=> {
+		if (!enabled)
+			return;
+		setImmediate(()=> {
+			resources.readFunctions().catch(err=>{
+				if (err) vscode.window.showErrorMessage("Error reading functions: " + err);
+			})
+		})
+	})
+
+	let advancementWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/advancements/**/*.json");
+	advancementWatcher.onDidChange(e=> {
+		if (!enabled)
+			return;
+		resources.reloadAdvancement(e.fsPath);
+	})
+	advancementWatcher.onDidCreate(e=> {
+		if (!enabled)
+			return;
+		resources.reloadAdvancement(e.fsPath);
+	})
+	advancementWatcher.onDidDelete(e=> {
+		if (!enabled)
+			return;
+		setImmediate(()=> {
+			resources.readAdvancements().catch(err=>{
+				if (err) vscode.window.showErrorMessage("Error reading advancements: " + err);
+			})
+		})
+	})
+
+	let configWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/.datapack/*.json", true, false, true);
+	configWatcher.onDidChange(e=> {
+		if (!enabled)
+			return;
+		if (e.fsPath.endsWith("sounds.json") || e.fsPath.endsWith("entity_tags.json")) {
+			setImmediate(()=> {
+				resources.loadFiles();
+			})
+		}
+	})
 
 	let baseNode = getBaseNode(fs.readFileSync(path.join(__dirname + "./../ref/command-format.json"), "utf-8"));
 
@@ -25,7 +76,6 @@ export function activate(context: vscode.ExtensionContext) {
 		provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext) {
 			if (!enabled)
 				return [];
-			console.log(document.lineAt(position.line).text.substring(0, position.character));
 			if (document.lineAt(position.line).text.length !== 0) {
 				let char = document.lineAt(position.line).text.charCodeAt(0);
 				if (char < 97 || char > 122)
