@@ -15,31 +15,28 @@ export function activate(context: vscode.ExtensionContext) {
 	let enabled = true;
 
 	vscode.commands.registerTextEditorCommand("datapack.escape", (editor, edit)=> {
-		editor.selections.forEach(v=> {
-			editor.edit((editBuilder)=> {
+		editor.edit((editBuilder)=> {
+			for (const v of editor.selections) {
 				editBuilder.replace(v, escape(editor.document.getText(v)));
-			}).then((value)=> {
-				if (!value) vscode.window.showErrorMessage("replace failed");
-			})
+			}
+		}).then((value)=> {
 		})
 	})
 	vscode.commands.registerTextEditorCommand("datapack.unescape", (editor, edit)=> {
-		editor.selections.forEach(v=> {
-			editor.edit((editBuilder)=> {
+		editor.edit((editBuilder)=> {
+			for (const v of editor.selections) {
 				editBuilder.replace(v, unescape(editor.document.getText(v)));
-			}).then((value)=> {
-				if (!value) vscode.window.showErrorMessage("replace failed");
-			})
+			}
+		}).then((value)=> {
 		})
 	})
 	vscode.commands.registerTextEditorCommand("datapack.evaluate", (editor, edit)=> {
-		editor.selections.forEach(v=> {
-			editor.edit((editBuilder)=> {
-				let result = evaluate(editor.document.getText(v));
-				editBuilder.replace(v, result.toString());
-			}).then((value)=> {
-				if (!value) vscode.window.showErrorMessage("replace failed");
-			})
+		editor.edit((editBuilder)=> {
+			for (const v of editor.selections) {
+				editBuilder.replace(v, evaluate(editor.document.getText(v)));
+			}
+		}).then((value)=> {
+			if (!value) vscode.window.showErrorMessage("replace failed");
 		})
 	})
 
