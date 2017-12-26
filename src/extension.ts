@@ -14,7 +14,14 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showErrorMessage("There must be 1 and only 1 workspace folder for the datapack");
 		enabled = false;
 	} else {
-		resources.loadFiles();
+		fs.access(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/.datapack/'), err=> {
+			if (!err) {
+				enabled = true;
+				resources.loadFiles();
+			} else {
+				resources.initialize();
+			}
+		})
 	}
 	//file change watcher
 	let functionWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/functions/**/*.mcfunction");
