@@ -2,7 +2,7 @@
     "name": "datapack-helper",
     "displayName": "datapack-helper",
     "description": "Minecraft Datapack helper, providing datapack creation utilities and autocompletion for functions",
-    "version": "0.3.2",
+    "version": "0.4.0",
     "publisher": "pca",
     "engines": {
         "vscode": "^1.19.0"
@@ -34,8 +34,12 @@
                 "title": "Initialize datapack"
             },
             {
-                "command": "datapack.read",
+                "command": "datapack.reload",
                 "title": "Reload datapack references"
+            },
+            {
+                "command": "datapack.open",
+                "title": "Open(create) function/advancement file based on its name"
             }
         ],
         "grammars": [
@@ -47,11 +51,11 @@
         ],
         "jsonValidation": [
             {
-                "fileMatch": "/data/advancements/**/*.json",
+                "fileMatch": "/data/*/advancements/**/*.json",
                 "url": "https://raw.githubusercontent.com/Levertion/minecraft-json-schemas/master/advancement_strict.json"
             },
             {
-                "fileMatch": "/data/loot_tables/**/*.json",
+                "fileMatch": "/data/*/loot_tables/**/*.json",
                 "url": "https://raw.githubusercontent.com/Levertion/minecraft-json-schemas/master/loot_table_strict.json"
             }
         ],
@@ -70,6 +74,10 @@
                 "command": "datapack.evaluate",
                 "key": "ctrl+e",
                 "when": "editorHasSelection"
+            },
+            {
+                "command": "datapack.open",
+                "key": "ctrl+alt+o"
             }
         ]
     },
@@ -86,10 +94,14 @@
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
+        "@types/fs-extra": "^5.0.0",
         "@types/mocha": "^2.2.42",
         "@types/node": "^7.0.43",
         "sinon": "^4.1.3",
         "typescript": "^2.6.1",
         "vscode": "^1.1.6"
+    },
+    "dependencies": {
+        "fs-extra": "^5.0.0"
     }
 }

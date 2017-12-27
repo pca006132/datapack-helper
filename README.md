@@ -14,11 +14,23 @@ Initialize a datapack, generate `.datapack` folter and files for tracking data, 
 ------
 
 ```
-datapack.read
+datapack.reload
 ```
 Parse functions and advancements, prepare completion data and store them in `.datapack` folder.
 
 Only need to use it at the first time to prepare those data, and those data would be updated when there are file changes
+
+------
+
+```
+datapack.open
+Key: Ctrl+Alt+O
+```
+Open an advancement/function file based on its name, and create if it does not exist.
+
+Example input:
+1. a
+2. `example:1`
 
 ### Keybinds
 Escape:

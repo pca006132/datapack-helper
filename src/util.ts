@@ -10,7 +10,8 @@ export function pathToName(base, fPath) {
         rel = rel.replace(DELIMETER_PATTERN, '/');
     }
     let first_delimeter = rel.indexOf('/');
-    return rel.substring(0, first_delimeter) + ":" + rel.substring(first_delimeter+1);
+    let second = indexOf(rel, first_delimeter+1, rel.length, '/');
+    return rel.substring(0, first_delimeter) + ":" + rel.substring(second+1);
 }
 
 export function getResourceComponents(str: string) {

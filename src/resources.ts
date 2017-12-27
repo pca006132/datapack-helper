@@ -110,7 +110,7 @@ export async function readFunctions() {
         return;
     }
     resources.functions = {};
-    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'functions');
+    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data');
     try {
         await accessAsync(root);
     } catch (err) {
@@ -118,7 +118,7 @@ export async function readFunctions() {
         return;
     }
 
-    let paths = await walker(root, ".mcfunction", true);
+    let paths = (await vscode.workspace.findFiles("data/*/functions/**/*.mcfunction")).map(v=>v.fsPath);
     let v = await Promise.all(paths.map(v=>readFileAsync(v)));
 
     for (let i = 0; i < v.length; i++) {
@@ -185,15 +185,16 @@ export async function readAdvancements() {
         //Cannot handle multi-root folder right now, quit
         return;
     }
-    resources.advancements = {};
-    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'advancements');
+    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data');
     try {
         await accessAsync(root);
     } catch (err) {
         //No such path, or can't access
         return;
     }
-    let paths = await walker(root, ".json", true);
+
+    resources.advancements = {};
+    let paths = (await vscode.workspace.findFiles("data/*/advancements/**/*.json")).map(v=>v.fsPath);
     let v = await Promise.all(paths.map(v=>readFileAsync(v)));
 
     for (let i = 0; i < v.length; i++) {
@@ -308,7 +309,7 @@ export function getResources(key: string) {
 
 export async function reloadAdvancement(p: string) {
     let v = await readFileAsync(p);
-    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'advancements');
+    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data');
     let name = pathToName(root, p);
     let nodes = name.split(":");
     if (nodes[1].length === 0) {
@@ -350,7 +351,7 @@ export async function reloadAdvancement(p: string) {
 }
 
 export async function reloadFunction(p: string) {
-    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'functions');
+    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data');
     let name = pathToName(root, p);
     let file = await readFileAsync(p);
 

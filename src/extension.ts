@@ -8,8 +8,9 @@ import * as path from 'path';
 import getBaseNode from './command-node/node-factory';
 import {escape, unescape} from './command-node/functions/nbt';
 import { Position } from 'vscode';
-import {indexOf} from './util';
+import {indexOf, getResourceComponents, accessAsync} from './util';
 import {evaluate} from './script-runner';
+import {outputFile} from 'fs-extra';
 
 export function activate(context: vscode.ExtensionContext) {
 	let enabled = true;
@@ -39,6 +40,79 @@ export function activate(context: vscode.ExtensionContext) {
 			if (!value) vscode.window.showErrorMessage("replace failed");
 		})
 	})
+	vscode.commands.registerCommand("datapack.open", ()=> {
+		vscode.window.showInputBox({placeHolder:"a", prompt: "(a)dvancements or (f)unctions"}).then(choice=> {
+			let extension = "";
+			choice = choice.toLowerCase();
+			switch (choice) {
+				case "a":
+				case "advancement":
+					choice = "advancement";
+					extension = ".json";
+					break;
+				case "f":
+				case "function":
+					choice = "function";
+					extension = ".mcfunction"
+					break;
+				default:
+					vscode.window.showErrorMessage("Invalid mode, either a or f");
+					return;
+			}
+			vscode.window.showInputBox({placeHolder: `example:${choice}_a`, prompt: `Name of the ${choice}`}).then(v=> {
+				if (v) {
+					let components = getResourceComponents(v);
+					if (components.length === 0) {
+						vscode.window.showErrorMessage("Invalid name");
+					} else {
+						let p = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', components[0], choice + "s", ...components.slice(1)) + extension;
+						accessAsync(p).then(()=> {
+							vscode.workspace.openTextDocument(vscode.Uri.file(p)).then(document=> {
+								vscode.window.showTextDocument(document);
+							});
+						}).catch(()=> {
+							outputFile(p, `# ${v}`, err=> {
+								if (err) {
+									vscode.window.showErrorMessage(`Error creating the ${choice} file`);
+								} else {
+									vscode.workspace.openTextDocument(vscode.Uri.file(p)).then(document=> {
+										vscode.window.showTextDocument(document);
+									});
+								}
+							})
+						})
+					}
+				}
+			})
+		})
+	})
+	vscode.commands.registerCommand("datapack.open.advancement", ()=> {
+		vscode.window.showInputBox({placeHolder: "example:advancement_a", prompt: "Name of the advancement"}).then(v=> {
+			if (v) {
+				let components = getResourceComponents(v);
+				if (components.length === 0) {
+					vscode.window.showErrorMessage("Invalid name");
+				} else {
+					let p = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', components[0], "advancements", ...components.slice(1)) + ".json";
+					accessAsync(p).then(()=> {
+						vscode.workspace.openTextDocument(vscode.Uri.file(p)).then(document=> {
+							vscode.window.showTextDocument(document);
+						});
+					}).catch(()=> {
+						outputFile(p, `# ${v}`, err=> {
+							if (err) {
+								vscode.window.showErrorMessage("Error creating the advancement file");
+							} else {
+								vscode.workspace.openTextDocument(vscode.Uri.file(p)).then(document=> {
+									vscode.window.showTextDocument(document);
+								});
+							}
+						})
+					})
+				}
+			}
+		})
+	})
 
 	if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length !== 1) {
 		vscode.window.showErrorMessage("There must be 1 and only 1 workspace folder for the datapack");
@@ -58,7 +132,7 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	}
 	//file change watcher
-	let functionWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/functions/**/*.mcfunction");
+	let functionWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/functions/**/*.mcfunction");
 	functionWatcher.onDidChange(e=> {
 		if (!enabled)
 			return;
@@ -79,7 +153,7 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	})
 
-	let advancementWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/advancements/**/*.json");
+	let advancementWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/advancements/**/*.json");
 	advancementWatcher.onDidChange(e=> {
 		if (!enabled)
 			return;
@@ -131,7 +205,7 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		resources.initialize();
 	})
-	vscode.commands.registerCommand("datapack.read", ()=> {
+	vscode.commands.registerCommand("datapack.reload", ()=> {
 		if (!enabled)
 			return;
 		resources.readFunctions().catch(err=>{
