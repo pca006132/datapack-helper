@@ -319,6 +319,52 @@
                             "function": "command",
                             "children": []
                         }]
+                    },
+                    {
+                        "data": "store",
+                        "children": [{
+                            "options": ["result", "success"],
+                            "children": [{
+                                "data": "entity",
+                                "children": [{
+                                    "function": "target",
+                                    "children": [{
+                                        "function": "entity path",
+                                        "children": [{
+                                            "options": ["byte", "double", "float", "int", "long", "short"],
+                                            "children": [{
+                                                "format": "number",
+                                                "children": []
+                                            }]
+                                        }]
+                                    }]
+                                }]
+                            },{
+                                "data": "block",
+                                "children": [{
+                                    "format": "location",
+                                    "children": [{
+                                        "function": "block path",
+                                        "children": [{
+                                            "options": ["byte", "double", "float", "int", "long", "short"],
+                                            "children": [{
+                                                "format": "number",
+                                                "children": []
+                                            }]
+                                        }]
+                                    }]
+                                }]
+                            },{
+                                "data": "score",
+                                "children": [{
+                                    "function": "target",
+                                    "children": [{
+                                        "function": "objectives",
+                                        "children": []
+                                    }]
+                                }]
+                            }]
+                        }]
                     }
                 ]
             ]

@@ -17,6 +17,8 @@ export default class SelectorNode extends BaseNode {
     }
 
     getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
+        console.log(start);
+        console.log(end);
         if (end > start && line[start] === '@') {
             if (end > start + 2 && line[start + 2] === '[') {
                 let argumentList = [
@@ -38,14 +40,14 @@ export default class SelectorNode extends BaseNode {
                 ]
 
                 let index = start + 3;
-                if (index === end) {
-                    let segment = line.substring(index);
+                if (index >= end) {
+                    let segment = line.substring(index, end);
                     return [argumentList.filter(n=>n.startsWith(segment)), true];
                 }
                 while (index < end) {
                     let equalSign = indexOf(line, index, end, '=');
                     if (equalSign === -1) {
-                        let segment = line.substring(index);
+                        let segment = line.substring(index, end);
                         return [argumentList.filter(n=>n.startsWith(segment)), true];
                     }
                     let key = line.substring(index, equalSign);
@@ -165,22 +167,17 @@ export default class SelectorNode extends BaseNode {
                             if (line[index++] !== '{') {
                                 return [[], true];
                             }
-                            if (index === end) {
+                            if (index >= end) {
                                 return [advancementCompletion(line, equalSign+1, end), true];
                             }
                             while (index < end && line[index] !== '}') {
                                 let equalSign = indexOf(line, index, end, '=');
                                 if (equalSign === -1) {
-                                    console.log(line.substring(equalSign+1));
-                                    return [advancementCompletion(line, equalSign+1, end), true];
+                                    return [advancementCompletion(line, index, end), true];
                                 }
                                 let key = line.substring(index, equalSign);
                                 index = equalSign+1;
                                 let criteria = criteriaCompletion(key);
-                                if (index === end) {
-                                    let segment = line.substring(index, end);
-                                    return [criteria.filter(n=>n.startsWith(segment)), true];
-                                }
                                 if (index < end && line[index] === '{') {
                                     while (index < end && line[index] !== '}') {
                                         let eqSign = indexOf(line, index, end, '=');
@@ -204,7 +201,7 @@ export default class SelectorNode extends BaseNode {
                                     if (result.completed) {
                                         index = result.index;
                                     } else {
-                                        return [["true", "false", "{"], true];
+                                        return [["true", "false"], true];
                                     }
                                 }
                             }
@@ -220,13 +217,13 @@ export default class SelectorNode extends BaseNode {
                             }
                             let objectives = getResources("objectives").map(v=>v[0]);
                             if (index === end) {
-                                let segment = line.substring(index);
+                                let segment = line.substring(index, end);
                                 return [objectives.filter(n=>n.startsWith(segment)), true];
                             }
                             while (index < end && line[index] !== '}') {
                                 let equalSign = indexOf(line, index, end, '=');
                                 if (equalSign === -1) {
-                                    let segment = line.substring(index);
+                                    let segment = line.substring(index, end);
                                     return [objectives.filter(n=>n.startsWith(segment)), true];
                                 }
                                 let key = line.substring(index, equalSign);

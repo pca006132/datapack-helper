@@ -44,12 +44,16 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showErrorMessage("There must be 1 and only 1 workspace folder for the datapack");
 		enabled = false;
 	} else {
-		fs.access(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/.datapack/'), err=> {
+		fs.access(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/pack.mcmeta'), err=> {
 			if (!err) {
-				enabled = true;
-				resources.loadFiles();
-			} else {
-				resources.initialize();
+				fs.access(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/.datapack/'), err=> {
+					if (!err) {
+						enabled = true;
+						resources.loadFiles();
+					} else {
+						resources.initialize();
+					}
+				})
 			}
 		})
 	}
@@ -143,10 +147,16 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showErrorMessage("There must be 1 and only 1 workspace folder for the datapack");
 			enabled = false;
 		} else {
-			fs.access(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'pack.mcmeta'), err=> {
+			fs.access(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/pack.mcmeta'), err=> {
 				if (!err) {
-					enabled = true;
-					resources.loadFiles();
+					fs.access(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/.datapack/'), err=> {
+						if (!err) {
+							enabled = true;
+							resources.loadFiles();
+						} else {
+							resources.initialize();
+						}
+					})
 				}
 			})
 		}

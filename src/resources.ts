@@ -5,7 +5,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import {pathToName, readdirAsync, readFileAsync, statAsync} from './util';
+import {pathToName, readdirAsync, readFileAsync, statAsync, accessAsync} from './util';
 import { isObject, isArray, isString } from 'util';
 import { setImmediate } from 'timers';
 
@@ -111,6 +111,13 @@ export async function readFunctions() {
     }
     resources.functions = {};
     let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'functions');
+    try {
+        await accessAsync(root);
+    } catch (err) {
+        //No such path, or can't access
+        return;
+    }
+
     let paths = await walker(root, ".mcfunction", true);
     let v = await Promise.all(paths.map(v=>readFileAsync(v)));
 
@@ -180,6 +187,12 @@ export async function readAdvancements() {
     }
     resources.advancements = {};
     let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', 'advancements');
+    try {
+        await accessAsync(root);
+    } catch (err) {
+        //No such path, or can't access
+        return;
+    }
     let paths = await walker(root, ".json", true);
     let v = await Promise.all(paths.map(v=>readFileAsync(v)));
 

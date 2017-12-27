@@ -15,7 +15,6 @@ export default class PlainNode extends BaseNode {
         let index = indexOf(line, start, end, ' ');
         if (index !== -1) {
             if (line.substring(start, index) === this.content) {
-                console.log("success");
                 return super.getCompletion(line, index+1, end, data);
             }
         }

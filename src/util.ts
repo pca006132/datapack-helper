@@ -55,6 +55,18 @@ export function readFileAsync(path: string) {
     })
 }
 
+export function accessAsync(path: string) {
+    return new Promise(function (resolve, reject) {
+        fs.access(path, err=> {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        })
+    })
+}
+
 export function strStartsWith(str: string, start: number, end: number, startswith: string) {
     if (end - start < startswith.length)
         return false;
