@@ -86,33 +86,6 @@ export function activate(context: vscode.ExtensionContext) {
 			})
 		})
 	})
-	vscode.commands.registerCommand("datapack.open.advancement", ()=> {
-		vscode.window.showInputBox({placeHolder: "example:advancement_a", prompt: "Name of the advancement"}).then(v=> {
-			if (v) {
-				let components = getResourceComponents(v);
-				if (components.length === 0) {
-					vscode.window.showErrorMessage("Invalid name");
-				} else {
-					let p = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', components[0], "advancements", ...components.slice(1)) + ".json";
-					accessAsync(p).then(()=> {
-						vscode.workspace.openTextDocument(vscode.Uri.file(p)).then(document=> {
-							vscode.window.showTextDocument(document);
-						});
-					}).catch(()=> {
-						outputFile(p, `# ${v}`, err=> {
-							if (err) {
-								vscode.window.showErrorMessage("Error creating the advancement file");
-							} else {
-								vscode.workspace.openTextDocument(vscode.Uri.file(p)).then(document=> {
-									vscode.window.showTextDocument(document);
-								});
-							}
-						})
-					})
-				}
-			}
-		})
-	})
 
 	if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length !== 1) {
 		vscode.window.showErrorMessage("There must be 1 and only 1 workspace folder for the datapack");
@@ -204,6 +177,12 @@ export function activate(context: vscode.ExtensionContext) {
 		if (!enabled)
 			return;
 		resources.initialize();
+		resources.readFunctions().catch(err=>{
+			if (err) vscode.window.showErrorMessage("Error reading functions: " + err);
+		})
+		resources.readAdvancements().catch(err=>{
+			if (err) vscode.window.showErrorMessage("Error reading advancements: " + err);
+		})
 	})
 	vscode.commands.registerCommand("datapack.reload", ()=> {
 		if (!enabled)

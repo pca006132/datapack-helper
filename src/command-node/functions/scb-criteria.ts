@@ -24,15 +24,15 @@ let CRITERIA = {
     teamkill: [getResources("#colors")],
     killedByTeam: [getResources("#colors")],
     minecraft: {
+        "broken:minecraft": getResources("#items"),
+        "crafted:minecraft": getResources("#items"),
+        "dropped:minecraft": getResources("#items"),
+        "killed:minecraft": getResources("#entities"),
+        "killed_by:minecraft": getResources("#entities"),
+        "mined:minecraft": BLOCKS,
+        "picked_up:minecraft": getResources("#items"),
+        "used:minecraft": getResources("#items"),
         "custom:minecraft": {
-            broken: getResources("#items"),
-            crafted: getResources("#items"),
-            dropped: getResources("#items"),
-            killed: getResources("#entities"),
-            killed_by: getResources("#entities"),
-            mined: BLOCKS,
-            picked_up: getResources("#items"),
-            used: getResources("#items")
         }
     }
 }
