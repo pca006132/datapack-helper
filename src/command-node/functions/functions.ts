@@ -20,6 +20,7 @@ export default class FunctionNode extends BaseNode {
 export function functionCompletion(line: string, start: number, end: number): Array<string> {
     let components = getResourceComponents(line.substring(start, end));
     let temp = getResources("functions");
+    console.log(components);
     if (components.length === 2 && indexOf(line, start, end, ':') === -1) {
         //probably completing namespace
         let children = Object.keys(temp);
