@@ -31,6 +31,10 @@
                 "optional": {
                     "type": "boolean",
                     "description": "Whether the tag (and its children) is optional. Default false."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the item"
                 }
             }
         },

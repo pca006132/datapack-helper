@@ -44,6 +44,7 @@
                     "function": "item",
                     "children": [{
                         "format": "number",
+                        "description": "Item count",
                         "children": []
                     }]
                 }]

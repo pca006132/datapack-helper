@@ -110,6 +110,7 @@ export async function readFunctions() {
         return;
     }
     resources.functions = {};
+    resources.teams = [];
     let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data');
     try {
         await accessAsync(root);
@@ -173,7 +174,7 @@ export async function readFunctions() {
             vscode.window.showErrorMessage("Error writing .datapack/functions.json");
         }
     });
-    fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'teams.json'), JSON.stringify(resources.tags), (err) => {
+    fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'teams.json'), JSON.stringify(resources.teams), (err) => {
         if (err) {
             vscode.window.showErrorMessage("Error writing .datapack/teams.json");
         }
@@ -401,7 +402,7 @@ export async function reloadFunction(p: string) {
                 vscode.window.showErrorMessage("Error writing .datapack/functions.json");
             }
         });
-        fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'teams.json'), JSON.stringify(resources.tags), (err) => {
+        fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'teams.json'), JSON.stringify(resources.teams), (err) => {
             if (err) {
                 vscode.window.showErrorMessage("Error writing .datapack/teams.json");
             }
