@@ -17,8 +17,6 @@ export default class SelectorNode extends BaseNode {
     }
 
     getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
-        console.log(start);
-        console.log(end);
         if (end > start && line[start] === '@') {
             if (end > start + 2 && line[start + 2] === '[') {
                 let argumentList = [
@@ -40,10 +38,6 @@ export default class SelectorNode extends BaseNode {
                 ]
 
                 let index = start + 3;
-                if (index >= end) {
-                    let segment = line.substring(index, end);
-                    return [argumentList.filter(n=>n.startsWith(segment)), true];
-                }
                 while (index < end) {
                     let equalSign = indexOf(line, index, end, '=');
                     if (equalSign === -1) {
@@ -145,14 +139,14 @@ export default class SelectorNode extends BaseNode {
                             }
                             break;
                         case 'nbt':
-                            let shouldDelete = false;
+                            let shouldDelete = true;
                             if (end > equalSign+1 && line[equalSign+1] === '!') {
-                                shouldDelete = true;
+                                shouldDelete = false;
                                 equalSign++;
                             }
                             var result = nbtCompletion("entity", line, equalSign+1, end, data);
                             if (result.completed) {
-                                index = result.index+1;
+                                index = result.index;
                                 if (shouldDelete) {
                                     let i = argumentList.indexOf(key);
                                     if (i !== -1)
@@ -166,9 +160,6 @@ export default class SelectorNode extends BaseNode {
                             index = equalSign+1;
                             if (line[index++] !== '{') {
                                 return [[], true];
-                            }
-                            if (index >= end) {
-                                return [advancementCompletion(line, equalSign+1, end), true];
                             }
                             while (index < end && line[index] !== '}') {
                                 let equalSign = indexOf(line, index, end, '=');
@@ -188,6 +179,8 @@ export default class SelectorNode extends BaseNode {
                                         var result = skipArgument(line, eqSign+1, end);
                                         if (result.completed) {
                                             index = result.index;
+                                            if (line[index] === ',')
+                                                index++;
                                             let i = criteria.indexOf(line.substring(index, eqSign));
                                             if (i !== -1)
                                                 criteria.splice(i, 1);
@@ -195,20 +188,25 @@ export default class SelectorNode extends BaseNode {
                                             return [["true", "false"], true];
                                         }
                                     }
-                                    index+=2;
+                                    index++;
                                 } else {
                                     var result = skipArgument(line, index, end);
                                     if (result.completed) {
                                         index = result.index;
+                                        if (line[index] === ',')
+                                            index++;
                                     } else {
                                         return [["true", "false"], true];
                                     }
                                 }
                             }
+                            if (index >= end) {
+                                return [advancementCompletion(line, equalSign+1, end), true];
+                            }
                             var i = argumentList.indexOf(key);
                             if (i !== -1)
                                 argumentList.splice(i, 1);
-                            index+=2;
+                            index++;
                             break;
                         case 'scores':
                             index = equalSign+1;
@@ -216,10 +214,6 @@ export default class SelectorNode extends BaseNode {
                                 return [[], true];
                             }
                             let objectives = getResources("objectives").map(v=>v[0]);
-                            if (index === end) {
-                                let segment = line.substring(index, end);
-                                return [objectives.filter(n=>n.startsWith(segment)), true];
-                            }
                             while (index < end && line[index] !== '}') {
                                 let equalSign = indexOf(line, index, end, '=');
                                 if (equalSign === -1) {
@@ -233,12 +227,17 @@ export default class SelectorNode extends BaseNode {
                                 var result = skipArgument(line, equalSign+1, end);
                                 if (result.completed) {
                                     index = result.index;
+                                    if (line[index] === ',')
+                                        index++;
                                 } else {
                                     return [[], true];
                                 }
                             }
-                            index+=2;
-
+                            if (index === end) {
+                                let segment = line.substring(index, end);
+                                return [objectives.filter(n=>n.startsWith(segment)), true];
+                            }
+                            index++;
                             var i = argumentList.indexOf(key);
                             if (i !== -1)
                                 argumentList.splice(i, 1);
@@ -246,9 +245,14 @@ export default class SelectorNode extends BaseNode {
                     }
                     if (line[index] === ']') {
                         return super.getCompletion(line, index+2, end, data);
+                    } else if (line[index] === ',') {
+                        index++;
                     }
                 }
-
+                if (index >= end) {
+                    let segment = line.substring(index, end);
+                    return [argumentList.filter(n=>n.startsWith(segment)), true];
+                }
             } else {
                 let index = indexOf(line, start, end, ' ');
                 if (index === -1) {
@@ -314,7 +318,7 @@ export function skipArgument(line: string, start: number, end: number): Result {
                 case ',':
                     return {
                         completed: true,
-                        index: index+1,
+                        index: index,
                         shouldDelete: !negation
                     }
                 case ']':

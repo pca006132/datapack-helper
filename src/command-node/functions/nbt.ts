@@ -81,14 +81,11 @@ function skipQuotedString(data: string, start: number, end: number) {
             if (data[index] === '\\') {
                 escape = true;
             } else if (data[index] === '"') {
-                break;
+                return index+1;
             }
         }
     }
-    if (index === end) {
-        throw new Error("Non-terminated string");
-    }
-    return index;
+    throw new Error("Non-terminated string");
 }
 
 function skipUnquotedString(data: string, start: number, end: number) {
