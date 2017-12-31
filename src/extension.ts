@@ -8,7 +8,7 @@ import * as path from 'path';
 import getBaseNode from './command-node/node-factory';
 import {escape, unescape} from './command-node/functions/nbt';
 import { Position } from 'vscode';
-import {indexOf, getResourceComponents, accessAsync} from './util';
+import {indexOf, getResourceComponents, pathToName, accessAsync} from './util';
 import {evaluate} from './script-runner';
 import {outputFile} from 'fs-extra';
 
@@ -158,6 +158,23 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	})
 
+	let tagWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/tags/{functions,items,blocks}/**/*.json", false, true, false);
+	tagWatcher.onDidCreate(e=> {
+		if (!enabled)
+			return;
+		resources.reloadTags(e.fsPath);
+	})
+	tagWatcher.onDidDelete(e=> {
+		if (!enabled)
+			return;
+		let t = getResourceComponents(pathToName(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "data"), e.fsPath))[1];
+		setImmediate(()=> {
+			resources.readTags(t).catch(err=>{
+				if (err) vscode.window.showErrorMessage("Error reading tags: " + err);
+			})
+		})
+	})
+
 	let baseNode = getBaseNode(fs.readFileSync(path.join(__dirname + "./../ref/command-format.json"), "utf-8"));
 
 	vscode.languages.registerCompletionItemProvider('mcfunction', {
@@ -171,27 +188,33 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 			return baseNode.getCompletion(document.lineAt(position.line).text, 0, position.character, {})[0].map(v=>new vscode.CompletionItem(v));
 		}
-	}, ...[".", ",", "[", "{", " ", "/", ":", "=", "!", "_"], ...range(97, 122).map(i=>String.fromCharCode(i)));
+	}, ...[".", ",", "[", "{", " ", "/", ":", "=", "!", "_", "#"]);
 
 	vscode.commands.registerCommand("datapack.initialize", ()=> {
 		if (!enabled)
 			return;
 		resources.initialize();
-		resources.readFunctions().catch(err=>{
-			if (err) vscode.window.showErrorMessage("Error reading functions: " + err);
-		})
-		resources.readAdvancements().catch(err=>{
-			if (err) vscode.window.showErrorMessage("Error reading advancements: " + err);
-		})
+		vscode.commands.executeCommand("datapack.reload");
+
 	})
 	vscode.commands.registerCommand("datapack.reload", ()=> {
 		if (!enabled)
 			return;
-		resources.readFunctions().catch(err=>{
+		resources.readFunctions().then().catch(err=>{
 			if (err) vscode.window.showErrorMessage("Error reading functions: " + err);
 		})
-		resources.readAdvancements().catch(err=>{
+		resources.readAdvancements().then().catch(err=>{
 			if (err) vscode.window.showErrorMessage("Error reading advancements: " + err);
+		})
+
+		resources.readTags("functions").then().catch(err=> {
+			if (err) vscode.window.showErrorMessage("Error reading function tags: " + err);
+		})
+		resources.readTags("blocks").then().catch(err=> {
+			if (err) vscode.window.showErrorMessage("Error reading block tags: " + err);
+		})
+		resources.readTags("items").then().catch(err=> {
+			if (err) vscode.window.showErrorMessage("Error reading item tags: " + err);
 		})
 	})
 
@@ -214,12 +237,4 @@ export function activate(context: vscode.ExtensionContext) {
 			})
 		}
 	})
-}
-
-function range(start: number, end: number) {
-    let result: Array<number> = [];
-    for (let i = start; i <= end; i++) {
-        result.push(i);
-    }
-    return result;
 }

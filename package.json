@@ -52,11 +52,19 @@
         "jsonValidation": [
             {
                 "fileMatch": "/data/*/advancements/**/*.json",
-                "url": "https://raw.githubusercontent.com/Levertion/minecraft-json-schemas/master/advancement_strict.json"
+                "url": "./ref/advancement-schema.json"
             },
             {
                 "fileMatch": "/data/*/loot_tables/**/*.json",
-                "url": "https://raw.githubusercontent.com/Levertion/minecraft-json-schemas/master/loot_table_strict.json"
+                "url": "./ref/loot-table-schema.json"
+            },
+            {
+                "fileMatch": "/data/*/recipes/**/*.json",
+                "url": "./ref/recipe-schema.json"
+            },
+            {
+                "fileMatch": "/data/*/tags/{blocks,functions,items}/**/*.json",
+                "url": "./ref/tag-schema.json"
             }
         ],
         "keybindings": [

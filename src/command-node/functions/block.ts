@@ -7,10 +7,41 @@ import {nbtCompletion} from './nbt';
 import {skipArgument} from './selector';
 import {getResources} from './../../resources';
 import {strStartsWith, indexOf} from './../../util';
+import {tagCompletion} from './tag';
 
 export default class BlockNode extends BaseNode {
+    test = true;
+    constructor(test: boolean) {
+        super();
+        this.test = test;
+    }
     getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
         let space = indexOf(line, start, end, " ");
+        if (strStartsWith(line, start, end, "#") && this.test) {
+            let square = indexOf(line, start, end, "[");
+            let brace = indexOf(line, start, end, "{");
+
+            if (brace !== -1) {
+                //nbt
+                let result = nbtCompletion("block", line, brace, end, data);
+                if (result.completed) {
+                    return super.getCompletion(line, result.index + 1, end, data);
+                } else {
+                    return [result.data, true];
+                }
+            } else {
+                if (space !== -1) {
+                    return super.getCompletion(line, space+1, end, data);
+                } else {
+                    if (square !== -1) {
+                        //don't know what block states
+                        return [[], true];
+                    } else {
+                        return [tagCompletion("blocks", line, start+1, end), true];
+                    }
+                }
+            }
+        }
         if (strStartsWith(line, start, end, "minecraft:")) {
             let colon = indexOf(line, start, end, ":");
             let square = indexOf(line, start, end, "[");

@@ -32,7 +32,8 @@ export function initialize() {
             prompt: "Description of your datapack"
         }).then(v=> {
             fs.write(fd, `{"pack":{"pack_format":4,"description":${JSON.stringify(v)}}}`, err=> {
-                vscode.window.showErrorMessage("Error opening pack.mcmeta");
+                if (err)
+                    vscode.window.showErrorMessage("Error opening pack.mcmeta");
             })
         })
     })
@@ -71,6 +72,21 @@ export function initialize() {
                 vscode.window.showErrorMessage("Error creating .datapack/sounds.json");
             }
         });
+        fs.writeFile(path.join(root.fsPath, '.datapack', 'functionsTag.json'), "{}", (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error creating .datapack/functionsTag.json");
+            }
+        });
+        fs.writeFile(path.join(root.fsPath, '.datapack', 'blocksTag.json'), "{}", (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error creating .datapack/blocksTag.json");
+            }
+        });
+        fs.writeFile(path.join(root.fsPath, '.datapack', 'itemsTag.json'), "{}", (err) => {
+            if (err) {
+                vscode.window.showErrorMessage("Error creating .datapack/itemsTag.json");
+            }
+        });
     })
 }
 
@@ -101,7 +117,10 @@ let resources = {
     objectives: [],
     tags: [],
     sounds: {},
-    teams: []
+    teams: [],
+    functionTags: {},
+    blockTags: {},
+    itemTags: {}
 }
 
 export async function readFunctions() {
@@ -128,15 +147,19 @@ export async function readFunctions() {
 
         let nodes = name.split(":");
         if (nodes[1].length === 0) {
-            return;
+            continue;
         }
         nodes.push(...nodes.pop().split("/"));
 
+        let skip = false;
         for (let n of nodes) {
             if (!NAME_PATTERN.exec(n)) {
-                return;
+                skip = true;
+                break;
             }
         }
+        if (skip)
+            continue;
 
         let temp = resources.functions;
         for (let i = 0; i < nodes.length-1; i++) {
@@ -204,15 +227,19 @@ export async function readAdvancements() {
 
         let nodes = name.split(":");
         if (nodes[1].length === 0) {
-            return;
+            continue;
         }
         nodes.push(...nodes.pop().split("/"));
 
+        let skip = false;
         for (let n of nodes) {
             if (!NAME_PATTERN.exec(n)) {
-                return;
+                skip = true;
+                break;
             }
         }
+        if (skip)
+            continue;
 
         let temp = resources.advancements;
         for (let i = 0; i < nodes.length-1; i++) {
@@ -242,41 +269,135 @@ export async function readAdvancements() {
     }
 }
 
+export async function readTags(t: string){
+    let base;
+    switch (t) {
+        case 'functions':
+            resources.functionTags = {};
+            base = resources.functionTags;
+            break;
+        case 'items':
+            resources.itemTags = {};
+            base = resources.itemTags;
+            break;
+        case 'blocks':
+            resources.blockTags = {};
+            base = resources.blockTags;
+            break;
+        default:
+            throw new Error("WTf is type " + t);
+    }
+    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data');
+    let paths = (await vscode.workspace.findFiles(`data/*/tags/${t}/**/*.json`)).map(v=>v.fsPath);
+    for (let p of paths) {
+        let name = pathToName(root, p);
+        let nodes = name.split(":");
+        if (nodes[1].length === 0) {
+            continue;
+        }
+        nodes.push(...nodes.pop().split("/"));
+        nodes.splice(1, 1);
+        if (nodes.length === 1) {
+            continue;
+        }
+
+        let skip = false;
+        for (let n of nodes) {
+            if (!NAME_PATTERN.exec(n)) {
+                skip = true;
+                break;
+            }
+        }
+        if (skip)
+            continue;
+
+        let temp = base;
+        for (let i = 0; i < nodes.length-1; i++) {
+            if (!temp[nodes[i]])
+                temp[nodes[i]] = {};
+            temp = temp[nodes[i]];
+        }
+        if (!temp["$tags"])
+            temp["$tags"] = [];
+
+        temp["$tags"].push(nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 5));
+    }
+    fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', `${t}Tag.json`), JSON.stringify(base), (err) => {
+        if (err) {
+            vscode.window.showErrorMessage(`Error writing .datapack/${t}Tag.json`);
+        }
+    });
+}
+
 export async function loadFiles() {
     async function loadJson(path: string) {
         let v = await readFileAsync(path);
         return JSON.parse(v);
     }
 
+    let root = vscode.workspace.workspaceFolders[0].uri;
+
     try {
-        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','entity_tags.json'));
+        let raw = await loadJson(path.join(root.fsPath, '.datapack','entity_tags.json'));
         if (!isArray(raw) || raw.find(v=>!isString(v))) {
             vscode.window.showErrorMessage("Invalid format: .datapack/entity_tags.json. Should be array with strings");
         } else {
             resources.tags = raw;
         }
     } catch (e) {
+        if (e.code === 'ENOENT') {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'entity_tags.json'), "[]", (err) => {
+                if (err) {
+                    vscode.window.showErrorMessage("Error creating .datapack/entity_tags.json");
+                }
+            });
+            return;
+        }
         vscode.window.showErrorMessage("Error loading .datapack/entity_tags.json");
     }
 
     try {
-        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','advancements.json'));
+        let raw = await loadJson(path.join(root.fsPath, '.datapack','advancements.json'));
         resources.advancements = raw;
     } catch (e) {
+        if (e.code === 'ENOENT') {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'advancements.json'), "{}", (err) => {
+                if (err) {
+                    vscode.window.showErrorMessage("Error creating .datapack/advancements.json");
+                }
+            });
+            return
+        }
         vscode.window.showErrorMessage("Error loading .datapack/advancements.json");
     }
 
     try {
-        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','functions.json'));
+        let raw = await loadJson(path.join(root.fsPath, '.datapack','functions.json'));
         resources.functions = raw;
     } catch (e) {
+        if (e.code === 'ENOENT') {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'functions.json'), "{}", (err) => {
+                if (err) {
+                    vscode.window.showErrorMessage("Error creating .datapack/functions.json");
+                }
+            });
+            return
+        }
         vscode.window.showErrorMessage("Error loading .datapack/functions.json");
     }
 
     try {
-        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','objectives.json'));
+        let raw = await loadJson(path.join(root.fsPath, '.datapack','objectives.json'));
         resources.objectives = raw;
     } catch (e) {
+        if (e.code === 'ENOENT') {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'objectives.json'), "{}", (err) => {
+                if (err) {
+                    vscode.window.showErrorMessage("Error creating .datapack/objectives.json");
+                }
+            });
+            return
+        }
         vscode.window.showErrorMessage("Error loading .datapack/objectives.json");
     }
 
@@ -284,7 +405,57 @@ export async function loadFiles() {
         let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','teams.json'));
         resources.teams = raw;
     } catch (e) {
+        if (e.code === 'ENOENT') {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'teams.json'), "[]", (err) => {
+                if (err) {
+                    vscode.window.showErrorMessage("Error creating .datapack/teams.json");
+                }
+            });
+            return
+        }
         vscode.window.showErrorMessage("Error loading .datapack/teams.json");
+    }
+    try {
+        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','functionsTag.json'));
+        resources.functionTags = raw;
+    } catch (e) {
+        if (e.code === 'ENOENT') {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'functionsTag.json'), "{}", (err) => {
+                if (err) {
+                    vscode.window.showErrorMessage("Error creating .datapack/functionsTag.json");
+                }
+            });
+            return
+        }
+        vscode.window.showErrorMessage("Error loading .datapack/functionsTag.json");
+    }
+    try {
+        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','itemsTag.json'));
+        resources.itemTags = raw;
+    } catch (e) {
+        if (e.code === 'ENOENT') {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'itemsTag.json'), "{}", (err) => {
+                if (err) {
+                    vscode.window.showErrorMessage("Error creating .datapack/itemsTag.json");
+                }
+            });
+            return
+        }
+        vscode.window.showErrorMessage("Error loading .datapack/itemsTag.json");
+    }
+    try {
+        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','blocksTag.json'));
+        resources.blockTags = raw;
+    } catch (e) {
+        if (e.code === 'ENOENT') {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'blocksTag.json'), "{}", (err) => {
+                if (err) {
+                    vscode.window.showErrorMessage("Error creating .datapack/blocksTag.json");
+                }
+            });
+            return
+        }
+        vscode.window.showErrorMessage("Error loading .datapack/blocksTag.json");
     }
 
     try {
@@ -300,6 +471,14 @@ export async function loadFiles() {
             }
         }
     } catch (e) {
+        if (e.code === 'ENOENT') {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'sounds.json'), "{}", (err) => {
+                if (err) {
+                    vscode.window.showErrorMessage("Error creating .datapack/sounds.json");
+                }
+            });
+            return
+        }
         vscode.window.showErrorMessage("Error loading .datapack/sounds.json");
     }
 }
@@ -407,6 +586,54 @@ export async function reloadFunction(p: string) {
                 vscode.window.showErrorMessage("Error writing .datapack/teams.json");
             }
         })
+    })
+}
+
+export async function reloadTags(p: string) {
+    let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data');
+    let name = pathToName(root, p);
+    let nodes = name.split(":");
+    if (nodes[1].length === 0) {
+        return;
+    }
+    nodes.push(...nodes.pop().split("/"));
+    let [t] = nodes.splice(1);
+    let base;
+    switch (t) {
+        case 'functions':
+        base = resources.functionTags;
+        break;
+    case 'items':
+        base = resources.itemTags;
+        break;
+    case 'blocks':
+        base = resources.blockTags;
+        break;
+    default:
+        throw new Error("Wrong tag type " + t);
+    }
+    for (let n of nodes) {
+        if (!NAME_PATTERN.exec(n)) {
+            return;
+        }
+    }
+    let temp = base;
+    for (let i = 0; i < nodes.length-1; i++) {
+        if (!temp[nodes[i]])
+            temp[nodes[i]] = {};
+        temp = temp[nodes[i]];
+    }
+    if (!temp["$tags"])
+        temp["$tags"] = [];
+
+    if (temp["$tags"].indexOf(nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 5)) === -1)
+        temp["$tags"].push(nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 5));
+    setImmediate(()=> {
+        fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', `${t}Tag.json`), JSON.stringify(base), (err) => {
+            if (err) {
+                vscode.window.showErrorMessage(`Error writing .datapack/${t}Tag.json`);
+            }
+        });
     })
 }
 

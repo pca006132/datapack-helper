@@ -1,19 +1,44 @@
 /**
- * Handle tags function
+ * Datapack tag node
  */
 
-import BaseNode from './../base';
 import {getResources} from './../../resources';
-import {indexOf} from './../../util';
+import {indexOf, getResourceComponents} from './../../util';
 
-export default class TagNode extends BaseNode {
-    getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
-        let index = indexOf(line, start, end, ' ');
-        if (index !== -1) {
-            return super.getCompletion(line, index+1, end, data);
-        }
-
-        let segment = line.substring(start, end);
-        return [getResources("tags").filter(v=>v.startsWith(segment)), true];
+export function tagCompletion(type: string, line: string, start: number, end: number): Array<string> {
+    let components = getResourceComponents(line.substring(start, end));
+    let temp;
+    switch (type) {
+        case 'functions':
+            temp = getResources("functionTags");
+            break;
+        case 'blocks':
+            temp = getResources("blockTags");
+            break;
+        case 'items':
+            temp = getResources("itemTags");
+            break;
+        default:
+            console.log("Invalid type");
+            return [];
     }
+
+    if (components.length === 2 && indexOf(line, start, end, ':') === -1) {
+        //probably completing namespace
+        let children = Object.keys(temp);
+        temp = temp["minecraft"] || {};
+        children.push(...Object.keys(temp).filter(n=>n!=='$tags'));
+        children.push( ...(temp["$tags"]||[]) );
+        return children;
+    }
+    for (let i = 0; i < components.length - 1; i++) {
+        if (temp[components[i]]) {
+            temp = temp[components[i]];
+        } else {
+            return [];
+        }
+    }
+    let children = Object.keys(temp).filter(n=>n!=='$tags');
+    children.push( ...(temp["$tags"]||[]) );
+    return children;
 }

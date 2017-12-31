@@ -1,0 +1,93 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "https://raw.githubusercontent.com/pca006132/datapack-helper/master/ref/recipe-schema.json",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "type": {
+            "type": "string",
+            "description": "The type of crafting recipe.",
+            "enum": [
+                "crafting_shaped",
+                "crafting_shapeless",
+                "crafting_special_armordye",
+                "crafting_special_banneraddpattern",
+                "crafting_special_bannerduplicate",
+                "crafting_special_bookcloning",
+                "crafting_special_firework_rocket",
+                "crafting_special_firework_star",
+                "crafting_special_firework_star_fade",
+                "crafting_special_mapcloning",
+                "crafting_special_mapextending",
+                "crafting_special_repairitem",
+                "crafting_special_shielddecoration",
+                "crafting_special_shulkerboxcoloring",
+                "crafting_special_tippedarrow"
+            ]
+        },
+        "group": {
+            "type": "string",
+            "description": "An identifier. Used to group multiple recipes together in the recipe book."
+        },
+        "pattern": {
+            "type": "array",
+            "description": "A list of keys used to describe the 3x3 pattern for shaped crafting.\nEach row in the crafting grid is one string in this list containing 3 or less keys. \nAll strings in this list need to have the same amount of keys.\nA space can be used to indicate an empty spot.",
+            "maxItems": 3,
+            "items": {
+                "type": "string",
+                "maxLength": 3
+            }
+        },
+        "key": {
+            "type": "object",
+            "description": "All keys used for shaped crafting.",
+            "patternProperties": {
+                ".": {
+                    "type": "object",
+                    "properties": {
+                        "item": {
+                            "type": "string",
+                            "description": "The item's ID"
+                        },
+                        "tag": {
+                            "type": "string",
+                            "description": "Tag of the item: (namespace):(tag)"
+                        }
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "ingredients": {
+            "type": "array",
+            "description": "A list of ingredients used for shapeless crafting.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "item": {
+                        "type": "string",
+                        "description": "The item's ID"
+                    },
+                    "tag": {
+                        "type": "string",
+                        "description": "Tag of the item: (namespace):(tag)"
+                    }
+                }
+            }
+        },
+        "result": {
+            "type": "object",
+            "description": "Output item",
+            "properties": {
+                "count": {
+                    "type": "number",
+                    "description": "Item count"
+                },
+                "item": {
+                    "type": "string",
+                    "description": "The item's ID"
+                }
+            }
+        }
+    }
+}

@@ -20,7 +20,7 @@ import ScbCriteriaNode from "./functions/scb-criteria";
 import SelectorNode from "./functions/selector";
 import SlotNode from "./functions/slot";
 import SoundNode from "./functions/sounds";
-import TagNode from "./functions/tag";
+import EntityTagNode from "./functions/entity-tag";
 import TeamNode from "./functions/teams";
 import { isArray } from "util";
 
@@ -72,13 +72,13 @@ function parseNode(obj, base: BaseNode): BaseNode {
                 result = new SoundNode();
                 break;
             case "block":
-                result = new BlockNode();
+                result = new BlockNode((obj.data||{})["test"] || false);
                 break;
             case "tags":
-                result = new TagNode();
+                result = new EntityTagNode();
                 break;
             case "item":
-                result = new ItemNode();
+                result = new ItemNode((obj.data||{})["test"] || false);
                 break;
             case "block path":
                 result = new NbtPathNode("block");

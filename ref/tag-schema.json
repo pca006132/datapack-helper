@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "id": "https://raw.githubusercontent.com/pca006132/datapack-helper/master/ref/tag-schema.json",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "replace": {
+            "type": "boolean",
+            "description": "Should this tag completely replace tags from different lower priority data packs with the same namespace and name.\nDefault: false"
+        },
+        "values": {
+            "type": "array",
+            "description": "List of functions, blocks or items",
+            "items": {
+                "type": "string",
+                "description": "(namespace):(name): An item, block or function.\n#(namespace):(name): An item, block or function tag. Tags must be of the same type."
+            }
+        }
+    }
+}

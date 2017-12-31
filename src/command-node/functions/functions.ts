@@ -4,7 +4,8 @@
 
 import BaseNode from './../base';
 import {getResources} from './../../resources';
-import {indexOf, getResourceComponents} from './../../util';
+import {indexOf, getResourceComponents, strStartsWith} from './../../util';
+import {tagCompletion} from './tag';
 
 export default class FunctionNode extends BaseNode {
     getCompletion (line: string, start: number, end: number, data): [Array<string>, boolean]  {
@@ -18,9 +19,12 @@ export default class FunctionNode extends BaseNode {
 }
 
 export function functionCompletion(line: string, start: number, end: number): Array<string> {
+    if (strStartsWith(line, start, end, "#")) {
+        return tagCompletion("functions", line, start+1, end);
+    }
+
     let components = getResourceComponents(line.substring(start, end));
     let temp = getResources("functions");
-    console.log(components);
     if (components.length === 2 && indexOf(line, start, end, ':') === -1) {
         //probably completing namespace
         let children = Object.keys(temp);

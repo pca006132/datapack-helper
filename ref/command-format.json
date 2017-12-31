@@ -409,6 +409,9 @@
                     "format": "location",
                     "children": [{
                         "function": "block",
+                        "data": {
+                            "test": false
+                        },
                         "children": [{
                                 "options": [
                                     "destroy",
@@ -506,6 +509,9 @@
                 "function": "targets",
                 "children": [{
                     "function": "item",
+                    "data": {
+                        "test": false
+                    },
                     "children": [{
                         "format": "int",
                         "optional": true,
@@ -617,6 +623,9 @@
                             "function": "slot",
                             "children": [{
                                 "function": "item",
+                                "data": {
+                                    "test": false
+                                },
                                 "children": [{
                                     "format": "int",
                                     "optional": true,
@@ -634,6 +643,9 @@
                             "function": "slot",
                             "children": [{
                                 "function": "item",
+                                "data": {
+                                    "test": false
+                                },
                                 "children": [{
                                     "format": "int",
                                     "optional": true,
@@ -763,6 +775,9 @@
                 "format": "location",
                 "children": [{
                     "function": "block",
+                    "data": {
+                        "test": false
+                    },
                     "children": [{
                         "options": ["replace", "destroy", "keep"],
                         "optional": true,
