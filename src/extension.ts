@@ -125,6 +125,7 @@ export function activate(context: vscode.ExtensionContext) {
 			if (!v)
 				return;
 			let current = pathToName(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data'), vscode.window.activeTextEditor.document.uri.fsPath);
+			current = current.substring(0, current.length - 11);
 			for (let tag of v.split(",").map(x=>x.trim())) {
 				let components = getResourceComponents(tag);
 				if (components.length === 0) {

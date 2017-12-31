@@ -144,6 +144,7 @@ export async function readFunctions() {
     for (let i = 0; i < v.length; i++) {
         let file = v[i];
         let name = pathToName(root, paths[i]);
+        console.log(name);
 
         let nodes = name.split(":");
         if (nodes[1].length === 0) {
