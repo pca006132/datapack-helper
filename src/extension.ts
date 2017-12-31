@@ -16,6 +16,8 @@ export function activate(context: vscode.ExtensionContext) {
 	let enabled = true;
 
 	vscode.commands.registerTextEditorCommand("datapack.escape", (editor, edit)=> {
+		if (!enabled)
+			return;
 		editor.edit((editBuilder)=> {
 			for (const v of editor.selections) {
 				editBuilder.replace(v, escape(editor.document.getText(v)));
@@ -24,6 +26,8 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	})
 	vscode.commands.registerTextEditorCommand("datapack.unescape", (editor, edit)=> {
+		if (!enabled)
+			return;
 		editor.edit((editBuilder)=> {
 			for (const v of editor.selections) {
 				editBuilder.replace(v, unescape(editor.document.getText(v)));
@@ -32,6 +36,8 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	})
 	vscode.commands.registerTextEditorCommand("datapack.evaluate", (editor, edit)=> {
+		if (!enabled)
+			return;
 		editor.edit((editBuilder)=> {
 			for (const v of editor.selections) {
 				editBuilder.replace(v, evaluate(editor.document.getText(v)));
@@ -41,17 +47,41 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	})
 	vscode.commands.registerCommand("datapack.open", ()=> {
-		vscode.window.showInputBox({placeHolder:"a", prompt: "(a)dvancements or (f)unctions"}).then(choice=> {
+		if (!enabled)
+			return;
+		vscode.window.showInputBox({placeHolder:"a/l/bt/it/ft/f/r", prompt: "a: advancements, l: loot-tables, bt: block-tag, it: item-tag, ft: function-tag, f: functions, r: recipe"}).then(choice=> {
 			let extension = "";
+			let tag = "";
 			choice = choice.toLowerCase();
 			switch (choice) {
 				case "a":
-				case "advancement":
 					choice = "advancement";
 					extension = ".json";
 					break;
+				case "l":
+					choice = "loot_tables";
+					extension = ".json";
+					break;
+				case "r":
+					choice = "recipes";
+					extension = ".json";
+					break;
+				case "bt":
+					tag = "blocks/";
+					choice = "tags";
+					extension = ".json";
+					break;
+				case "it":
+					tag = "items/";
+					choice = "tags";
+					extension = ".json";
+					break;
+				case "ft":
+					tag = "functions";
+					choice = "tags";
+					extension = ".json";
+					break;
 				case "f":
-				case "function":
 					choice = "function";
 					extension = ".mcfunction"
 					break;
@@ -65,13 +95,15 @@ export function activate(context: vscode.ExtensionContext) {
 					if (components.length === 0) {
 						vscode.window.showErrorMessage("Invalid name");
 					} else {
+						if (tag !== "")
+							components.splice(1, 0, tag);
 						let p = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', components[0], choice + "s", ...components.slice(1)) + extension;
 						accessAsync(p).then(()=> {
 							vscode.workspace.openTextDocument(vscode.Uri.file(p)).then(document=> {
 								vscode.window.showTextDocument(document);
 							});
 						}).catch(()=> {
-							outputFile(p, `# ${v}`, err=> {
+							outputFile(p, extension == ".mcfunction"? `# ${v}` : "{}", err=> {
 								if (err) {
 									vscode.window.showErrorMessage(`Error creating the ${choice} file`);
 								} else {
@@ -84,6 +116,42 @@ export function activate(context: vscode.ExtensionContext) {
 					}
 				}
 			})
+		})
+	})
+	vscode.commands.registerCommand("datapack.addTag", ()=> {
+		if (!vscode.window.activeTextEditor || vscode.window.activeTextEditor.document.isUntitled || !vscode.window.activeTextEditor.document.uri.fsPath.endsWith(".mcfunction"))
+			return;
+		vscode.window.showInputBox({prompt: "List of tags to add to the current function, use `,` to seperate different tags.", value: "minecraft:tick"}).then(v=> {
+			if (!v)
+				return;
+			let current = pathToName(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data'), vscode.window.activeTextEditor.document.uri.fsPath);
+			for (let tag of v.split(",").map(x=>x.trim())) {
+				let components = getResourceComponents(tag);
+				if (components.length === 0) {
+					vscode.window.showErrorMessage("Invalid name: " + tag);
+					continue;
+				}
+				let p = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', components[0], 'tags', 'functions', ...components.slice(1)) + ".json";
+				fs.readFile(p, "utf-8", (err, data)=> {
+					let functions = [];
+					let replace = false;
+					if (!err) {
+						try {
+							let d = JSON.parse(data);
+							replace = d.replace || false;
+							functions = d.values || [];
+						} catch (e) {
+							vscode.window.showErrorMessage("Error reading tag file: " + p);
+						}
+					}
+					if (functions.indexOf(current) === -1)
+						functions.push(current);
+					outputFile(p, JSON.stringify({replace: replace, values: functions}), err=> {
+						if (err)
+							vscode.window.showErrorMessage("Error writing tag file" + p);
+					})
+				})
+			}
 		})
 	})
 
@@ -105,7 +173,7 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	}
 	//file change watcher
-	let functionWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/functions/**/*.mcfunction");
+	let functionWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/functions/**.mcfunction");
 	functionWatcher.onDidChange(e=> {
 		if (!enabled)
 			return;
@@ -126,7 +194,7 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	})
 
-	let advancementWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/advancements/**/*.json");
+	let advancementWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/advancements/**.json");
 	advancementWatcher.onDidChange(e=> {
 		if (!enabled)
 			return;
@@ -158,7 +226,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	})
 
-	let tagWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/tags/{functions,items,blocks}/**/*.json", false, true, false);
+	let tagWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/tags/**/*.json", false, true, false);
 	tagWatcher.onDidCreate(e=> {
 		if (!enabled)
 			return;

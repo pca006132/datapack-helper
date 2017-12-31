@@ -72,13 +72,13 @@ function parseNode(obj, base: BaseNode): BaseNode {
                 result = new SoundNode();
                 break;
             case "block":
-                result = new BlockNode((obj.data||{})["test"] || false);
+                result = new BlockNode((obj.data||{})["test"] || true);
                 break;
             case "tags":
                 result = new EntityTagNode();
                 break;
             case "item":
-                result = new ItemNode((obj.data||{})["test"] || false);
+                result = new ItemNode((obj.data||{})["test"] || true);
                 break;
             case "block path":
                 result = new NbtPathNode("block");

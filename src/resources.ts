@@ -292,15 +292,11 @@ export async function readTags(t: string){
     for (let p of paths) {
         let name = pathToName(root, p);
         let nodes = name.split(":");
-        if (nodes[1].length === 0) {
-            continue;
-        }
         nodes.push(...nodes.pop().split("/"));
         nodes.splice(1, 1);
-        if (nodes.length === 1) {
+        if (nodes.length <= 1) {
             continue;
         }
-
         let skip = false;
         for (let n of nodes) {
             if (!NAME_PATTERN.exec(n)) {
@@ -593,24 +589,23 @@ export async function reloadTags(p: string) {
     let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data');
     let name = pathToName(root, p);
     let nodes = name.split(":");
-    if (nodes[1].length === 0) {
-        return;
-    }
     nodes.push(...nodes.pop().split("/"));
-    let [t] = nodes.splice(1);
+    let [t] = nodes.splice(1, 1);
+    if (nodes.length <= 1)
+        return;
     let base;
     switch (t) {
         case 'functions':
-        base = resources.functionTags;
-        break;
-    case 'items':
-        base = resources.itemTags;
-        break;
-    case 'blocks':
-        base = resources.blockTags;
-        break;
-    default:
-        throw new Error("Wrong tag type " + t);
+            base = resources.functionTags;
+            break;
+        case 'items':
+            base = resources.itemTags;
+            break;
+        case 'blocks':
+            base = resources.blockTags;
+            break;
+        default:
+            throw new Error("Wrong tag type " + t);
     }
     for (let n of nodes) {
         if (!NAME_PATTERN.exec(n)) {

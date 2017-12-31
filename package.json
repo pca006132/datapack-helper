@@ -2,7 +2,7 @@
     "name": "datapack-helper",
     "displayName": "datapack-helper",
     "description": "Minecraft Datapack helper, providing datapack creation utilities and autocompletion for functions",
-    "version": "0.4.4",
+    "version": "0.5.0",
     "publisher": "pca",
     "engines": {
         "vscode": "^1.19.0"
@@ -40,6 +40,10 @@
             {
                 "command": "datapack.open",
                 "title": "Open(create) function/advancement file based on its name"
+            },
+            {
+                "command": "datapack.addTag",
+                "title": "Add tags to the current function"
             }
         ],
         "grammars": [
@@ -51,19 +55,19 @@
         ],
         "jsonValidation": [
             {
-                "fileMatch": "/data/*/advancements/**/*.json",
+                "fileMatch": "/data/*/advancements/**.json",
                 "url": "./ref/advancement-schema.json"
             },
             {
-                "fileMatch": "/data/*/loot_tables/**/*.json",
+                "fileMatch": "/data/*/loot_tables/**.json",
                 "url": "./ref/loot-table-schema.json"
             },
             {
-                "fileMatch": "/data/*/recipes/**/*.json",
+                "fileMatch": "/data/*/recipes/**.json",
                 "url": "./ref/recipe-schema.json"
             },
             {
-                "fileMatch": "/data/*/tags/{blocks,functions,items}/**/*.json",
+                "fileMatch": "/data/*/tags/**/*.json",
                 "url": "./ref/tag-schema.json"
             }
         ],
@@ -86,6 +90,10 @@
             {
                 "command": "datapack.open",
                 "key": "ctrl+alt+o"
+            },
+            {
+                "command": "datapack.addTag",
+                "key": "ctrl+alt+t"
             }
         ]
     },
