@@ -26,7 +26,7 @@ import { isArray } from "util";
 
 function parseNode(obj, base: BaseNode): BaseNode {
     let result: BaseNode;
-    if (obj["data"]) {
+    if (obj["data"] && !obj["function"]) {
         result = new PlainNode(obj["data"]);
     } else if (obj["options"]) {
         result = new OptionNode(obj["options"]);

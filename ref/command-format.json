@@ -159,16 +159,6 @@
                             }]
                         }]
                     }]
-                },
-                {
-                    "data": "entity",
-                    "children": [{
-                        "function": "target",
-                        "children": [{
-                            "function": "entity path",
-                            "children": []
-                        }]
-                    }]
                 }
             ]
         },
