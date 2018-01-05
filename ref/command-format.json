@@ -969,8 +969,11 @@
                 {
                     "function": "targets",
                     "children": [{
-                            "function": "target",
-                            "children": []
+                            "data": "facing",
+                            "children": [{
+                                "format": "location",
+                                "children": []
+                            }]
                         },
                         {
                             "format": "location",
@@ -983,6 +986,10 @@
                                     "children": []
                                 }]
                             }]
+                        },
+                        {
+                            "function": "target",
+                            "children": []
                         }
                     ]
                 }

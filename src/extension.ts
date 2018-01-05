@@ -55,7 +55,7 @@ export function activate(context: vscode.ExtensionContext) {
 			choice = choice.toLowerCase();
 			switch (choice) {
 				case "a":
-					choice = "advancement";
+					choice = "advancements";
 					extension = ".json";
 					break;
 				case "l":
@@ -82,7 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
 					extension = ".json";
 					break;
 				case "f":
-					choice = "function";
+					choice = "functions";
 					extension = ".mcfunction"
 					break;
 				default:
@@ -97,7 +97,7 @@ export function activate(context: vscode.ExtensionContext) {
 					} else {
 						if (tag !== "")
 							components.splice(1, 0, tag);
-						let p = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', components[0], choice + "s", ...components.slice(1)) + extension;
+						let p = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data', components[0], choice, ...components.slice(1)) + extension;
 						accessAsync(p).then(()=> {
 							vscode.workspace.openTextDocument(vscode.Uri.file(p)).then(document=> {
 								vscode.window.showTextDocument(document);
