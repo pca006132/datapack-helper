@@ -294,7 +294,10 @@
                                         "format": "int",
                                         "children": [
                                            {
-                                              "format": "bool",
+                                              "options": [
+                                                 "false",
+                                                 "true"
+                                              ],
                                               "children": []
                                            }
                                         ]
@@ -688,7 +691,10 @@
                 ],
                 "children": [
                    {
-                      "format": "bool",
+                      "options": [
+                         "false",
+                         "true"
+                      ],
                       "optional": true,
                       "children": []
                    }
