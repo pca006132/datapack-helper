@@ -326,6 +326,17 @@
                    ]
                 },
                 {
+                   "data": "anchored",
+                   "children": [
+                      {
+                         "options": [
+                            "feet",
+                            "eyes"
+                         ]
+                      }
+                   ]
+                },
+                {
                    "data": "as",
                    "children": [
                       {
@@ -340,6 +351,32 @@
                       {
                          "function": "targets",
                          "children": []
+                      }
+                   ]
+                },
+                {
+                   "data": "facing",
+                   "children": [
+                      {
+                         "format": "location",
+                         "children": []
+                      },
+                      {
+                         "data": "entity",
+                         "children": [
+                            {
+                               "function": "target",
+                               "children": [
+                                  {
+                                     "options": [
+                                        "feet",
+                                        "eyes"
+                                     ],
+                                     "children": []
+                                  }
+                               ]
+                            }
+                         ]
                       }
                    ]
                 },
@@ -422,6 +459,15 @@
                                                  ]
                                               }
                                            ]
+                                        },
+                                        {
+                                           "data": "matches",
+                                           "children": [
+                                              {
+                                                 "format": "^\\S+",
+                                                 "children": []
+                                              }
+                                           ]
                                         }
                                      ]
                                   }
@@ -432,11 +478,50 @@
                    ]
                 },
                 {
-                   "data": "offset",
+                   "data": "in",
+                   "children": [
+                      {
+                         "options": [
+                            "overworld",
+                            "the_end",
+                            "the_nether"
+                         ]
+                      }
+                   ]
+                },
+                {
+                   "data": "positioned",
                    "children": [
                       {
                          "format": "location",
                          "children": []
+                      },
+                      {
+                         "data": "as",
+                         "children": [
+                            {
+                               "function": "targets",
+                               "children": []
+                            }
+                         ]
+                      }
+                   ]
+                },
+                {
+                   "data": "rotated",
+                   "children": [
+                      {
+                         "format": "rotation",
+                         "children": []
+                      },
+                      {
+                         "data": "as",
+                         "children": [
+                            {
+                               "function": "targets",
+                               "children": []
+                            }
+                         ]
                       }
                    ]
                 },
@@ -1425,90 +1510,53 @@
           "children": [
              {
                 "function": "target",
-                "children": [
-                   {
-                      "data": "facing",
-                      "optional": true,
-                      "children": [
-                         {
-                            "function": "target",
-                            "children": []
-                         },
-                         {
-                            "format": "location",
-                            "children": []
-                         }
-                      ]
-                   }
-                ]
+                "children": []
              },
              {
                 "format": "location",
-                "children": [
-                   {
-                      "data": "facing",
-                      "optional": true,
-                      "children": [
-                         {
-                            "function": "target",
-                            "children": []
-                         },
-                         {
-                            "format": "location",
-                            "children": []
-                         }
-                      ]
-                   },
-                   {
-                      "format": "rotation",
-                      "optional": true,
-                      "children": []
-                   }
-                ]
+                "children": []
              },
              {
                 "function": "targets",
                 "children": [
                    {
                       "function": "target",
-                      "children": [
-                         {
-                            "data": "facing",
-                            "optional": true,
-                            "children": [
-                               {
-                                  "function": "target",
-                                  "children": []
-                               },
-                               {
-                                  "format": "location",
-                                  "children": []
-                               }
-                            ]
-                         }
-                      ]
+                      "children": []
                    },
                    {
                       "format": "location",
                       "children": [
                          {
+                            "format": "rotation",
+                            "optional": true,
+                            "children": []
+                         },
+                         {
                             "data": "facing",
                             "optional": true,
                             "children": [
                                {
-                                  "function": "target",
+                                  "format": "location",
                                   "children": []
                                },
                                {
-                                  "format": "location",
-                                  "children": []
+                                  "data": "entity",
+                                  "children": [
+                                     {
+                                        "function": "target",
+                                        "children": [
+                                           {
+                                              "options": [
+                                                 "feet",
+                                                 "eyes"
+                                              ],
+                                              "children": []
+                                           }
+                                        ]
+                                     }
+                                  ]
                                }
                             ]
-                         },
-                         {
-                            "format": "rotation",
-                            "optional": true,
-                            "children": []
                          }
                       ]
                    }
