@@ -332,7 +332,8 @@
                          "options": [
                             "feet",
                             "eyes"
-                         ]
+                         ],
+                         "children": []
                       }
                    ]
                 },
@@ -485,7 +486,8 @@
                             "overworld",
                             "the_end",
                             "the_nether"
-                         ]
+                         ],
+                         "children": []
                       }
                    ]
                 },
