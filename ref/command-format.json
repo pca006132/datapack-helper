@@ -1511,10 +1511,6 @@
           ],
           "children": [
              {
-                "function": "target",
-                "children": []
-             },
-             {
                 "format": "location",
                 "children": []
              },
