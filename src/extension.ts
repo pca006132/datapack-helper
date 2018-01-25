@@ -86,7 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
 					extension = ".mcfunction"
 					break;
 				default:
-					vscode.window.showErrorMessage("Invalid mode, either a or f");
+					vscode.window.showErrorMessage("Invalid mode");
 					return;
 			}
 			vscode.window.showInputBox({placeHolder: `example:${choice}_a`, prompt: `Name of the ${choice}`}).then(v=> {
@@ -174,7 +174,7 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	}
 	//file change watcher
-	let functionWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/functions/**.mcfunction");
+	let functionWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/functions/**/*.mcfunction");
 	functionWatcher.onDidChange(e=> {
 		if (!enabled)
 			return;
@@ -195,7 +195,7 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	})
 
-	let advancementWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/advancements/**.json");
+	let advancementWatcher = vscode.workspace.createFileSystemWatcher(vscode.workspace.workspaceFolders[0].uri.fsPath + "/data/*/advancements/**/*.json");
 	advancementWatcher.onDidChange(e=> {
 		if (!enabled)
 			return;
