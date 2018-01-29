@@ -553,6 +553,10 @@ export async function reloadFunction(p: string) {
 
     if (temp["$func"].indexOf(nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 11)) === -1)
         temp["$func"].push(nodes[nodes.length - 1].substring(0, nodes[nodes.length - 1].length - 11));
+
+    //delete objectives
+    resources.objectives = resources.objectives.filter(v=>v[2] !== name);
+
     for (let line of file.split(LINE_DELIMITER)) {
         let m = OBJ_PATTERN.exec(line);
         if (m) {

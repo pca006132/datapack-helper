@@ -839,6 +839,113 @@
        {
           "data": "particle",
           "children": [
+            {
+                 "data": "minecraft:block",
+                 "children": [
+                     {
+                         "function": "block",
+                         "children": [
+                            {
+                               "format": "location",
+                               "children": [
+                                  {
+                                     "format": "number",
+                                     "children": [
+                                        {
+                                           "format": "number",
+                                           "children": [
+                                              {
+                                                 "format": "number",
+                                                 "children": [
+                                                    {
+                                                       "format": "number",
+                                                       "children": [
+                                                          {
+                                                             "format": "int",
+                                                             "children": [
+                                                                {
+                                                                   "options": [
+                                                                      "force",
+                                                                      "normal"
+                                                                   ],
+                                                                   "optional": true,
+                                                                   "children": [
+                                                                      {
+                                                                         "function": "targets",
+                                                                         "optional": true,
+                                                                         "children": []
+                                                                      }
+                                                                   ]
+                                                                }
+                                                             ]
+                                                          }
+                                                       ]
+                                                    }
+                                                 ]
+                                              }
+                                           ]
+                                        }
+                                     ]
+                                  }
+                               ]
+                            }
+                         ]
+                     }
+                 ]
+             }, {
+                 "data": "minecraft:dust",
+                 "children": [
+                     {
+                         "format": "^\\d(\\.\\d+)? \\d(\\.\\d+)? \\d(\\.\\d+)? \\d(\\.\\d+)?",
+                         "children": [
+                            {
+                               "format": "location",
+                               "children": [
+                                  {
+                                     "format": "number",
+                                     "children": [
+                                        {
+                                           "format": "number",
+                                           "children": [
+                                              {
+                                                 "format": "number",
+                                                 "children": [
+                                                    {
+                                                       "format": "number",
+                                                       "children": [
+                                                          {
+                                                             "format": "int",
+                                                             "children": [
+                                                                {
+                                                                   "options": [
+                                                                      "force",
+                                                                      "normal"
+                                                                   ],
+                                                                   "optional": true,
+                                                                   "children": [
+                                                                      {
+                                                                         "function": "targets",
+                                                                         "optional": true,
+                                                                         "children": []
+                                                                      }
+                                                                   ]
+                                                                }
+                                                             ]
+                                                          }
+                                                       ]
+                                                    }
+                                                 ]
+                                              }
+                                           ]
+                                        }
+                                     ]
+                                  }
+                               ]
+                            }
+                         ]
+                     }
+                 ]
+             },
              {
                 "key": "#particles",
                 "children": [

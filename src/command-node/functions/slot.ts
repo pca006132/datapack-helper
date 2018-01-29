@@ -7,21 +7,19 @@ import {strStartsWith, indexOf} from './../../util';
 import { isArray } from 'util';
 
 const SLOT = {
-    slot: {
-        armor: [
-            "chest", "feet", "head"
-        ],
-        weapon: [
-            "mainhand", "offhand"
-        ],
-        enderchest: range(26),
-        hotbar: range(8),
-        inventory: range(26),
-        horse: [
-            "saddle", "chest", "armor", ...range(14)
-        ],
-        villager: range(7)
-    }
+    armor: [
+        "chest", "feet", "head"
+    ],
+    weapon: [
+        "mainhand", "offhand"
+    ],
+    enderchest: range(26),
+    hotbar: range(8),
+    inventory: range(26),
+    horse: [
+        "saddle", "chest", "armor", ...range(14)
+    ],
+    villager: range(7)
 }
 
 function range(end: number) {
