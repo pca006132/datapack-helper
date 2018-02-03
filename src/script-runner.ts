@@ -70,7 +70,7 @@ Array.prototype.removeDuplicated = function(): Array<any> {
  * Duplicate Removal Command
  */
 const LINE_DELIMITER = /\r\n|\n|\r/g;
-export function removeDuplicated(code: string) {
+export function removeDuplicates(code: string) {
     let product = code.split(LINE_DELIMITER).removeDuplicated();
     let result = "";
     for(let item of product) {
