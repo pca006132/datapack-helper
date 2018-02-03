@@ -88,6 +88,11 @@
                 "when": "editorHasSelection"
             },
             {
+                "command": "datapack.removeduplicated",
+                "key": "ctrl+alt+r",
+                "when": "editorHasSelection"
+            },
+            {
                 "command": "datapack.open",
                 "key": "ctrl+alt+o"
             },
