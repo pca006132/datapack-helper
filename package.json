@@ -88,7 +88,7 @@
                 "when": "editorHasSelection"
             },
             {
-                "command": "datapack.removeduplicated",
+                "command": "datapack.removeduplicates",
                 "key": "ctrl+alt+r",
                 "when": "editorHasSelection"
             },
