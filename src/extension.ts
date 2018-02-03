@@ -9,7 +9,7 @@ import getBaseNode from './command-node/node-factory';
 import {escape, unescape} from './command-node/functions/nbt';
 import { Position } from 'vscode';
 import {indexOf, getResourceComponents, pathToName, accessAsync} from './util';
-import {evaluate} from './script-runner';
+import {evaluate, removeDuplicates} from './script-runner';
 import {outputFile} from 'fs-extra';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -41,6 +41,17 @@ export function activate(context: vscode.ExtensionContext) {
 		editor.edit((editBuilder)=> {
 			for (const v of editor.selections) {
 				editBuilder.replace(v, evaluate(editor.document.getText(v)));
+			}
+		}).then((value)=> {
+			if (!value) vscode.window.showErrorMessage("replace failed");
+		})
+	})
+	vscode.commands.registerTextEditorCommand("datapack.removeduplicates", (editor, edit) => {
+		if(!enabled)
+			return;
+		editor.edit((editBuilder)=> {
+			for(const v of editor.selections) {
+				editBuilder.replace(v, removeDuplicates(editor.document.getText(v)));
 			}
 		}).then((value)=> {
 			if (!value) vscode.window.showErrorMessage("replace failed");

@@ -42,3 +42,41 @@ export function evaluate(code: string) {
     }
     return result.toString();
 }
+
+/*
+ * New prototype for Array
+ * clone
+ * removeDuplicated
+*/
+declare global {
+    interface Array<T> {
+        clone(): Array<T>;
+        removeDuplicated(): Array<T>;
+    }
+}
+Array.prototype.clone = function(): Array<any> {
+    return new Array(this);
+}
+Array.prototype.removeDuplicated = function(): Array<any> {
+    let contains = [];
+    for(let item of this) {
+        if(contains.indexOf(item) === -1) {
+            contains.push(item);
+        }
+    }
+    return contains;
+}
+
+/*
+ * Duplicate Removal Command
+ */
+const LINE_DELIMITER = /\r\n|\n|\r/g;
+export function removeDuplicates(code: string) {
+    let product = code.split(LINE_DELIMITER).removeDuplicated();
+    let result = "";
+    for(let item of product) {
+        result += (item + `\r\n`);
+    }
+    result = result.substring(0,result.length - 2);
+    return result;
+}

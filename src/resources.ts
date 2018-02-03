@@ -12,6 +12,7 @@ import { setImmediate } from 'timers';
 const NAME_PATTERN = /^[a-z0-9-_.]+$/;
 const OBJ_PATTERN = /^scoreboard objectives add (\S+) (\S+)/;
 const TEAM_PATTERN = /^team add (\S+)/;
+const BOSSBAR_PATTERN = /^bossbar create (\S+) (\S+)/;
 const LINE_DELIMITER = /\r\n|\n|\r/g;
 
 export function initialize() {
@@ -87,6 +88,11 @@ export function initialize() {
                 vscode.window.showErrorMessage("Error creating .datapack/itemsTag.json");
             }
         });
+        fs.writeFile(path.join(root.fsPath, '.datapack', 'bossbars.json'), "[]", (err) => {
+            if(err) {
+                vscode.window.showErrorMessage("Error creating .datapack/bossbars.json");
+            }
+        });
     })
 }
 
@@ -120,7 +126,8 @@ let resources = {
     teams: [],
     functionTags: {},
     blockTags: {},
-    itemTags: {}
+    itemTags: {},
+    bossbars: []
 }
 
 export async function readFunctions() {
@@ -130,6 +137,7 @@ export async function readFunctions() {
     }
     resources.functions = {};
     resources.teams = [];
+    resources.bossbars = [];
     let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data');
     try {
         await accessAsync(root);
@@ -186,6 +194,12 @@ export async function readFunctions() {
                     resources.teams.push(m[1]);
                 }
             }
+            m = BOSSBAR_PATTERN.exec(line);
+            if(m) {
+                if(!resources.bossbars.find(v=>v===m[1])) {
+                    resources.bossbars.push(m[1]);
+                }
+            }
         }
     }
     fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'objectives.json'), JSON.stringify(resources.objectives), (err) => {
@@ -202,7 +216,12 @@ export async function readFunctions() {
         if (err) {
             vscode.window.showErrorMessage("Error writing .datapack/teams.json");
         }
-    })
+    });
+    fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'bossbars.json'), JSON.stringify(resources.bossbars), err => {
+        if(err) {
+            vscode.window.showErrorMessage("Error writing .datapack/bossbars.json");
+        }
+    });
 }
 
 export async function readAdvancements() {
@@ -454,6 +473,19 @@ export async function loadFiles() {
         }
         vscode.window.showErrorMessage("Error loading .datapack/blocksTag.json");
     }
+    try {
+        let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'bossbars.json'));
+        resources.bossbars = raw;
+    } catch(e) {
+        if (e.code == 'ENOENT') {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'bossbars.json'), "[]", (err) => {
+                if (err) {
+                    vscode.window.showErrorMessage("Error creating .datapack/bossbars.json");
+                }
+            });
+        }
+        vscode.window.showErrorMessage("Error loading .datapack/bossbars.json");
+    }
 
     try {
         let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','sounds.json'));
@@ -570,6 +602,12 @@ export async function reloadFunction(p: string) {
                 resources.teams.push(m[1]);
             }
         }
+        m = BOSSBAR_PATTERN.exec(line);
+        if(m) {
+            if(!resources.bossbars.find(v=>v===m[1])) {
+                resources.bossbars.push(m[1]);
+            }
+        }
     }
     setImmediate(()=> {
         fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'objectives.json'), JSON.stringify(resources.objectives), (err) => {
@@ -586,7 +624,12 @@ export async function reloadFunction(p: string) {
             if (err) {
                 vscode.window.showErrorMessage("Error writing .datapack/teams.json");
             }
-        })
+        });
+        fs.writeFile(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack', 'bossbars.json'), JSON.stringify(resources.bossbars), (err) => {
+            if(err){
+                vscode.window.showErrorMessage("Error writing .datapack/bossbars.json");
+            }
+        });
     })
 }
 
