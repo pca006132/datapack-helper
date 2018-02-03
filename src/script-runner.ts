@@ -45,6 +45,7 @@ export function evaluate(code: string) {
 
 /*
  * New prototype for Array
+ * clone
  * removeDuplicated
 */
 declare global {
