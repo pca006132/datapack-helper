@@ -45,17 +45,12 @@ export function evaluate(code: string) {
 
 /*
  * New prototype for Array
- * clone
  * removeDuplicated
 */
 declare global {
     interface Array<T> {
-        clone(): Array<T>;
         removeDuplicated(): Array<T>;
     }
-}
-Array.prototype.clone = function(): Array<any> {
-    return new Array(this);
 }
 Array.prototype.removeDuplicated = function(): Array<any> {
     let contains = [];
