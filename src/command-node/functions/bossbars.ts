@@ -1,6 +1,6 @@
 /*
  * Bossbars node
- * 
+ *
 */
 
 import BaseNode from './../base'
@@ -24,13 +24,13 @@ export function bossbarCompletion(line: string, start: number, end: number): Arr
     if(components.length === 2 && indexOf(line, start, end, ':') === -1) {
         let children = Object.keys(temp);
         temp = temp["minecraft"] || [];
-        children.push(...temp);
+        children.push(...temp.map(v=>v[0]));
         return children;
     }
     let children = [];
     for(let i = 0; i < components.length-1; i++) {
         if(temp[components[i]]) {
-            children.push(...(temp[components[i]]));
+            children.push(...(temp[components[i]].map(v=>v[0])));
         } else {
             return [];
         }

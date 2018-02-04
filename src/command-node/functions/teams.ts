@@ -14,6 +14,6 @@ export default class TeamNode extends BaseNode {
         }
 
         let segment = line.substring(start, end);
-        return [getResources("teams").filter(v=>v.startsWith(segment)), true];
+        return [getResources("teams").map(v=>v[0]).filter(v=>v.startsWith(segment)), true];
     }
 }

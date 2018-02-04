@@ -152,7 +152,6 @@ export async function readFunctions() {
     for (let i = 0; i < v.length; i++) {
         let file = v[i];
         let name = pathToName(root, paths[i]);
-        console.log(name);
 
         let nodes = name.split(":");
         if (nodes[1].length === 0) {
@@ -190,8 +189,8 @@ export async function readFunctions() {
             }
             m = TEAM_PATTERN.exec(line);
             if (m) {
-                if (!resources.teams.find(v=>v===m[1])) {
-                    resources.teams.push(m[1]);
+                if (!resources.teams.find(v=>v[0]===m[1])) {
+                    resources.teams.push([m[1], name]);
                 }
             }
             m = BOSSBAR_PATTERN.exec(line);
@@ -201,8 +200,8 @@ export async function readFunctions() {
                     if(!temp["minecraft"]) {
                         temp["minecraft"] = [];
                     }
-                    if(!temp["minecraft"].find(v[0]===m[1])) {
-                        temp["minecraft"].push(m[1]);
+                    if(!temp["minecraft"].find(v=>v[0]===m[1])) {
+                        temp["minecraft"].push([m[1], name]);
                     }
                 }
                 else {
@@ -211,8 +210,8 @@ export async function readFunctions() {
                         if(!temp[res[0]]) {
                             temp[res[0]] = [];
                         }
-                        if(!temp[res[0]].find(v[0]===m[1])) {
-                            temp[res[0]].push(res[1]);
+                        if(!temp[res[0]].find(v=>v[0]===res[1])) {
+                            temp[res[0]].push([res[1], name]);
                         }
                     }
                 }
@@ -436,6 +435,10 @@ export async function loadFiles() {
 
     try {
         let raw = await loadJson(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.datapack','teams.json'));
+        if (raw.length > 0 && !Array.isArray(raw[0])) {
+            vscode.window.showErrorMessage("The format of teams.json is updated. Please use datapack.reload to update the refereces.");
+            raw = [];
+        }
         resources.teams = raw;
     } catch (e) {
         if (e.code === 'ENOENT') {
@@ -607,8 +610,10 @@ export async function reloadFunction(p: string) {
     resources.objectives = resources.objectives.filter(v=>v[2] !== name);
 
     //Reset
-    resources.bossbars = {};
-    resources.teams = [];
+    for (let key of Object.keys(resources.bossbars)) {
+        resources.bossbars[key] = resources.bossbars[key].filter(v=>v[1] !== name);
+    }
+    resources.teams = resources.teams.filter(v=>v[1] !== name);
     for (let line of file.split(LINE_DELIMITER)) {
         let m = OBJ_PATTERN.exec(line);
         if (m) {
@@ -619,7 +624,7 @@ export async function reloadFunction(p: string) {
         m = TEAM_PATTERN.exec(line);
         if (m) {
             if (!resources.teams.find(v=>v===m[1])) {
-                resources.teams.push(m[1]);
+                resources.teams.push([m[1], name]);
             }
         }
         m = BOSSBAR_PATTERN.exec(line);
@@ -630,7 +635,7 @@ export async function reloadFunction(p: string) {
                     temp["minecraft"] = [];
                 }
                 if(!temp["minecraft"].find(v=>v[0]===m[1])) {
-                    temp["minecraft"].push(m[1]);
+                    temp["minecraft"].push([m[1], name]);
                 }
             }
             else {
@@ -639,8 +644,8 @@ export async function reloadFunction(p: string) {
                     if(!temp[res[0]]) {
                         temp[res[0]] = [];
                     }
-                    if(!temp[res[0]].find(v=>v[0]===m[1])) {
-                        temp[res[0]].push(res[1]);
+                    if(!temp[res[0]].find(v=>v[0]===res[1])) {
+                        temp[res[0]].push([res[1], name]);
                     }
                 }
             }
