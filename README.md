@@ -75,18 +75,6 @@ Key: Alt+\
 Example: \"a\" -> "a"
 ```
 
-Remove duplicated lines(in selection):
-```
-Key: Ctrl+Alt+r
-Example:
-
-say 1      say 1
-say 1  --> say 2
-say 2
-say 2
-
-```
-
 Evaluate Js expression:
 ```
 Key: Ctrl+E
