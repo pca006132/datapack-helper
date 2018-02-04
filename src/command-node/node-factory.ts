@@ -23,6 +23,7 @@ import SoundNode from "./functions/sounds";
 import EntityTagNode from "./functions/entity-tag";
 import TeamNode from "./functions/teams";
 import { isArray } from "util";
+import BossbarNode from "./functions/bossbars";
 
 function parseNode(obj, base: BaseNode): BaseNode {
     let result: BaseNode;
@@ -97,6 +98,9 @@ function parseNode(obj, base: BaseNode): BaseNode {
                 break;
             case "trigger":
                 result = new ObjectiveNode(true);
+                break;
+            case "bossbars":
+                result = new BossbarNode();
                 break;
             default:
                 throw new Error(`Unknown function type: ${obj["function"]}`);

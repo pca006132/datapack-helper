@@ -52,6 +52,176 @@
           ]
        },
        {
+            "data": "bossbar",
+            "children": [
+                {
+                    "data": "create",
+                    "children": [
+                        {
+                            "format": "^\\S+",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "data": "get",
+                    "children": [
+                        {
+                            "function": "bossbars",
+                            "children": [
+                                {
+                                    "data": "max",
+                                    "children": []
+                                },
+                                {
+                                    "data": "players",
+                                    "children": []
+                                },
+                                {
+                                    "data": "value",
+                                    "children": []
+                                },
+                                {
+                                    "data": "visible",
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "data": "list",
+                    "children": []
+                },
+                {
+                    "data": "remove",
+                    "children": [
+                        {
+                            "function": "bossbars",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "data": "set",
+                    "children": [
+                        {
+                            "function": "bossbars",
+                            "children": [
+                                {
+                                    "data": "color",
+                                    "children": [
+                                        {
+                                            "data": "blue",
+                                            "children": []
+                                        },
+                                        {
+                                            "data": "green",
+                                            "children": []
+                                        },
+                                        {
+                                            "data": "pink",
+                                            "children": []
+                                        },
+                                        {
+                                            "data": "purple",
+                                            "children": []
+                                        },
+                                        {
+                                            "data": "red",
+                                            "children": []
+                                        },
+                                        {
+                                            "data": "white",
+                                            "children": []
+                                        },
+                                        {
+                                            "data": "yellow",
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "data": "max",
+                                    "children": [
+                                        {
+                                            "format": "int",
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "data": "name",
+                                    "children": [
+                                        {
+                                            "format": "^\\S+",
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "data": "players",
+                                    "children": [
+                                        {
+                                            "function": "targets",
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "data": "style",
+                                    "children": [
+                                        {
+                                            "data": "notched_10",
+                                            "children": []
+                                        },
+                                        {
+                                            "data": "notched_12",
+                                            "children": []
+                                        },
+                                        {
+                                            "data": "notched_20",
+                                            "children": []
+                                        },
+                                        {
+                                            "data": "notched_6",
+                                            "children": []
+                                        },
+                                        {
+                                            "data": "progress",
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "data": "value",
+                                    "children": [
+                                        {
+                                            "format": "int",
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "data": "visible",
+                                    "children": [
+                                        {
+                                            "data": "true",
+                                            "children": []
+                                        },
+                                        {
+                                            "data": "false",
+                                            "children": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+       },
+       {
           "data": "clear",
           "children": [
              {
@@ -1141,6 +1311,10 @@
                 ]
              }
           ]
+       },
+       {
+            "data": "say",
+            "children": []
        },
        {
           "data": "scoreboard",

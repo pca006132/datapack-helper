@@ -77,7 +77,7 @@ Example: \"a\" -> "a"
 
 Evaluate Js expression:
 ```
-Ctrl+E
+Key: Ctrl+E
 ```
 
 A `range(start=0, end, step=1): Array<number>` is provided, which is similar to the `range` function in python.
@@ -86,6 +86,13 @@ If the result is an array, it would join the array into lines and replace the co
 
 ![Example](https://thumbs.gfycat.com/VainForcefulDobermanpinscher-size_restricted.gif)
 
+Duplicate Removal
+```
+Key: Ctrl+Alt+R
+```
+Remove the duplicate lines in the selected text.
+Will reserve the first one met in the sequence, so the order won't change.
+![Example](https://t1.picb.cc/uploads/2018/02/03/seaVt.gif)
 ### Files
 ```
 ├ .datapack
