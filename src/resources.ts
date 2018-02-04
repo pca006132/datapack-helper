@@ -88,7 +88,7 @@ export function initialize() {
                 vscode.window.showErrorMessage("Error creating .datapack/itemsTag.json");
             }
         });
-        fs.writeFile(path.join(root.fsPath, '.datapack', 'bossbars.json'), "[]", (err) => {
+        fs.writeFile(path.join(root.fsPath, '.datapack', 'bossbars.json'), "{}", (err) => {
             if(err) {
                 vscode.window.showErrorMessage("Error creating .datapack/bossbars.json");
             }
@@ -127,7 +127,7 @@ let resources = {
     functionTags: {},
     blockTags: {},
     itemTags: {},
-    bossbars: []
+    bossbars: {}
 }
 
 export async function readFunctions() {
@@ -137,7 +137,7 @@ export async function readFunctions() {
     }
     resources.functions = {};
     resources.teams = [];
-    resources.bossbars = [];
+    resources.bossbars = {};
     let root = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'data');
     try {
         await accessAsync(root);
@@ -196,8 +196,25 @@ export async function readFunctions() {
             }
             m = BOSSBAR_PATTERN.exec(line);
             if(m) {
-                if(!resources.bossbars.find(v=>v===m[1])) {
-                    resources.bossbars.push(m[1]);
+                let temp = resources.bossbars;
+                if(m[1].indexOf(':') === -1) {
+                    if(!temp["minecraft"]) {
+                        temp["minecraft"] = [];
+                    }
+                    if(!temp["minecraft"].find(v[0]===m[1])) {
+                        temp["minecraft"].push(m[1]);
+                    }
+                }
+                else {
+                    let res = m[1].split(":");
+                    if(res.length === 2) {
+                        if(!temp[res[0]]) {
+                            temp[res[0]] = [];
+                        }
+                        if(!temp[res[0]].find(v[0]===m[1])) {
+                            temp[res[0]].push(res[1]);
+                        }
+                    }
                 }
             }
         }
@@ -478,7 +495,7 @@ export async function loadFiles() {
         resources.bossbars = raw;
     } catch(e) {
         if (e.code == 'ENOENT') {
-            fs.writeFile(path.join(root.fsPath, '.datapack', 'bossbars.json'), "[]", (err) => {
+            fs.writeFile(path.join(root.fsPath, '.datapack', 'bossbars.json'), "{}", (err) => {
                 if (err) {
                     vscode.window.showErrorMessage("Error creating .datapack/bossbars.json");
                 }
@@ -589,6 +606,9 @@ export async function reloadFunction(p: string) {
     //delete objectives
     resources.objectives = resources.objectives.filter(v=>v[2] !== name);
 
+    //Reset
+    resources.bossbars = {};
+    resources.teams = [];
     for (let line of file.split(LINE_DELIMITER)) {
         let m = OBJ_PATTERN.exec(line);
         if (m) {
@@ -604,8 +624,25 @@ export async function reloadFunction(p: string) {
         }
         m = BOSSBAR_PATTERN.exec(line);
         if(m) {
-            if(!resources.bossbars.find(v=>v===m[1])) {
-                resources.bossbars.push(m[1]);
+            let temp = resources.bossbars;
+            if(m[1].indexOf(':') === -1) {
+                if(!temp["minecraft"]) {
+                    temp["minecraft"] = [];
+                }
+                if(!temp["minecraft"].find(v=>v[0]===m[1])) {
+                    temp["minecraft"].push(m[1]);
+                }
+            }
+            else {
+                let res = m[1].split(":");
+                if(res.length === 2) {
+                    if(!temp[res[0]]) {
+                        temp[res[0]] = [];
+                    }
+                    if(!temp[res[0]].find(v=>v[0]===m[1])) {
+                        temp[res[0]].push(res[1]);
+                    }
+                }
             }
         }
     }
