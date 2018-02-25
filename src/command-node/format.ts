@@ -6,7 +6,7 @@ import BaseNode from './base';
 
 const NUMBER = /^[+-]?\d+(\.\d+)?/;
 const INT = /^[+-]?\d+/;
-const LOCATION = /^((((~?[+-]?(\d+(\.\d+)?)|\.\d+)|(~))(\s|$)){3}|(`([+-]?(\d+(\.\d+)?|\.\d+))?(\s|$)){3})/;
+const LOCATION = /^((((~?[+-]?(\d+(\.\d+)?)|\.\d+)|(~))(\s|$)){3}|(\^([+-]?(\d+(\.\d+)?|\.\d+))?(\s|$)){3})/;
 const ROTATION = /^((((~?[+-]?(\d+(\.\d+)?)|\.\d+)|(~))(\s|$)){2})/;
 const BOOLEAN = /^(true|false)/;
 
