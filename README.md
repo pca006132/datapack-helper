@@ -1,4 +1,5 @@
 # datapack-helper
+
 VSCode datapack-helper extension, providing basic template for datapack creation, json schema and autocompletion for command functions.
 
 * Some data used are from PepijnMC's [Minecraft data](https://github.com/PepijnMC/Minecraft), with minor modification (removing the `minecraft:` namespace).
