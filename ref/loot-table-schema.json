@@ -233,11 +233,7 @@
                                         },
                                         "expand": {
                                             "type": "boolean",
-                                            "enum": [
-                                                "minecraft:contents",
-                                                "minecraft:self"
-                                            ],
-                                            "description": "The item tag's ID"
+                                            "description": "If false, entry will return all contents of tag, otherwise entry will behave as multiple item entries (all with same weight and quality)"
                                         }
                                     },
                                     "not": {
