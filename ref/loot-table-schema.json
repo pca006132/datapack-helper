@@ -7,6 +7,24 @@
     "additionalProperties": false,
     "properties": {
         "additionalProperties": false,
+        "type": {
+            "type": "string",
+            "description": "The type of loot table.",
+            "enum": [
+                "minecraft:advancement_reward",
+                "minecraft:block",
+                "minecraft:chest",
+                "minecraft:empty",
+                "minecraft:entity",
+                "minecraft:fishing"
+            ]
+        },
+        "functions": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/function"
+            }
+        },
         "pools": {
             "type": "array",
             "title": "Loot pools",
@@ -18,6 +36,12 @@
                         "$ref": "#/definitions/conditions",
                         "title": "Pool conditions",
                         "description": "The conditions which must pass in order for this pool to be used"
+                    },
+                    "functions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/function"
+                        }
                     },
                     "rolls": {
                         "$ref": "shared/minecraft_definitions.json#/definitions/range",
@@ -40,7 +64,7 @@
                                     "properties": {
                                         "type": {
                                             "enum": [
-                                                "item"
+                                                "minecraft:item"
                                             ],
                                             "title": "Item",
                                             "description": "This entry will give an item (if the conditions pass). The item type is defined in \"name\""
@@ -56,13 +80,19 @@
                                                 "$ref": "#/definitions/function"
                                             }
                                         }
+                                    },
+                                    "not": {
+                                        "properties": {
+                                            "children": {},
+                                            "expand": {}
+                                        }
                                     }
                                 },
                                 {
                                     "properties": {
                                         "type": {
                                             "enum": [
-                                                "loot_table"
+                                                "minecraft:loot_table"
                                             ],
                                             "title": "Loot table",
                                             "description": "This entry will give the result of another loot table specified in 'name'. These cannot be self referencing in any way, if they are self referencing, they don't run"
@@ -75,7 +105,8 @@
                                     },
                                     "not": {
                                         "properties": {
-                                            "functions": {}
+                                            "children": {},
+                                            "expand": {}
                                         }
                                     }
                                 },
@@ -83,7 +114,7 @@
                                     "properties": {
                                         "type": {
                                             "enum": [
-                                                "empty"
+                                                "minecraft:empty"
                                             ],
                                             "title": "Empty",
                                             "description": "An empty pool. No items will be granted"
@@ -91,8 +122,127 @@
                                     },
                                     "not": {
                                         "properties": {
-                                            "functions": {},
-                                            "name": {}
+                                            "name": {},
+                                            "children": {},
+                                            "expand": {}
+                                        }
+                                    }
+                                },
+                                {
+                                    "properties": {
+                                        "type": {
+                                            "enum": [
+                                                "minecraft:alternatives"
+                                            ],
+                                            "title": "Alternatives",
+                                            "description": "Tests conditions of child entries and executes first that can run"
+                                        },
+                                        "children": {
+                                            "$ref": "#/properties/pools/items/entries",
+                                            "title": "Children",
+                                            "description": "Child entries"
+                                        }
+                                    },
+                                    "not": {
+                                        "properties": {
+                                            "name": {},
+                                            "expand": {}
+                                        }
+                                    }
+                                },
+                                {
+                                    "properties": {
+                                        "type": {
+                                            "enum": [
+                                                "minecraft:group"
+                                            ],
+                                            "title": "Group",
+                                            "description": "Executes child entries when own conditions pass"
+                                        },
+                                        "children": {
+                                            "$ref": "#/properties/pools/items/entries",
+                                            "title": "Children",
+                                            "description": "Child entries"
+                                        }
+                                    },
+                                    "not": {
+                                        "properties": {
+                                            "name": {},
+                                            "expand": {}
+                                        }
+                                    }
+                                },
+                                {
+                                    "properties": {
+                                        "type": {
+                                            "enum": [
+                                                "minecraft:sequence"
+                                            ],
+                                            "title": "Sequence",
+                                            "description": "Executes child entries until first one that can't run due to conditions"
+                                        },
+                                        "children": {
+                                            "$ref": "#/properties/pools/items/entries",
+                                            "title": "Children",
+                                            "description": "Child entries"
+                                        }
+                                    },
+                                    "not": {
+                                        "properties": {
+                                            "name": {},
+                                            "expand": {}
+                                        }
+                                    }
+                                },
+                                {
+                                    "properties": {
+                                        "type": {
+                                            "enum": [
+                                                "minecraft:dynamic"
+                                            ],
+                                            "title": "Dynamic",
+                                            "description": "Gets block specific drops"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "enum": [
+                                                "minecraft:contents",
+                                                "minecraft:self"
+                                            ]
+                                        }
+                                    },
+                                    "not": {
+                                        "properties": {
+                                            "expand": {},
+                                            "children": {}
+                                        }
+                                    }
+                                },
+                                {
+                                    "properties": {
+                                        "type": {
+                                            "enum": [
+                                                "minecraft:tag"
+                                            ],
+                                            "title": "Tag",
+                                            "description": "Adds contents of item tag"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "description": "The item tag's ID"
+                                        },
+                                        "expand": {
+                                            "type": "boolean",
+                                            "enum": [
+                                                "minecraft:contents",
+                                                "minecraft:self"
+                                            ],
+                                            "description": "The item tag's ID"
+                                        }
+                                    },
+                                    "not": {
+                                        "properties": {
+                                            "children": {}
                                         }
                                     }
                                 }
@@ -113,6 +263,8 @@
                                 },
                                 "type": {},
                                 "name": {},
+                                "children": {},
+                                "expand": {},
                                 "functions": {}
                             },
                             "additionalProperties": false
@@ -129,7 +281,7 @@
         "conditions": {
             "type": "array",
             "title": "Conditions",
-            "description": "The conditions that must pass for this pool/entry to be used",
+            "description": "The conditions that must pass for this pool/entry/function to be used",
             "items": {
                 "oneOf": [
                     {
